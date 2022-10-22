@@ -74,6 +74,25 @@ var LIBS = {
     translateZ: function(m, t){
         m[14]+=t;
     },
+    
+    
+    trianguloVertices: function (){
+        
+        var triangle_vertex = [ -1, -1, 0,
+                            0, 0, 1,
+                            1, -1, 0,
+                            1, 1, 0,
+                            1, 1, 0,
+                            1, 0, 0];
+                        
+        return triangle_vertex;                 
+    },
+  
+  
+    trianguloCara: function (){
+        var triangle_faces = [0, 1, 2];
+        return triangle_faces;
+    },
   
   
     cuboVerticesDegradado: function(){
@@ -191,18 +210,20 @@ var LIBS = {
         var coords = [];
         
         //==== Vertice 0: centro de la base =====
-        coords.push(0);
-        coords.push(0);
-        coords.push(0);
+        coords.push(0.0);
+        coords.push(0.0);
+        coords.push(0.0);
         
         coords.push(0.9);
         coords.push(0.9);
         coords.push(0.9);
         
+        var x;
+        var z;
         //==== Vertices [1, secciones]: borde de la base =====
         for(let i=0; i<360; i+=angulo){
-            var x = Math.cos(degToRad(i))*radio;            
-            var z = Math.sin(degToRad(i))*radio;
+            x = Math.cos(LIBS.degToRad(i))*radio;            
+            z = Math.sin(LIBS.degToRad(i))*radio;
             
             coords.push(x);
             coords.push(0);
@@ -214,35 +235,37 @@ var LIBS = {
         }
         
         //==== Vertice secciones+1: cuspide del cono ====
-        coords.push(0);
+        coords.push(0.0);
         coords.push(altura);
-        coords.push(0);
+        coords.push(0.0);
         
-        coords.push(0.1);
-        coords.push(0.1);
-        coords.push(0.1);
+        coords.push(0.9);
+        coords.push(0.9);
+        coords.push(0.9);
+        
         
         return coords;
     },
+    
     
     conoCaras: function(secciones){
         
         var caras = [];
         
-        
-        for (let i=1; i<=secciones; i+=1){
+        for (let i=1; i<=secciones; i++){
             //Triangulos base
             caras.push(0);
             caras.push(i);
-            caras.push((i+1)%secciones);
+            caras.push((i%secciones)+1);
             
             //Triengulos laterales
             caras.push(secciones+1);
             caras.push(i);
-            caras.push((i+1)%secciones);
+            caras.push((i%secciones)+1);
         }
         
         return caras;
     }
+    
 };
 
