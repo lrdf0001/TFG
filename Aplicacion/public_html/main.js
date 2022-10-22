@@ -7,6 +7,59 @@ function main() {
   var CANVAS = document.getElementById("mi_canvas");
   CANVAS.width = window.innerWidth;
   CANVAS.height = window.innerHeight;
+  
+  /*========================= CAPTURE MOUSE EVENTS ========================= */
+
+  var AMORTIZATION = 0.95;  // Para amortiguar el movimiento
+  var drag = false;         // Indica si se arrartra el puntero
+
+  var x_prev, y_prev;       // Guardar la posicion del puntero
+  var dX = 0, dY = 0;
+
+  var mouseDown = function(e) { // Para cuando se pulsa el boton del ratón
+    drag = true;
+    x_prev = e.pageX, y_prev = e.pageY;
+    e.preventDefault();
+    return false;
+  };
+
+  var mouseUp = function(e){ //Para cuando se suelta el puntero del ratón
+    drag = false;
+  };
+
+  var mouseMove2 = function(e) { // Movimiento del ratón
+        if (!drag) return false;
+        dX = (x_prev-e.pageX) * 2 * Math.PI / CANVAS.width,
+        dY = (y_prev-e.pageY ) * 2 * Math.PI / CANVAS.height;
+        THETA += dX;
+        PHI += dY;
+        /*
+        var dX = e.pageX - x_prev,
+            dY = e.pageY - y_prev;
+        THETA += dX * 2 * Math.PI / CANVAS.width;
+        PHI += dY * 2 * Math.PI / CANVAS.height;
+        */
+        x_prev = e.pageX, y_prev = e.pageY;
+        e.preventDefault();
+  };
+  
+  var mouseMove = function(e) {
+    if (!drag) return false;
+        dX = (e.pageX-x_prev) * 2 * Math.PI / CANVAS.width,
+        dY = (e.pageY-y_prev) * 2 * Math.PI / CANVAS.height;
+        THETA += dX;
+        PHI += dY;
+        x_prev = e.pageX, y_prev = e.pageY;
+        e.preventDefault();
+  };
+  
+  
+  // Event listeners
+  CANVAS.addEventListener("mousedown", mouseDown, false);
+  CANVAS.addEventListener("mouseup", mouseUp, false);
+  CANVAS.addEventListener("mouseout", mouseUp, false);
+  CANVAS.addEventListener("mousemove", mouseMove, false);
+
 
   /*========================= GET WEBGL CONTEXT ========================= */
   var GL;
@@ -94,6 +147,8 @@ function main() {
 
 
   LIBS.translateZ(VIEWMATRIX, -6);
+  var THETA = 0;
+  var PHI = 0;
 
   /*========================= DRAWING ========================= */
   GL.enable(GL.DEPTH_TEST);
@@ -104,9 +159,14 @@ function main() {
   var time_prev = 0;
   var animate = function(time) {
     var dt = time - time_prev;
-    LIBS.rotateZ(MOVEMATRIX, dt*0.001);
-    LIBS.rotateY(MOVEMATRIX, dt*0.0013);
-    LIBS.rotateX(MOVEMATRIX, dt*0.0017);
+    if (!drag) { // Lo sigue moviendo cuando se suelta el raton
+      dX *= AMORTIZATION, dY *= AMORTIZATION;
+      THETA += dX, PHI += dY;
+    }
+    LIBS.set_I4(MOVEMATRIX);
+    //LIBS.rotateZ(MOVEMATRIX, dt*0.001);
+    LIBS.rotateY(MOVEMATRIX, THETA);
+    LIBS.rotateX(MOVEMATRIX, PHI);
     time_prev = time;
 
     GL.viewport(0, 0, CANVAS.width, CANVAS.height);

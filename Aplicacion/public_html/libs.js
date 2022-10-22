@@ -28,7 +28,15 @@ var LIBS = {
                 0,0,0,1];
     },
 
-
+    set_I4: function (m){//Mas eficiente en cuanto a memoria
+        m[0]=1, m[1]=0, m[2]=0, m[3]=0,
+        m[4]=0, m[5]=1, m[6]=0, m[7]=0,
+        m[8]=0, m[9]=0, m[10]=1, m[11]=0,
+        m[12]=0, m[13]=0, m[14]=0, m[15]=1;
+        
+    },
+    
+    
     rotateX: function(m, angle) {
         var c = Math.cos(angle);
         var s = Math.sin(angle);
@@ -75,15 +83,14 @@ var LIBS = {
         m[14]+=t;
     },
     
-    
     trianguloVertices: function (){
         
         var triangle_vertex = [ -1, -1, 0,
-                            0, 0, 1,
-                            1, -1, 0,
-                            1, 1, 0,
-                            1, 1, 0,
-                            1, 0, 0];
+                                0, 0, 1,
+                                1, -1, 0,
+                                1, 1, 0,
+                                1, 1, 0,
+                                1, 0, 0];
                         
         return triangle_vertex;                 
     },
