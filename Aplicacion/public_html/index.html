@@ -10,15 +10,41 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
         <script src="libs.js"></script>
         <script src="main.js"></script>
+        
+        <style>
+            * {
+              box-sizing: border-box;
+            }
+
+            /* Create two equal columns that floats next to each other */
+            .column {
+              float: left;
+              width: 50%;
+              padding: 10px;
+            }
+
+            /* Clear floats after the columns */
+            .row:after {
+              content: "";
+              display: table;
+              clear: both;
+            }
+        </style>
     </head>
     
-    <body style='margin: 0'>
-        <canvas id='mi_canvas'
-                style="position: absolute; background-color: black;"></canvas>  <!--Area de rendering para dibujar en WebGL-->
-        <!--
-        <p id="demo"></p>
-        
-        <script>document.getElementById("demo").innerHTML = LIBS.conoVertices(4,1,1.5);</script>
-        -->
+    <!-- style='margin: 0' --> 
+    <body >
+        <div class="row">
+            <div class="column">
+                <canvas id='mi_canvas'
+                        style=' background-color: black; width: 100%;'>
+                </canvas>  <!--Area de rendering para dibujar en WebGL-->
+            </div>
+            
+            <div class="column" >    
+                <p id="demo"></p>
+            <!--<script>document.getElementById("demo").innerHTML = LIBS.conoVertices(4,1,1.5);</script>-->
+            </div>
+        </div>
     </body>
 </html>

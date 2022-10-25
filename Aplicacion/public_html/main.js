@@ -9,13 +9,19 @@ function main() {
   CANVAS.height = window.innerHeight;
   
   /*========================= CAPTURE MOUSE EVENTS ========================= */
-
+  
+  let canvas_mouse = document.querySelector('#mi_canvas');//output para depurar
+  
+  var mouse;
   var AMORTIZATION = 0.95;  // Para amortiguar el movimiento
   var drag = false;         // Indica si se arrartra el puntero
 
-  var x_prev, y_prev;       // Guardar la posicion del puntero
+  var x_prev, y_prev;       // Guardar la posicion del puntero 
   var dX = 0, dY = 0;
-
+  
+  var x_pos, y_pos;       // Guardar la posicion del puntero 
+  var tX = 0, tY = 0;
+  
   var mouseDown = function(e) { // Para cuando se pulsa el boton del ratón
     drag = true;
     x_prev = e.pageX, y_prev = e.pageY;
@@ -44,21 +50,57 @@ function main() {
   };
   
   var mouseMove = function(e) {
-    if (!drag) return false;
-        dX = (e.pageX-x_prev) * 2 * Math.PI / CANVAS.width,
-        dY = (e.pageY-y_prev) * 2 * Math.PI / CANVAS.height;
-        THETA += dX;
-        PHI += dY;
-        x_prev = e.pageX, y_prev = e.pageY;
-        e.preventDefault();
+    if(mouse === 0){
+        if (!drag) return false;
+            dX = (e.pageX-x_prev) * 2 * Math.PI / CANVAS.width,
+            dY = (e.pageY-y_prev) * 2 * Math.PI / CANVAS.height;
+            THETA += dX;
+            PHI += dY;
+            x_prev = e.pageX, y_prev = e.pageY;
+            e.preventDefault();
+    }else if (mouse === 2) {
+            if (!drag) return false;
+            tX = (x_pos-e.pageX) / CANVAS.width,
+            tY = (y_pos-e.pageY) / CANVAS.height;
+            POSY += tX*0.2;
+            POSX += tY*0.2;
+            x_pos = e.pageX, y_pos = e.pageY;
+            e.preventDefault();
+        }
+
   };
   
   
   // Event listeners
-  CANVAS.addEventListener("mousedown", mouseDown, false);
-  CANVAS.addEventListener("mouseup", mouseUp, false);
-  CANVAS.addEventListener("mouseout", mouseUp, false);
-  CANVAS.addEventListener("mousemove", mouseMove, false);
+    CANVAS.addEventListener("mousedown", mouseDown, false);
+    
+    canvas_mouse.addEventListener('mousedown', (e) => {
+         let log = document.querySelector('#demo');
+         switch (e.button) {
+           case 0:
+             log.textContent = 'Left button clicked.';
+             mouse = 0;
+             break;
+           case 1:
+             log.textContent = 'Middle button clicked.';
+             mouse = 1;
+             break;
+           case 2:
+             log.textContent = 'Right button clicked.';
+             mouse = 2;
+             break;
+           default:
+             mouse = 0;
+             log.textContent = `Unknown button code: ${e.button}`;
+         }
+     });
+     
+    CANVAS.addEventListener("mouseup", mouseUp, false);
+    CANVAS.addEventListener("mouseout", mouseUp, false);
+    CANVAS.addEventListener("mousemove", mouseMove, false);
+  
+  
+  
 
 
   /*========================= GET WEBGL CONTEXT ========================= */
@@ -149,7 +191,10 @@ function main() {
   LIBS.translateZ(VIEWMATRIX, -6);
   var THETA = 0;
   var PHI = 0;
-
+  
+  var POSX = 0;
+  var POSY = 0;
+  
   /*========================= DRAWING ========================= */
   GL.enable(GL.DEPTH_TEST);
   GL.depthFunc(GL.LEQUAL);
@@ -165,8 +210,10 @@ function main() {
     }
     LIBS.set_I4(MOVEMATRIX);
     //LIBS.rotateZ(MOVEMATRIX, dt*0.001);
+    //LIBS.translate(MOVEMATRIX, -POSX, -POSY, 0);
     LIBS.rotateY(MOVEMATRIX, THETA);
     LIBS.rotateX(MOVEMATRIX, PHI);
+    //LIBS.translate(MOVEMATRIX, POSX, POSY, 0);
     time_prev = time;
 
     GL.viewport(0, 0, CANVAS.width, CANVAS.height);

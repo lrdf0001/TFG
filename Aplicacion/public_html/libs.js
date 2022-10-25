@@ -77,11 +77,19 @@ var LIBS = {
         m[5]=c*m[5]+s*mv4;
         m[9]=c*m[9]+s*mv8;
     },
-  
-  
-    translateZ: function(m, t){
-        m[14]+=t;
+    
+    translate: function(m, tx, ty, tz){ 
+        m[12]+=tx;
+        m[13]+=ty;
+        m[14]+=tz;
     },
+    
+    translateX: function(m, t){ m[12]+=t; },    
+    
+    translateY: function(m, t){ m[13]+=t; },    
+  
+    translateZ: function(m, t){ m[14]+=t; },
+    
     
     trianguloVertices: function (){
         
