@@ -229,9 +229,9 @@ var LIBS = {
         coords.push(0.0);
         coords.push(0.0);
         
-        coords.push(0.9);
-        coords.push(0.9);
-        coords.push(0.9);
+        coords.push(0.85);
+        coords.push(0.85);
+        coords.push(0.85);
         
         var x;
         var z;
@@ -244,9 +244,15 @@ var LIBS = {
             coords.push(0);
             coords.push(z);
             
-            coords.push(Math.random());
-            coords.push(Math.random());
-            coords.push(Math.random());
+            if(i==0){
+                coords.push(0.9);//Math.random()
+                coords.push(0.1);
+                coords.push(0.1);
+            }else{
+                coords.push(0.1);//Math.random()
+                coords.push(0.1);
+                coords.push(0.9);
+            }
         }
         
         //==== Vertice secciones+1: cuspide del cono ====
@@ -254,9 +260,9 @@ var LIBS = {
         coords.push(altura);
         coords.push(0.0);
         
-        coords.push(0.9);
-        coords.push(0.9);
-        coords.push(0.9);
+        coords.push(0.85);
+        coords.push(0.85);
+        coords.push(0.85);
         
         
         return coords;

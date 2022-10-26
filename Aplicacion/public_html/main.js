@@ -58,16 +58,22 @@ function main() {
             PHI += dY;
             x_prev = e.pageX, y_prev = e.pageY;
             e.preventDefault();
-    }else if (mouse === 2) {
+            
+            let log = document.querySelector('#demo2');
+            log.textContent = THETA+'   '+PHI;
+            
+    }else if (mouse === 1) {
             if (!drag) return false;
-            tX = (x_pos-e.pageX) / CANVAS.width,
-            tY = (y_pos-e.pageY) / CANVAS.height;
-            POSY += tX*0.2;
-            POSX += tY*0.2;
-            x_pos = e.pageX, y_pos = e.pageY;
+            dX = (e.pageX-x_prev) / CANVAS.width ,
+            dY = (e.pageY-y_prev) / CANVAS.height ;
+            POSX += dX*2;
+            POSY -= dY*2;
+            x_prev = e.pageX, y_prev = e.pageY;
             e.preventDefault();
+            
+            let log = document.querySelector('#demo2');
+            log.textContent = POSX+'   '+POSY;
         }
-
   };
   
   
@@ -97,10 +103,7 @@ function main() {
      
     CANVAS.addEventListener("mouseup", mouseUp, false);
     CANVAS.addEventListener("mouseout", mouseUp, false);
-    CANVAS.addEventListener("mousemove", mouseMove, false);
-  
-  
-  
+    CANVAS.addEventListener("mousemove", mouseMove, false);  
 
 
   /*========================= GET WEBGL CONTEXT ========================= */
@@ -120,9 +123,10 @@ function main() {
             uniform mat4 Pmatrix, Vmatrix, Mmatrix;\n\
             attribute vec3 color;\n\
             varying vec3 vColor;\n\
+            uniform vec3 translation;\n\
             \n\
             void main(void) {\n\
-            gl_Position = Pmatrix * Vmatrix * Mmatrix * vec4(position, 1.);\n\
+            gl_Position = Pmatrix * Vmatrix * Mmatrix * vec4(position + translation, 1.);\n\
             vColor = color;\n\
             }";
 
@@ -157,6 +161,8 @@ function main() {
   var _Pmatrix = GL.getUniformLocation(SHADER_PROGRAM, "Pmatrix");
   var _Vmatrix = GL.getUniformLocation(SHADER_PROGRAM, "Vmatrix");
   var _Mmatrix = GL.getUniformLocation(SHADER_PROGRAM, "Mmatrix");
+  
+  var _translation = GL.getUniformLocation(SHADER_PROGRAM, "translation");
 
   var _color = GL.getAttribLocation(SHADER_PROGRAM, "color");
   var _position = GL.getAttribLocation(SHADER_PROGRAM, "position");
@@ -222,11 +228,20 @@ function main() {
     GL.uniformMatrix4fv(_Pmatrix, false, PROJMATRIX);
     GL.uniformMatrix4fv(_Vmatrix, false, VIEWMATRIX);
     GL.uniformMatrix4fv(_Mmatrix, false, MOVEMATRIX);
+    GL.uniform3f(_translation, POSX, POSY, 0);
+    
+    //Pruebas
+    //THETA+=0.01;
+    //POSX+=0.01;
+    //PHI+=0.2;
+    //======
     
     GL.bindBuffer(GL.ARRAY_BUFFER, CUBE_VERTEX);
     
     GL.vertexAttribPointer(_position, 3, GL.FLOAT, false, 4*(3+3), 0);
     GL.vertexAttribPointer(_color, 3, GL.FLOAT, false, 4*(3+3), 3*4);
+    
+    
     GL.drawElements(GL.TRIANGLES, 20*2*3, GL.UNSIGNED_SHORT, 0);
     
     GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, CUBE_FACES);
