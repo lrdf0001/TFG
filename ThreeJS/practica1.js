@@ -1,3 +1,4 @@
+
 //========================= Escena ============================
 const scene = new THREE.Scene()
 
@@ -48,6 +49,7 @@ scene.add(camera)
 
 
 //========================== Caja =============================
+
 const geometriaCaja = new THREE.BoxGeometry( 1, 1, 2 )
 const materialCaja = new THREE.MeshBasicMaterial( { color:    0x239b56   } )
 const caja = new THREE.Mesh( geometriaCaja, materialCaja )
@@ -71,7 +73,8 @@ renderer.render(scene, camera)
 
 	function animate() {
 		requestAnimationFrame( animate )
-
+	
+		
 		caja.rotation.x += 0.01
 		caja.rotation.y += 0.01
 		
@@ -79,6 +82,7 @@ renderer.render(scene, camera)
 		tapa.rotation.x += 0.01
 		tapa.rotation.y += 0.01
 		tapa.translateY(0.5)
+		
 		
 		renderer.render( scene, camera )
 		renderer.setSize( window.innerWidth, window.innerHeight )
