@@ -51,12 +51,12 @@ scene.add(camera)
 //========================== Caja =============================
 
 const geometriaCaja = new THREE.BoxGeometry( 1, 1, 2 )
-const materialCaja = new THREE.MeshBasicMaterial( { color:    0x239b56   } )
+const materialCaja = new THREE.MeshBasicMaterial( { color:    0x009688    } )
 const caja = new THREE.Mesh( geometriaCaja, materialCaja )
 scene.add( caja )
 
 const geometriaTapa = new THREE.BoxGeometry( 1.15, 0.25, 2.15 )
-const materialTapa = new THREE.MeshBasicMaterial( { color:    0x239b56   } )
+const materialTapa = new THREE.MeshBasicMaterial( { color:    0x00796b    } )
 const tapa = new THREE.Mesh( geometriaTapa, materialTapa )
 tapa.translateY(0.5)
 scene.add( tapa )
