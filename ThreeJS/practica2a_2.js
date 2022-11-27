@@ -55,7 +55,7 @@ function main(){
 		}
 
 //========================= Luces =============================
-/*
+
 const color = 0xFFFFFF
 const intensity = 1
 const ambientLight = new THREE.AmbientLight(color, intensity)
@@ -63,7 +63,7 @@ const pointLight = new THREE.PointLight(color, intensity)
 pointLight.position.set(-3, 10, 3)
 scene.add(ambientLight)
 scene.add(pointLight)
-*/
+
 
 //========================= Camara =============================
 	const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20 )
@@ -74,68 +74,74 @@ scene.add(pointLight)
 	scene.add(camera)
 
 
-//========================== Caja =============================
-	const geometriaCaja = new THREE.BoxGeometry( 1, 1, 2 );
-	const materialCaja = new THREE.MeshBasicMaterial( { color:    0x0066FF    } );
+//========================== Modelo =============================
 
-	const materialTapa = new THREE.MeshBasicMaterial( { color:    0x23689b    } );
-	const geometriaTapa = new THREE.BoxGeometry( 1.15, 0.25, 2.15 );
-
-	miscajas = [];
-	cont = 0;
-	for(let k=0; k<3; k++){
-		for(let j=0; j<3; j++){
-			for (let i=0; i<3; i++){
-				caja = new THREE.Mesh( geometriaCaja, materialCaja );
-				tapa = new THREE.Mesh( geometriaTapa, materialTapa );
-				
-				tapa.translateY(0.5);
-							
-				caja.translateX(1.4*i);
-				tapa.translateX(1.4*i);
-				
-				caja.translateY(1.125*j);
-				tapa.translateY(1.125*j);
-				
-				caja.translateZ(-2.2*k);
-				tapa.translateZ(-2.2*k);
-				
-				miscajas[cont]=caja;
-				miscajas[cont+1]=tapa;
-				cont = cont + 2;
-			}
-		}
-	}
-
-	
-	numZ = 1;
-	numY = 1;
-	numX = 1;
-	
-	function vercajas(){
-		cont = 0;
-		for(let k=0; k<numZ; k++){
-			for(let j=0; j<numY; j++){
-				for (let i=0; i<numX; i++){	
-					
-					scene.add( miscajas[cont] );
-					scene.add( miscajas[cont+1] );
-					cont = cont + 2;
-				}
-			}
-		}
-	}
-	
-	function clearCajas(){
-		c = 0;
-		for (let i=0; i<27; i++){
-			scene.remove(miscajas[c]);
-			scene.remove(miscajas[c+1]);
-			c = c + 2; 
+	//---------------------- CajaZapatos ----------------------
+	class CajaZapatos{
+		constructor(caja, tapa) {
+			this.caja = caja;
+			this.tapa = tapa;
+			this.tapa.translateY(0.5);
 		}
 		
+		trasladarY(y){
+			this.caja.translateY(y);
+			this.tapa.translateY(y);
+		}
+		
+		getcaja(){ return this.caja;}
+		gettapa(){ return this.tapa;}
+	}
+	
+
+	//Geometria y material
+	const geometriaCaja = new THREE.BoxGeometry( 1, 1, 2 );
+	const materialCaja = new THREE.MeshToonMaterial( { color:  0x0066FF  } );
+
+	const materialTapa = new THREE.MeshToonMaterial( { color:  0x23689b  } );
+	const geometriaTapa = new THREE.BoxGeometry( 1.15, 0.25, 2.15 );
+	
+	//Variables para trasladar las cajas en el ejeY
+	const dy = 1.125;
+	
+	//---------------------- Estructura Datos ----------------------
+	mapcajas = new Map();
+	for(let j=0; j<3; j++){
+		unacaja = new THREE.Mesh( geometriaCaja, materialCaja );
+				unatapa = new THREE.Mesh( geometriaTapa, materialTapa );
+				
+				cajazapatos = new CajaZapatos(unacaja, unatapa);
+				cajazapatos.trasladarY(dy*j);
+				
+				clave = dy*j; //Usamos las coordenadas como clave
+				mapcajas.set(clave, cajazapatos);
+	}
+	
+	//---------------------- Puesta en escena ----------------------
+	
+	// Para saber el número de cajas en la pila
+	numY = 1;
+	
+	// Vincula las cajas creadas con la escena
+	function vercajas(){
+		for(let j=0; j<numY; j++){
+			clave = dy*j;
+			scene.add( mapcajas.get(clave).getcaja() );
+			scene.add( mapcajas.get(clave).gettapa() );
+		}
+	}
+	
+	// Limpia la escena, quita las todas las cajas
+	function clearCajas(){
+		for(let j=0; j<numY; j++){	
+			clave = dy*j;
+			scene.remove( mapcajas.get(clave).getcaja() );
+			scene.remove( mapcajas.get(clave).gettapa() );
+			
+		}
 	}
 
+	
 //========================== Render =============================
 	const canvas = document.querySelector('#mi_canvas')
 	const renderer = new THREE.WebGLRenderer({canvas: canvas})
@@ -145,25 +151,21 @@ scene.add(pointLight)
 
 //========================= Eventos ============================
 	
-	//------------------------- Teclado ----------------------------
-	
-		function keyFunction(e) {
-			switch (e.key){
-				case "e":
-					verEjes(ejes);
-				break;
-				case "x":
-					if (numX < 3) numX++;
-				break;
-				case "y":
-					if (numY < 3) numY++;
-				break;
-				case "z":
-					if (numZ < 3) numZ++;
-				break;				
-			}
+	//------------------------- Teclado ----------------------------	
+	function keyFunction(e) {
+		switch (e.key){
+			case "e":
+				verEjes(ejes);
+			break;
+			case "y":
+				if (numY < 3) numY++;
+			break;
+			case "Y":
+				if (numY > 1) numY--;
+			break;				
 		}
-		document.getElementById("cuerpo").addEventListener("keypress", keyFunction);
+	}
+	document.getElementById("cuerpo").addEventListener("keypress", keyFunction);
 
 //========================= Visualiza =========================
 

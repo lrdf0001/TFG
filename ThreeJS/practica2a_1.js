@@ -66,17 +66,46 @@ function main(){
 
 //========================== Caja =============================
 
+	class CajaZapatos{
+		constructor(caja, tapa) {
+			this.caja = caja;
+			this.tapa = tapa;
+			this.tapa.translateY(0.5);
+		}
+		
+		trasladarX(x){
+			this.caja.translateX(x);
+			this.tapa.translateX(x);
+		}
+		
+		trasladarY(y){
+			this.caja.translateY(y);
+			this.tapa.translateY(y);
+		}
+		
+		trasladarZ(z){
+			this.caja.translateZ(z);
+			this.tapa.translateZ(z);
+		}
+		
+		getcaja() { return this.caja;}
+		gettapa() { return this.tapa;}
+	};
+
 	const geometriaCaja = new THREE.BoxGeometry( 1, 1, 2 )
 	const materialCaja = new THREE.MeshBasicMaterial( { color:    0x009688    } )
 	const caja = new THREE.Mesh( geometriaCaja, materialCaja )
-	scene.add( caja )
+	//scene.add( caja )
 
 	const geometriaTapa = new THREE.BoxGeometry( 1.15, 0.25, 2.15 )
 	const materialTapa = new THREE.MeshBasicMaterial( { color:    0x00796b    } )
 	const tapa = new THREE.Mesh( geometriaTapa, materialTapa )
-	tapa.translateY(0.5)
-	scene.add( tapa )
-
+	//tapa.translateY(0.5)
+	//scene.add( tapa )
+	
+	cajazapatos = new CajaZapatos(caja, tapa);
+	scene.add(cajazapatos.getcaja());
+	scene.add(cajazapatos.gettapa());
 
 //========================== Render =============================
 	const canvas = document.querySelector('#mi_canvas')
@@ -103,7 +132,7 @@ function main(){
 	function animate() {
 		requestAnimationFrame( animate )
 	
-		
+		/*
 		caja.rotation.x += 0.01
 		caja.rotation.y += 0.01
 		
@@ -111,7 +140,7 @@ function main(){
 		tapa.rotation.x += 0.01
 		tapa.rotation.y += 0.01
 		tapa.translateY(0.5)
-		
+		*/
 		
 		renderer.render( scene, camera )
 		renderer.setSize( window.innerWidth, window.innerHeight )
