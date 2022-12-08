@@ -66,7 +66,15 @@ function main(){
 //========================= Camaras =============================
 
 	//---------------------- Perspectiva ------------------------
-	const cameraPersp = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20 );
+	var fov = 75;
+	
+	var cameraPersp;
+
+	function creaPersp(){
+		cameraPersp = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, 0.1, 20 );
+	}
+	
+	creaPersp();
 	cameraPersp.position.x = 3;
 	cameraPersp.position.y = 2;
 	cameraPersp.position.z = 4;
@@ -78,9 +86,15 @@ function main(){
 	const right = 6;  
 	const top = 4;
 	const bottom = -4; 
-	const near = 0.01;
+	var near = 0.01;
 	const far = 20;
-	const cameraOrtho = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
+	var cameraOrtho;
+
+	function creaOrtho(){
+		cameraOrtho	= new THREE.OrthographicCamera(left, right, top, bottom, near, far);	
+	}
+	
+	creaOrtho();
 	cameraOrtho.position.x = 3;
 	cameraOrtho.position.y = 2;
 	cameraOrtho.position.z = 4;
@@ -123,8 +137,61 @@ function main(){
 			case "e":
 				verEjes(ejes);
 			break;
+			
 			case "p":
 				paralela = !paralela;
+			break;
+			
+			case "x":
+			case "X":
+				cameraOrtho.position.x = 4;
+				cameraOrtho.position.y = 0;
+				cameraOrtho.position.z = 0;
+				cameraOrtho.lookAt(0,0,0);
+				
+				cameraPersp.position.x = 4;
+				cameraPersp.position.y = 0;
+				cameraPersp.position.z = 0;
+				cameraPersp.lookAt(0,0,0);
+			break;
+			
+			case "y":
+			case "Y":
+				cameraOrtho.position.x = 0;
+				cameraOrtho.position.y = 4;
+				cameraOrtho.position.z = 0;
+				cameraOrtho.lookAt(0,0,0);
+				
+				cameraPersp.position.x = 0;
+				cameraPersp.position.y = 4;
+				cameraPersp.position.z = 0;
+				cameraPersp.lookAt(0,0,0);
+			break;
+			
+			case "z":
+			case "Z":
+				cameraOrtho.position.x = 0;
+				cameraOrtho.position.y = 0;
+				cameraOrtho.position.z = 4;
+				cameraOrtho.lookAt(0,0,0);
+				
+				cameraPersp.position.x = 0;
+				cameraPersp.position.y = 0;
+				cameraPersp.position.z = 4;
+				cameraPersp.lookAt(0,0,0);
+			break;
+			
+			case "c":
+			case "C":
+				cameraOrtho.position.x = 3;
+				cameraOrtho.position.y = 2;
+				cameraOrtho.position.z = 4;
+				cameraOrtho.lookAt(0,0,0);
+				
+				cameraPersp.position.x = 3;
+				cameraPersp.position.y = 2;
+				cameraPersp.position.z = 4;
+				cameraPersp.lookAt(0,0,0);
 			break;
 		}
 	}
