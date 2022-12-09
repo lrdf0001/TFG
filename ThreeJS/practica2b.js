@@ -59,7 +59,7 @@ function main(){
 	const intensity = 1;
 	const ambientLight = new THREE.AmbientLight(color, 0.2);
 	const pointLight = new THREE.PointLight(color, intensity);
-	pointLight.position.set(-3, 5, 5);
+	pointLight.position.set(-3, 4.5, 5);
 	scene.add(ambientLight);
 	scene.add(pointLight);
 
@@ -67,14 +67,10 @@ function main(){
 
 	//---------------------- Perspectiva ------------------------
 	var fov = 75;
+	var near = 0.1;	
+	var far = 20;
+	var cameraPersp = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, near, far );
 	
-	var cameraPersp;
-
-	function creaPersp(){
-		cameraPersp = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, 0.1, 20 );
-	}
-	
-	creaPersp();
 	cameraPersp.position.x = 3;
 	cameraPersp.position.y = 2;
 	cameraPersp.position.z = 4;
@@ -82,25 +78,109 @@ function main(){
 	scene.add(cameraPersp);	
 	
 	//---------------------- Paralela ------------------------
-	const left = -6;
-	const right = 6;  
-	const top = 4;
-	const bottom = -4; 
-	var near = 0.01;
-	const far = 20;
-	var cameraOrtho;
-
-	function creaOrtho(){
-		cameraOrtho	= new THREE.OrthographicCamera(left, right, top, bottom, near, far);	
-	}
+	var left = -6;
+	var right = 6;  
+	var top = 4;
+	var bottom = -4; 
 	
-	creaOrtho();
+	var cameraOrtho = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
 	cameraOrtho.position.x = 3;
 	cameraOrtho.position.y = 2;
 	cameraOrtho.position.z = 4;
 	cameraOrtho.lookAt(0,0,0);
 	scene.add(cameraOrtho);
 
+	//---------------------- Vistas ------------------------
+	
+	// Enum para indicar sobre que eje esta la camara
+	const PosicionCamara = {
+		PERFIL: 'PERFIL',
+		PLANTA: 'PLANTA',
+		ALZADO: 'ALZADO',
+		PERSP: 'PERSP'
+	};
+	
+	var camaraPOS = PosicionCamara.PERSP;
+	
+	function setPos(unaCamara){
+		switch(camaraPOS){
+			case 'PERFIL':
+				unaCamara.position.x = 4;
+				unaCamara.position.y = 0;
+				unaCamara.position.z = 0;
+			break;
+
+			case 'PLANTA':
+				unaCamara.position.x = 0;
+				unaCamara.position.y = 4;
+				unaCamara.position.z = 0;
+			break;
+			
+			case 'ALZADO':
+				unaCamara.position.x = 0;
+				unaCamara.position.y = 0;
+				unaCamara.position.z = 4;
+			break;
+			
+			default:
+				unaCamara.position.x = 3;
+				unaCamara.position.y = 2;
+				unaCamara.position.z = 4;
+			break;
+		}
+			
+		unaCamara.lookAt(0,0,0);
+	}
+	
+	//---------------------- Funciones Auxiliares ------------------------
+	function creaPersp(){
+		scene.remove(cameraPersp);
+		
+		cameraPersp = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, near, 20 );
+		setPos(cameraPersp);
+		scene.add(cameraPersp);
+	}
+	
+	function creaOrtho(){
+		scene.remove(cameraOrtho);
+		
+		cameraOrtho = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
+		setPos(cameraOrtho);
+		scene.add(cameraOrtho);		
+	}
+	
+	//---------------------- Zoom ------------------------
+	function zoom(factor){
+		if(factor){
+			//Reducimos la distancia entre planos para hacer zoom+ con la camara paralela
+			if(top > 0.5){
+				left = left + 0.25;
+				right = right - 0.25 ;
+				top = top - 0.25;
+				bottom = bottom + 0.25;
+			}			
+			
+			//Reducimos el ángulo de vision para hacer zoom+ con la camara perspectiva
+			if(fov > 10)
+				fov = fov - 5;
+			
+		}else{
+			//Ampliamos la distancia entre planos para hacer zoom- con la camara paralela
+			if(top < 10){
+				left = left - 0.25;
+				right = right + 0.25 ;
+				top = top + 0.25;
+				bottom = bottom - 0.25;
+			}
+			
+			//Ampliamos el ángulo de vision para hacer zoom- con la camara perspectiva
+			if(fov < 175)
+				fov = fov + 5;			
+		}
+		//Redefinimos las camaras
+		creaOrtho();
+		creaPersp();	
+	}
 	
 //========================== Modelo =============================
 
@@ -144,54 +224,50 @@ function main(){
 			
 			case "x":
 			case "X":
-				cameraOrtho.position.x = 4;
-				cameraOrtho.position.y = 0;
-				cameraOrtho.position.z = 0;
-				cameraOrtho.lookAt(0,0,0);
-				
-				cameraPersp.position.x = 4;
-				cameraPersp.position.y = 0;
-				cameraPersp.position.z = 0;
-				cameraPersp.lookAt(0,0,0);
+				camaraPOS = PosicionCamara.PERFIL;
+				setPos(cameraPersp);
+				setPos(cameraOrtho);
 			break;
 			
 			case "y":
 			case "Y":
-				cameraOrtho.position.x = 0;
-				cameraOrtho.position.y = 4;
-				cameraOrtho.position.z = 0;
-				cameraOrtho.lookAt(0,0,0);
-				
-				cameraPersp.position.x = 0;
-				cameraPersp.position.y = 4;
-				cameraPersp.position.z = 0;
-				cameraPersp.lookAt(0,0,0);
+				camaraPOS = PosicionCamara.PLANTA;
+				setPos(cameraPersp);
+				setPos(cameraOrtho);
 			break;
 			
 			case "z":
 			case "Z":
-				cameraOrtho.position.x = 0;
-				cameraOrtho.position.y = 0;
-				cameraOrtho.position.z = 4;
-				cameraOrtho.lookAt(0,0,0);
-				
-				cameraPersp.position.x = 0;
-				cameraPersp.position.y = 0;
-				cameraPersp.position.z = 4;
-				cameraPersp.lookAt(0,0,0);
+				camaraPOS = PosicionCamara.ALZADO;
+				setPos(cameraPersp);
+				setPos(cameraOrtho);
 			break;
 			
 			case "c":
 			case "C":
-				cameraOrtho.position.x = 3;
-				cameraOrtho.position.y = 2;
-				cameraOrtho.position.z = 4;
-				cameraOrtho.lookAt(0,0,0);
-				
-				cameraPersp.position.x = 3;
-				cameraPersp.position.y = 2;
-				cameraPersp.position.z = 4;
-				cameraPersp.lookAt(0,0,0);
+				camaraPOS = PosicionCamara.PERSP;
+				setPos(cameraPersp);
+				setPos(cameraOrtho);
+			break;
+			
+			case "+":
+				zoom(1);
+			break;
+			
+			case "-":
+				zoom(0);
+			break;
+			
+			case "n":
+				near = near + 0.25;
+				creaOrtho();
+				creaPersp();
+			break;
+			
+			case "N":
+				if (near > 0.1) near = near - 0.25;
+				creaOrtho();
+				creaPersp();
 			break;
 		}
 	}
