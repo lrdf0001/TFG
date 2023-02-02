@@ -108,13 +108,13 @@ scene.add(pointLight)
 	mapcajas = new Map();
 	for(let j=0; j<3; j++){
 		unacaja = new THREE.Mesh( geometriaCaja, materialCaja );
-				unatapa = new THREE.Mesh( geometriaTapa, materialTapa );
-				
-				cajazapatos = new CajaZapatos(unacaja, unatapa);
-				cajazapatos.trasladarY(dy*j);
-				
-				clave = dy*j; //Usamos las coordenadas como clave
-				mapcajas.set(clave, cajazapatos);
+		unatapa = new THREE.Mesh( geometriaTapa, materialTapa );
+		
+		cajazapatos = new CajaZapatos(unacaja, unatapa);
+		cajazapatos.trasladarY(dy*j);
+		
+		clave = dy*j; //Usamos las coordenadas como clave
+		mapcajas.set(clave, cajazapatos);
 	}
 	
 	//---------------------- Puesta en escena ----------------------
