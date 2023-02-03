@@ -68,12 +68,12 @@ function main(){
 	//---------------------- Perspectiva ------------------------
 	var fov = 75;
 	var near = 0.1;	
-	var far = 20;
+	var far = 50;
 	var cameraPersp = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, near, far );
 	
-	cameraPersp.position.x = 0;
-	cameraPersp.position.y = 15;
-	cameraPersp.position.z = 0;
+	cameraPersp.position.x = 11;
+	cameraPersp.position.y = 5;
+	cameraPersp.position.z = 11;
 	cameraPersp.lookAt(0,0,0);
 	scene.add(cameraPersp);
 
@@ -134,6 +134,34 @@ function main(){
 
 	renderer.render(scene, cameraPersp);
 	
+//========================= Eventos ============================
+	
+	// Play y Pause de la animación
+	const Animacion = {
+		PLAY: 'PLAY',
+		PAUSE: 'PAUSE'
+	}
+	
+	var animado = Animacion.PLAY;
+	
+	//------------------------- Teclado ----------------------------
+	function keyFunction(e) {
+		switch (e.key){
+			case "e":
+				verEjes(ejes);
+			break;
+			
+			case "p":
+				animado = Animacion.PLAY;
+			break;
+			
+			case "P":
+				animado = Animacion.PAUSE;
+			break;
+		}
+	}
+	document.getElementById("cuerpo").addEventListener("keypress", keyFunction);
+	
 //========================= Visualiza =========================
 
 	function sleep(ms) {
@@ -145,9 +173,11 @@ function main(){
 	function animate() {
 		requestAnimationFrame( animate );
 		
-		objects.forEach((obj) => {
-			obj.rotation.y += 0.01;
-		});
+		if(animado == Animacion.PLAY){
+			objects.forEach((obj) => {
+				obj.rotation.y += 0.01;
+			});
+		}
 		
 		renderer.render( scene, cameraPersp );
 		renderer.setSize( window.innerWidth, window.innerHeight );		
