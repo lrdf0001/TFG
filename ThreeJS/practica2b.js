@@ -277,15 +277,21 @@ function main(){
 //========================= Visualiza =========================
 
 	function animate() {
-		requestAnimationFrame( animate );
-	
-		if(paralela){
-			renderer.render( scene, cameraOrtho);
-		}else{
-			renderer.render( scene, cameraPersp);
-		}
+		requestAnimationFrame( animate );		
 		
-		renderer.setSize( window.innerWidth, window.innerHeight );
+		if(paralela){
+			cameraOrtho.aspect = window.innerWidth / window.innerHeight;			
+			cameraOrtho.updateProjectionMatrix();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.render( scene, cameraOrtho);			
+			
+		}else{
+			cameraPersp.aspect = window.innerWidth / window.innerHeight;			
+			cameraPersp.updateProjectionMatrix();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.render( scene, cameraPersp);		
+		}	
+		
 		
 	};
 

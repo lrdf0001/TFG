@@ -142,8 +142,10 @@ function main(){
 		tapa.translateY(0.5)
 		*/
 		
-		renderer.render( scene, camera )
-		renderer.setSize( window.innerWidth, window.innerHeight )
+		camera.aspect = window.innerWidth / window.innerHeight;			
+		camera.updateProjectionMatrix();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.render( scene, camera);
 	};
 
 

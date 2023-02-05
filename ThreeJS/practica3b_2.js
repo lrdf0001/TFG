@@ -282,8 +282,10 @@ function main(){
 			saludoAnimacion()
 		}		
 		
-		renderer.render( scene, cameraPersp );
-		renderer.setSize( window.innerWidth, window.innerHeight );		
+		cameraPersp.aspect = window.innerWidth / window.innerHeight;			
+		cameraPersp.updateProjectionMatrix();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.render( scene, cameraPersp);		
 	};
 
 animate();
