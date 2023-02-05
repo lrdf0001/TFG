@@ -121,7 +121,7 @@ function main(){
 				codo.add(anterior);
 				
 				//------------------------- Mano ------------------------------
-				const manoGeometria = new THREE.SphereBufferGeometry(1, 6, 6);
+				const manoGeometria = new THREE.SphereBufferGeometry(0.95, 6, 6);
 				const manoMaterial = new THREE.MeshToonMaterial( { color: 0xffe082});
 				mano = new THREE.Mesh(manoGeometria, manoMaterial);
 				mano.translateZ(5);
@@ -131,28 +131,33 @@ function main(){
 					dedoGeometria = new THREE.BoxGeometry( 0.2, 0.2, 1.3 );
 					dedoMaterial = new THREE.MeshToonMaterial( { color: 0xffe082 });
 					
+					//Indice					
 					dedo = new THREE.Mesh(dedoGeometria, dedoMaterial);
-					dedo.rotateY(0.7);
-					dedo.translateZ(1.3);					
-					mano.add(dedo);
+					dedo.rotateY(0.9);
+					dedo.translateZ(1.4);					
+					mano.add(dedo);					
 					
-					dedoGeometria = new THREE.BoxGeometry( 0.2, 0.2, 1.5 );
+					//Corazon
+					dedoGeometria = new THREE.BoxGeometry( 0.2, 0.2, 1.5 );					
 					dedo2 = new THREE.Mesh(dedoGeometria, dedoMaterial);
 					dedo2.rotateY(0.5);
 					dedo2.translateZ(1.5);					
 					mano.add(dedo2);
 					
+					//Anular
 					dedoGeometria = new THREE.BoxGeometry( 0.2, 0.2, 1.4 );
 					dedo3 = new THREE.Mesh(dedoGeometria, dedoMaterial);
 					dedo3.translateZ(1.4);					
 					mano.add(dedo3);
 					
+					//Menique
 					dedoGeometria = new THREE.BoxGeometry( 0.2, 0.2, 1.2 );
 					dedo4 = new THREE.Mesh(dedoGeometria, dedoMaterial);
-					dedo4.rotateY(-0.3);
+					dedo4.rotateY(-0.60);
 					dedo4.translateZ(1.2);					
 					mano.add(dedo4);
 					
+					//Pulgar
 					dedoGeometria = new THREE.BoxGeometry( 0.75, 0.25, 0.25 );
 					dedo5 = new THREE.Mesh(dedoGeometria, dedoMaterial);
 					dedo5.translateX(1.25);				
@@ -191,13 +196,13 @@ function main(){
 			}
 			
 		if(!topeHombroBajo && !topeHombroArriba){ // No está abajo, se ha levantado pero no ha saludado
-			if(angMano<=45 && !izq){// giramos la mano para la izquierda
+			if(angMano<=20 && !izq){// giramos la mano para la izquierda
 				mano.rotateY(degToRad(0.75));
 				angMano = angMano + 0.75;
 			}else{
 				izq=true; // Si se ha girado para la izquierda...
 				
-				if(angMano>=-45 && !der){ // ... ahora la giramos para la derecha.
+				if(angMano>=-35 && !der){ // ... ahora la giramos para la derecha.
 					mano.rotateY(degToRad(-0.75));
 					angMano = angMano - 0.75;
 				}else{ // La devolvemos a la posicion original
@@ -248,15 +253,25 @@ function main(){
 			case "P":
 				animado = Animacion.PAUSE;
 			break;
+			
+			case "b":
+				brazo.rotateY(degToRad(5));
+			break;
+			
+			case "B":
+				brazo.rotateY(degToRad(-5));
+			break;
+			
+			case "i":
+			case "I":
+				if(animado == Animacion.PAUSE)
+					saludoAnimacion()
+			break;
 		}
 	}
 	document.getElementById("cuerpo").addEventListener("keypress", keyFunction);
 	
 //========================= Visualiza =========================
-
-	function sleep(ms) {
-		return new Promise(resolve => setTimeout(resolve, ms));
-	}
 	
 	var ang = 0.01;
 	
