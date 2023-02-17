@@ -112,9 +112,9 @@ function main(){
 	}
 	
 	//Variables para trasladar las cajas en los 3 ejes
-	const dx = 1.4; 
+	const dx = 2.2; //1.4
 	const dy = 1.125;
-	const dz = 2.3;
+	const dz = 2.3; //2.3
 	
 	//---------------------- Estructura Datos ----------------------
 	mapcajas = new Map();
