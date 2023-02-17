@@ -102,8 +102,7 @@ function main(){
 //========================= Visualiza =========================
 
 		function animate() {
-			requestAnimationFrame( animate );
-			
+			requestAnimationFrame( animate );			
 			
 			line.rotation.x += 0.01;
 			line.rotation.y += 0.01;

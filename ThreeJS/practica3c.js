@@ -55,14 +55,13 @@ function main(){
 		}
 
 //========================= Luces =============================
-
-const color = 0xFFFFFF
-const intensity = 1
-const ambientLight = new THREE.AmbientLight(color, intensity)
-const pointLight = new THREE.PointLight(color, intensity)
-pointLight.position.set(0, 7, 0)
-scene.add(ambientLight)
-scene.add(pointLight)
+	const color = 0xFFFFFF
+	const intensity = 1
+	const ambientLight = new THREE.AmbientLight(color, intensity)
+	const pointLight = new THREE.PointLight(color, intensity)
+	pointLight.position.set(0, 7, 0)
+	scene.add(ambientLight)
+	scene.add(pointLight)
 
 
 //========================= Camara =============================
@@ -97,6 +96,11 @@ scene.add(pointLight)
 		trasladarZ(z){
 			this.caja.translateZ(z);
 			this.tapa.translateZ(z);
+		}
+		
+		rotarY(y){
+			this.caja.rotateY(y);
+			this.tapa.rotateY(y);
 		}
 		
 		getcaja(){ return this.caja;}
@@ -177,6 +181,13 @@ scene.add(pointLight)
 			}
 		}
 	}
+	
+	// Rotar la caja seleccionada
+	function rotarSeleccionado(seleccionado, dY){
+		if(mapcajas.has(seleccionado)){
+			mapcajas.get(seleccionado).rotarY(dY);
+		}
+	}
 
 //========================== Render =============================
 	const canvas = document.querySelector('#mi_canvas');
@@ -194,6 +205,26 @@ scene.add(pointLight)
 	var seleccionado = null;
 	var I, J, K;
 	
+	
+	var x_prev = 0.0, y_prev = 0.0;		// Guardar la posicion del puntero al clicar
+	var x_pos, y_pos;					// Guardar la posicion del puntero al soltar
+	var dX = 0.0, dY = 0.0;				// Incrementos en los ejes X y Z
+	
+	// Actualiza la posicion del raton y calcula los incrementos de desplazamientos
+	function onMouseMove( event ) {
+		if (seleccionado) {	
+			x_pos = ( event.clientX / window.innerWidth ) * 2 - 1;
+			y_pos = - ( event.clientY / window.innerHeight ) * 2 + 1;
+			
+			dX = x_pos - x_prev;
+			dY = y_pos - y_prev;
+			
+			x_prev = x_pos, y_prev = y_pos;
+			//console.log(x_pos , y_pos);
+		}
+	}
+	
+	// Quitar la seleccion de una caja (cambiar de rojo a su color original)
 	function quitarSeleccion(_seleccionado){
 		
 		const anterior = _seleccionado;
@@ -201,42 +232,50 @@ scene.add(pointLight)
 		J = _seleccionado % 100; _seleccionado -= J; J = J/10 - 1;
 		I = _seleccionado % 1000 / 100 - 1; 
 		//console.log("Inv:", I, J, K);
-		mapcajas.get(anterior).setColor( ((I+1)/10), ((J+1)/10), ((K+1)/10));
+		if(mapcajas.has(anterior)){
+			mapcajas.get(anterior).setColor( ((I+1)/10), ((J+1)/10), ((K+1)/10));
+		}
 	}
 	
-	function onPointerMove( event ) {
+	// Evento cuando se clica en pantalla
+	function onPointerClick( event ) {
 		// calculate pointer position in normalized device coordinates
 		// (-1 to +1) for both components
 		pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 		pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 		
-		raycaster.setFromCamera( pointer, camera );
+		raycaster.setFromCamera( pointer, camera ); // Se lanza un rayo en la posicion del puntero
 		
-		const intersects = raycaster.intersectObjects( scene.children );		
+		const intersects = raycaster.intersectObjects( scene.children ); // Obtenemos los objetos ipactados		
 		
-		if(seleccionado) quitarSeleccion(seleccionado);
+		if(seleccionado) quitarSeleccion(seleccionado); // Si previamente hay un objeto seleccionado, se le quita la selccion
 		
 		if(0 < intersects.length){
 			
+			//Calculamos la clave para el primer impactado por el rayo
 			I = intersects[ 0 ].object.material.color.r * 10 - 1;
 			J = intersects[ 0 ].object.material.color.g * 10 - 1;
 			K = intersects[ 0 ].object.material.color.b * 10 - 1;
 			seleccionado = (I+1)*100 + (J+1)*10 + (K+1);
 			
-			clearCajas();
+			clearCajas(); //Limpiamos la escena, porque hay que cambiar el color a la caja seleccionada
 			
-			mapcajas.get(seleccionado).setColor( 0.9, 0.1, 0.1);
+			if(mapcajas.has(seleccionado)){ 
+				mapcajas.get(seleccionado).setColor( 0.9, 0.1, 0.1); // Actualizamos color
+			}
 			
-			vercajas();			
+			vercajas();	// Añadimos cajas a la escena
 			//console.log(I, J, K);			
 		}
 		else{			
 			seleccionado = null;
+			x_prev = 0.0, y_prev = 0.0;
 		}
 	}
 	
-	//window.addEventListener( "mousemove", onPointerMove );
-	document.addEventListener("mousedown", onPointerMove);
+	//window.addEventListener( "mousemove", mouseMove );
+	document.addEventListener("mousedown", onPointerClick);
+	document.addEventListener("mousemove", onMouseMove);
 	
 	//------------------------- Teclado ----------------------------	
 	function keyFunction(e) {
@@ -297,7 +336,8 @@ scene.add(pointLight)
 					numZ--;
 					seleccionado = null;
 				}
-			break;				
+			break;
+			
 		}
 	}
 	document.addEventListener("keypress", keyFunction);
@@ -309,6 +349,8 @@ scene.add(pointLight)
 		requestAnimationFrame( animate )
 	
 		vercajas();
+		
+		if(seleccionado) rotarSeleccionado(seleccionado, dX);
 		
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();

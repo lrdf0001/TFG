@@ -1,0 +1,5 @@
+1. Generar cajas con colores especificos
+2. Usar los colores como claves
+3. Cuando cliquemos, guardar el color original (seleccionado)
+4. Aplicar color al objeto resaltado
+5. Redibujar escena
