@@ -58,9 +58,9 @@ function main(){
 
 const color = 0xFFFFFF
 const intensity = 1
-const ambientLight = new THREE.AmbientLight(color, intensity)
+const ambientLight = new THREE.AmbientLight(color)
 const pointLight = new THREE.PointLight(color, intensity)
-pointLight.position.set(-3, 10, 3)
+pointLight.position.set(-2, 10, 2)
 scene.add(ambientLight)
 scene.add(pointLight)
 

@@ -3,14 +3,43 @@
 	<head>
 		<meta charset="utf-8">
 		<title>My first three.js app</title>
-		
+		<link href="./Styles/index.css" rel="stylesheet" type="text/css" />
 	</head>
 	
-	<body id="cuerpo">
+	<body id="cuerpo" >
 		
-		<canvas id="mi_canvas"></canvas>
+		<div class="container">
+			<header class="blog-header lh-1 py-3">
+				<div class="row flex-nowrap justify-content-between align-items-center">
+					<div class="col-4 text-center">
+						<h2 class="blog-header-logo text-dark">TFG</h2>
+					</div>
+				</div>
+			</header>
 
-		<script src="./js/three.min.js"></script>	
-		<script src="./practica3c.js"></script>
+			<div class="nav-scroller py-1 mb-2">
+				<nav class="nav d-flex justify-content-between"> 
+					<a class="p-2 link-secondary">Practica 1</a>
+					<a class="p-2 link-secondary">Practica 2</a>
+					<a class="p-2 link-secondary">Practica 3</a>
+				</nav>
+			</div>
+		</div>
+
+		<main id="algo" class="container">
+			<div class="p-4 p-md-5 mb-4">
+				<div id="lienzo" class="px-0 col-md-6">
+					<div id="gui"></div>
+					<canvas id="mi_canvas" class="rounded"></canvas>
+				</div>
+			</div>
+
+			<script src="./Dependencies/three.min.js"></script>
+			<script type="text/javascript" src="./Dependencies/dat.gui.min.js"></script>
+			
+			<script src="./Scripts/practica3c.js"></script>
+		
+		</main>		
+		
 	</body>
 </html>
