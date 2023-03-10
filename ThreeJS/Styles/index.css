@@ -185,5 +185,5 @@ html, body {
 
 #gui { 
   position: absolute;
-  top: 2px; right: 2px;
+  top: 2px; left: 30px;
 }
