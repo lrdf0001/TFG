@@ -1,3 +1,5 @@
+//const { Vector3 } = require("three");
+
 function main(){
 
 //========================= Escenas ============================
@@ -7,37 +9,37 @@ function main(){
 //========================== Ejes =============================
 
 //-------------------------- Eje X ----------------------------
-		const ejeXvertices = [];
-		ejeXvertices.push( new THREE.Vector3( - 100, 0, 0 ) );
-		ejeXvertices.push( new THREE.Vector3(  100, 0, 0 ) );
-		const colorEjeX = new THREE.LineBasicMaterial( { color:  0x943126 } );
+	const ejeXvertices = [];
+	ejeXvertices.push( new THREE.Vector3( 0, 0, 0 ) );
+	ejeXvertices.push( new THREE.Vector3( 3, 0, 0 ) );
+	const colorEjeX = new THREE.LineBasicMaterial( { color:  0x943126 } );
 
-		const geometriaX = new THREE.BufferGeometry().setFromPoints( ejeXvertices );
-		const ejeX = new THREE.Line( geometriaX, colorEjeX );
+	const geometriaX = new THREE.BufferGeometry().setFromPoints( ejeXvertices );
+	const ejeX = new THREE.Line( geometriaX, colorEjeX );
 
-		scene.add(ejeX);
+	scene.add(ejeX);
 
 //-------------------------- Eje Y ----------------------------
-		const ejeYvertices = [];
-		ejeYvertices.push( new THREE.Vector3( 0, -100, 0 ) );
-		ejeYvertices.push( new THREE.Vector3(  0, 100, 0 ) );
-		const colorEjeY = new THREE.LineBasicMaterial( { color:   0x2ecc71  } );
+	const ejeYvertices = [];
+	ejeYvertices.push( new THREE.Vector3( 0, 0, 0 ) );
+	ejeYvertices.push( new THREE.Vector3(  0, 3, 0 ) );
+	const colorEjeY = new THREE.LineBasicMaterial( { color:   0x2ecc71  } );
 
-		const geometriaY = new THREE.BufferGeometry().setFromPoints( ejeYvertices );
-		const ejeY = new THREE.Line( geometriaY, colorEjeY );
+	const geometriaY = new THREE.BufferGeometry().setFromPoints( ejeYvertices );
+	const ejeY = new THREE.Line( geometriaY, colorEjeY );
 
-		scene.add(ejeY);
+	scene.add(ejeY);
 
 //-------------------------- Eje Z ----------------------------
-		const ejeZvertices = [];
-		ejeZvertices.push( new THREE.Vector3( 0, 0, -100 ) );
-		ejeZvertices.push( new THREE.Vector3(  0, 0, 100 ) );
-		const colorEjeZ = new THREE.LineBasicMaterial( { color:   0x3498db  } );
-		
-		const geometriaZ = new THREE.BufferGeometry().setFromPoints( ejeZvertices );
-		const ejeZ = new THREE.Line( geometriaZ, colorEjeZ );
+	const ejeZvertices = [];
+	ejeZvertices.push( new THREE.Vector3( 0, 0, 0 ) );
+	ejeZvertices.push( new THREE.Vector3(  0, 0, 3 ) );
+	const colorEjeZ = new THREE.LineBasicMaterial( { color:   0x3498db  } );
+	
+	const geometriaZ = new THREE.BufferGeometry().setFromPoints( ejeZvertices );
+	const ejeZ = new THREE.Line( geometriaZ, colorEjeZ );
 
-		scene.add(ejeZ);
+	scene.add(ejeZ);
 	
 //---------------------- Activar/desactivar ejes ------------------------	
 	var ejes = true;
@@ -54,30 +56,54 @@ function main(){
 			ejes = true;
 		}
 	}
-	
+
+//========================= Luces =============================
+	const color = 0xFFFFFF;
+	const intensity = 1;
+	const ambientLight = new THREE.AmbientLight(color, intensity);
+	const pointLight = new THREE.PointLight(color, intensity);
+	pointLight.position.set(0, 7, 0);
+	scene.add(ambientLight);
+	scene.add(pointLight);
+
 //========================= Camara =============================
-	const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 15 );
-	camera.position.x = 2;
-	camera.position.y = 2;
-	camera.position.z = 5;
+	const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20);
+	camera.position.x = 3;
+	camera.position.y = 3;
+	camera.position.z = 3;
 	camera.lookAt(0,0,0);
 	scene.add(camera);
 
 //========================== Cubo ==============================
 	
 	const geometriaCaja = new THREE.BoxGeometry( 1, 1, 1 );
-	const wireframe = new THREE.WireframeGeometry( geometriaCaja );
-	var mat = new THREE.LineBasicMaterial( { color: 0x673ab7  } );
-	const line = new THREE.LineSegments( wireframe, mat );
+	//const wireframe = new THREE.WireframeGeometry( geometriaCaja );
+	
+	//var mat = new THREE.LineBasicMaterial( { color: 0x673ab7  } );
+	var mat = new THREE.MeshToonMaterial( { color: 0x673ab7  } );
+	
+	//const line = new THREE.LineSegments( wireframe, mat );
+	const line = new THREE.Mesh( geometriaCaja, mat );
 
 	scene.add( line );
 
 //========================== Render =============================
 	var canvas = document.querySelector('#mi_canvas');
 	const renderer = new THREE.WebGLRenderer({canvas: canvas});
-	renderer.setSize( window.innerWidth, window.innerHeight );
+	//renderer.setSize( window.innerWidth, window.innerHeight );
 
 	renderer.render(scene, camera);
+
+	function resizeRendererToDisplaySize(renderer) {
+		const canvas = renderer.domElement;
+		const width = canvas.clientWidth;
+		const height = canvas.clientHeight;
+		const needResize = canvas.width !== width || canvas.height !== height;
+		if (needResize) {
+			renderer.setSize(width, height, false);
+		}
+		return needResize;
+	}
 	
 //========================= Eventos ============================
 
@@ -98,20 +124,56 @@ function main(){
 	}
 	document.getElementById("cuerpo").addEventListener("keypress", keyFunction);
 
+//============================ GUI ============================
+
+	function degToRad(deg){
+		return 3.14 * deg / 180.0;
+	}
+
+	let rotacion = { x: 0.0, y: 0.0, z: 0.0};
+	let traslacion = {x: 0.0, y: 0.0, z: 0.0};
+
+	const gui1 = new dat.GUI( { autoPlace: false } );	
+	var customContainer = document.querySelector('#gui').append(gui1.domElement);
+	
+	const rotacionGUI = gui1.addFolder('Rotacion');
+	rotacionGUI.add(rotacion, 'x', 0, 360, 10).name('x').onFinishChange((value) => line.setRotationFromAxisAngle(new THREE.Vector3(1, 0, 0), degToRad(rotacion.x)));
+	rotacionGUI.add(rotacion, 'y', 0, 360, 10).name('y').onFinishChange((value) => line.setRotationFromAxisAngle(new THREE.Vector3(0, 1, 0), degToRad(rotacion.y)));
+	rotacionGUI.add(rotacion, 'z', 0, 360, 10).name('z').onFinishChange((value) => line.setRotationFromAxisAngle(new THREE.Vector3(0, 0, 1), degToRad(rotacion.z)));
+
+	
+	const traslacionGUI = gui1.addFolder('Traslacion');
+	traslacionGUI.add(traslacion, 'x', 0, 3, 0.5).onFinishChange((value) => line.translateOnAxis(new THREE.Vector3(1, 0, 0), traslacion.x - line.position.x));
+	traslacionGUI.add(traslacion, 'y', 0, 3, 0.5).onFinishChange((value) => line.translateOnAxis(new THREE.Vector3(0, 1, 0), traslacion.y - line.position.y));
+	traslacionGUI.add(traslacion, 'z', 0, 3, 0.5).onFinishChange((value) => line.translateOnAxis(new THREE.Vector3(0, 0, 1), traslacion.z - line.position.z));
+		
+
+	const escaladoGUI = gui1.addFolder('Escalado');
+	escaladoGUI.add(line.scale, 'x', 0, 3).name('Ancho').listen();
+	escaladoGUI.add(line.scale, 'y', 0, 3).name('Alto').listen();
+	escaladoGUI.add(line.scale, 'z', 0, 3).name('largo').listen();
+
+	gui1.add(line.material, 'wireframe').listen();
 
 //========================= Visualiza =========================
 
-		function animate() {
-			requestAnimationFrame( animate );			
-			
-			line.rotation.x += 0.01;
-			line.rotation.y += 0.01;
-			
-			camera.aspect = window.innerWidth / window.innerHeight;			
+	function animate() {
+		requestAnimationFrame( animate );
+		
+		/*
+		line.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), rotacion.x);
+		line.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), rotacion.y);
+		line.rotateOnWorldAxis(new THREE.Vector3(0, 0, 1), rotacion.z);
+		*/
+
+		if (resizeRendererToDisplaySize(renderer)) {
+			const canvas = renderer.domElement;
+			camera.aspect = canvas.clientWidth / canvas.clientHeight;
 			camera.updateProjectionMatrix();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.render( scene, camera);
-		};
+		}
+
+		renderer.render( scene, camera );
+	};
 
 
 	animate()
