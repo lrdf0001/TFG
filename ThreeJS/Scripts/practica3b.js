@@ -189,4 +189,4 @@ animate();
 
 }
 
-window.addEventListener('load', main);
+//window.addEventListener('load', main);

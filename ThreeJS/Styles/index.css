@@ -187,3 +187,27 @@ html, body {
   position: absolute;
   top: 2px; left: 30px;
 }
+
+#mi_canvas2 {
+  width: 100%;
+  display: block;
+}
+#lienzo2{
+  position: relative;
+}
+#gui2 { 
+  position: absolute;
+  top: 2px; left: 30px;
+}
+
+#mi_canvas3 {
+  width: 100%;
+  display: block;
+}
+#lienzo3{
+  position: relative;
+}
+#gui3 { 
+  position: absolute;
+  top: 2px; left: 30px;
+}

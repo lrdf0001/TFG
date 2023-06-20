@@ -110,9 +110,20 @@ function main(){
 //========================== Render =============================
 	const canvas = document.querySelector('#mi_canvas')
 	const renderer = new THREE.WebGLRenderer({canvas: canvas})
-	renderer.setSize( window.innerWidth, window.innerHeight )
 
 	renderer.render(scene, camera)
+
+	function resizeRendererToDisplaySize(renderer) {
+		const canvas = renderer.domElement;
+		const width = canvas.clientWidth;
+		const height = canvas.clientHeight;
+		const needResize = canvas.width !== width || canvas.height !== height;
+		if (needResize) {
+			renderer.setSize(width, height, false);
+		}
+		return needResize;
+	}
+	
 	
 //========================= Eventos ============================
 	
@@ -142,9 +153,12 @@ function main(){
 		tapa.translateY(0.5)
 		*/
 		
-		camera.aspect = window.innerWidth / window.innerHeight;			
-		camera.updateProjectionMatrix();
-		renderer.setSize( window.innerWidth, window.innerHeight );
+		if (resizeRendererToDisplaySize(renderer)) {
+			const canvas = renderer.domElement;
+			camera.aspect = canvas.clientWidth / canvas.clientHeight;
+			camera.updateProjectionMatrix();
+		}
+		
 		renderer.render( scene, camera);
 	};
 

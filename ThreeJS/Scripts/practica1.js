@@ -83,9 +83,9 @@ function main(){
 	var mat = new THREE.MeshToonMaterial( { color: 0x673ab7  } );
 	
 	//const line = new THREE.LineSegments( wireframe, mat );
-	const line = new THREE.Mesh( geometriaCaja, mat );
+	const cubo = new THREE.Mesh( geometriaCaja, mat );
 
-	scene.add( line );
+	scene.add( cubo );
 
 //========================== Render =============================
 	var canvas = document.querySelector('#mi_canvas');
@@ -114,10 +114,10 @@ function main(){
 				verEjes(ejes);
 			break;
 			case "a":
-				scene.add( line );
+				scene.add( cubo );
 			break;
 			case "q":
-				scene.remove( line );
+				scene.remove( cubo );
 			break;
 			
 		}
@@ -137,34 +137,28 @@ function main(){
 	var customContainer = document.querySelector('#gui').append(gui1.domElement);
 	
 	const rotacionGUI = gui1.addFolder('Rotacion');
-	rotacionGUI.add(rotacion, 'x', 0, 360, 10).name('x').onFinishChange((value) => line.setRotationFromAxisAngle(new THREE.Vector3(1, 0, 0), degToRad(rotacion.x)));
-	rotacionGUI.add(rotacion, 'y', 0, 360, 10).name('y').onFinishChange((value) => line.setRotationFromAxisAngle(new THREE.Vector3(0, 1, 0), degToRad(rotacion.y)));
-	rotacionGUI.add(rotacion, 'z', 0, 360, 10).name('z').onFinishChange((value) => line.setRotationFromAxisAngle(new THREE.Vector3(0, 0, 1), degToRad(rotacion.z)));
+	rotacionGUI.add(rotacion, 'x', 0, 360, 10).name('x').onFinishChange((value) => cubo.setRotationFromAxisAngle(new THREE.Vector3(1, 0, 0), degToRad(rotacion.x)));
+	rotacionGUI.add(rotacion, 'y', 0, 360, 10).name('y').onFinishChange((value) => cubo.setRotationFromAxisAngle(new THREE.Vector3(0, 1, 0), degToRad(rotacion.y)));
+	rotacionGUI.add(rotacion, 'z', 0, 360, 10).name('z').onFinishChange((value) => cubo.setRotationFromAxisAngle(new THREE.Vector3(0, 0, 1), degToRad(rotacion.z)));
 
 	
 	const traslacionGUI = gui1.addFolder('Traslacion');
-	traslacionGUI.add(traslacion, 'x', 0, 3, 0.5).onFinishChange((value) => line.translateOnAxis(new THREE.Vector3(1, 0, 0), traslacion.x - line.position.x));
-	traslacionGUI.add(traslacion, 'y', 0, 3, 0.5).onFinishChange((value) => line.translateOnAxis(new THREE.Vector3(0, 1, 0), traslacion.y - line.position.y));
-	traslacionGUI.add(traslacion, 'z', 0, 3, 0.5).onFinishChange((value) => line.translateOnAxis(new THREE.Vector3(0, 0, 1), traslacion.z - line.position.z));
+	traslacionGUI.add(traslacion, 'x', 0, 3, 0.5).onFinishChange((value) => cubo.translateOnAxis(new THREE.Vector3(1, 0, 0), traslacion.x - cubo.position.x));
+	traslacionGUI.add(traslacion, 'y', 0, 3, 0.5).onFinishChange((value) => cubo.translateOnAxis(new THREE.Vector3(0, 1, 0), traslacion.y - cubo.position.y));
+	traslacionGUI.add(traslacion, 'z', 0, 3, 0.5).onFinishChange((value) => cubo.translateOnAxis(new THREE.Vector3(0, 0, 1), traslacion.z - cubo.position.z));
 		
 
 	const escaladoGUI = gui1.addFolder('Escalado');
-	escaladoGUI.add(line.scale, 'x', 0, 3).name('Ancho').listen();
-	escaladoGUI.add(line.scale, 'y', 0, 3).name('Alto').listen();
-	escaladoGUI.add(line.scale, 'z', 0, 3).name('largo').listen();
+	escaladoGUI.add(cubo.scale, 'x', 0, 3).name('Ancho').listen();
+	escaladoGUI.add(cubo.scale, 'y', 0, 3).name('Alto').listen();
+	escaladoGUI.add(cubo.scale, 'z', 0, 3).name('largo').listen();
 
-	gui1.add(line.material, 'wireframe').listen();
+	gui1.add(cubo.material, 'wireframe').listen();
 
 //========================= Visualiza =========================
 
 	function animate() {
 		requestAnimationFrame( animate );
-		
-		/*
-		line.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), rotacion.x);
-		line.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), rotacion.y);
-		line.rotateOnWorldAxis(new THREE.Vector3(0, 0, 1), rotacion.z);
-		*/
 
 		if (resizeRendererToDisplaySize(renderer)) {
 			const canvas = renderer.domElement;
