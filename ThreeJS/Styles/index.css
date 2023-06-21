@@ -211,3 +211,15 @@ html, body {
   position: absolute;
   top: 2px; left: 30px;
 }
+
+#mi_canvas4 {
+  width: 100%;
+  display: block;
+}
+#lienzo4{
+  position: relative;
+}
+#gui4 { 
+  position: absolute;
+  top: 2px; left: 30px;
+}

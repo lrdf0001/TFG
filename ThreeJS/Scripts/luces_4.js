@@ -1,8 +1,21 @@
+class DegRadHelper {
+    constructor(obj, prop) {
+        this.obj = obj;
+        this.prop = prop;
+    }
+    get value() {
+        return THREE.MathUtils.radToDeg(this.obj[this.prop]);
+    }
+    set value(v) {
+        this.obj[this.prop] = THREE.MathUtils.degToRad(v);
+    }
+}
+
 function main(){
 
     //========================= Escenas ============================
         const scene = new THREE.Scene();
-        var canvas = document.querySelector('#mi_canvas3');
+        var canvas = document.querySelector('#mi_canvas4');
     
     //========================== Ejes =============================
     
@@ -40,33 +53,24 @@ function main(){
         scene.add(ejeZ);
     
     //========================= Luces ============================= 
-        const pivot = new THREE.Object3D();
-        pivot.position.set(0, 7, 0);
-        scene.add(pivot);
-
         const color = 0xFFFFFF;
         const intensity = 1;
-        const light = new THREE.PointLight(color, intensity);
-        light.position.set(0, 0, 3);
-        pivot.add(light);
-        //pivot.add(light.target);
-
-    //-------------------------- Bombilla ----------------------------     
-        const bombillaGeometria = new THREE.SphereBufferGeometry(0.05, 6, 6);
-		const bombillaMaterial = new THREE.MeshToonMaterial( { color: 0xFFFF00});
-		bombilla = new THREE.Mesh(bombillaGeometria, bombillaMaterial);
-        light.add(bombilla);
+        const light = new THREE.SpotLight(color, intensity);
+        light.position.set(0, 2.75, 0);
+        scene.add(light);
+        scene.add(light.target);
+    
     
     //========================= Camara =============================
-        const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20);
-        camera.position.x = 0;
-        camera.position.y = 7;
-        camera.position.z = 4;
-        camera.lookAt(0,7,0);
-        scene.add(camera);         
+        const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20);
+        camera.position.x = 3;
+        camera.position.y = 3;
+        camera.position.z = 3;
+        camera.lookAt(0,0,0);
+        scene.add(camera);        
     
     //========================== Modelos ==============================
-        /*
+
         const planeGeometry = new THREE.PlaneGeometry( 20, 20 );
         var planeMat = new THREE.MeshToonMaterial( { color: 0x202020 } );
         const plano = new THREE.Mesh( planeGeometry, planeMat );
@@ -79,22 +83,6 @@ function main(){
 		esfera = new THREE.Mesh(esferaGeometria, esferaMaterial);
         esfera.position.set(0,0.5,0);
         scene.add(esfera);
-        */
-
-        //-------------------------- OBJ ----------------------------
-        
-        const mtlLoader = new THREE.MTLLoader();
-        const objLoader = new THREE.OBJLoader();
-
-        mtlLoader.load('../Models/eva01.mtl', (mtl) => {
-            mtl.preload();
-            objLoader.setMaterials(mtl);
-            
-            objLoader.load('../Models/eva01.obj', (root) => {
-                scene.add(root);
-              });      
-        });
-        
     
     //========================== Render =============================
         
@@ -116,31 +104,33 @@ function main(){
     
     //============================ GUI ============================
 
-        const helper = new THREE.PointLightHelper(light, 0.01);
+        const helper = new THREE.SpotLightHelper(light);
         scene.add(helper);
+
+        function updateLight() {
+            light.target.updateMatrixWorld();
+            helper.update();
+        }
     
         const gui1 = new dat.GUI( { autoPlace: false } );
-        var customContainer = document.querySelector('#gui3').append(gui1.domElement);
+        var customContainer = document.querySelector('#gui4').append(gui1.domElement);
     
-        //gui1.add(esfera.material, 'wireframe').listen();
+        gui1.add(esfera.material, 'wireframe').listen();
         
-        const puntualGUI = gui1.addFolder('Puntal');
-        puntualGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
-        puntualGUI.add(light, 'intensity', 0, 2, 0.01);
-        puntualGUI.add(light, 'distance', 0, 10).setValue(3).onChange( helper.update());
-        /*
-        puntualGUI.add(light.position, 'x', -10, 10);
-        puntualGUI.add(light.position, 'z', -10, 10);
-        puntualGUI.add(light.position, 'y', 0, 10);
-        */        
+        const focalGUI = gui1.addFolder('Focal');
+        focalGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
+        focalGUI.add(light, 'intensity', 0, 2, 0.01);
+        focalGUI.add(light, 'distance', 0, 40).onChange( helper.update());
+        focalGUI.add(new DegRadHelper(light, 'angle'), 'value', 0, 90).name('angle').onChange(updateLight);
+        focalGUI.add(light, 'penumbra', 0, 1, 0.01);
+        focalGUI.add(light.position, 'x', -10, 10).onChange(updateLight);
+        focalGUI.add(light.position, 'z', -10, 10).onChange(updateLight);
+        focalGUI.add(light.position, 'y', 0, 10).onChange(updateLight);        
     
     //========================= Visualiza =========================
     
         function animate() {
             requestAnimationFrame( animate );
-
-            pivot.rotation.y += 0.01;
-            pivot.rotation.x += 0.01;
     
             if (resizeRendererToDisplaySize(renderer)) {
                 const canvas = renderer.domElement;
