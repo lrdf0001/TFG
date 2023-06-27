@@ -53,6 +53,17 @@ function main(){
         scene.add(ejeZ);
     
     //========================= Luces ============================= 
+        
+        
+        var ambientLight = new THREE.AmbientLight(0xfafafa , 0.5);        
+        scene.add(ambientLight);
+
+        const skyColor = 0x7986cb;  
+        const groundColor = 0xe8f5e9;  
+        const  hemisphereLight = new THREE.HemisphereLight(skyColor, groundColor, 0.75);
+        scene.add(hemisphereLight);
+        
+
         const color = 0xFFFFFF;
         const intensity = 1;
         const light = new THREE.SpotLight(color, intensity);
@@ -62,10 +73,10 @@ function main(){
     
     
     //========================= Camara =============================
-        const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20);
-        camera.position.x = 3;
-        camera.position.y = 3;
-        camera.position.z = 3;
+        const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20);
+        camera.position.x = 6;
+        camera.position.y = 6;
+        camera.position.z = 6;
         camera.lookAt(0,0,0);
         scene.add(camera);        
     
@@ -78,12 +89,34 @@ function main(){
         plano.position.set(0,-0.1,0);
         scene.add( plano );
 
+        /*
         const esferaGeometria = new THREE.SphereBufferGeometry(1, 10, 10);
 		const esferaMaterial = new THREE.MeshToonMaterial( { color: 0x7b7d7d});
 		esfera = new THREE.Mesh(esferaGeometria, esferaMaterial);
         esfera.position.set(0,0.5,0);
         scene.add(esfera);
-    
+        */
+       
+        // Flying saucer by Poly by Google [CC-BY] via Poly Pizza
+        const mtlLoader = new THREE.MTLLoader();
+        const objLoader = new THREE.OBJLoader();
+
+        mtlLoader.load('../Models/UFO/ufo.mtl', (mtl) => {
+            mtl.preload();
+            objLoader.setMaterials(mtl);
+            
+            objLoader.load('../Models/UFO/ufo.obj', (root) => {
+                light.add(root);
+              });
+
+        });
+        /*
+        const fbxLoader = new THREE.FBXLoader();
+        fbxLoader.load('../Models/Cow/cow.fbx', (cow) => {
+            scene.add(cow);
+            cow.scale.set(0.005,0.005,0.005);
+          });
+          */
     //========================== Render =============================
         
         const renderer = new THREE.WebGLRenderer({canvas: canvas});
@@ -114,15 +147,13 @@ function main(){
     
         const gui1 = new dat.GUI( { autoPlace: false } );
         var customContainer = document.querySelector('#gui4').append(gui1.domElement);
-    
-        gui1.add(esfera.material, 'wireframe').listen();
         
         const focalGUI = gui1.addFolder('Focal');
         focalGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
         focalGUI.add(light, 'intensity', 0, 2, 0.01);
         focalGUI.add(light, 'distance', 0, 40).onChange( helper.update());
         focalGUI.add(new DegRadHelper(light, 'angle'), 'value', 0, 90).name('angle').onChange(updateLight);
-        focalGUI.add(light, 'penumbra', 0, 1, 0.01);
+        focalGUI.add(light, 'penumbra', 0, 1, 0.01).setValue(0.1);
         focalGUI.add(light.position, 'x', -10, 10).onChange(updateLight);
         focalGUI.add(light.position, 'z', -10, 10).onChange(updateLight);
         focalGUI.add(light.position, 'y', 0, 10).onChange(updateLight);        

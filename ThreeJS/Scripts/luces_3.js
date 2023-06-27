@@ -1,3 +1,22 @@
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GUI } from 'dat.gui'
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+
+class ColorGUIHelper {
+    constructor(object, prop) {
+      this.object = object;
+      this.prop = prop;
+    }
+    get value() {
+      return `#${this.object[this.prop].getHexString()}`;
+    }
+    set value(hexString) {
+      this.object[this.prop].set(hexString);
+    }
+}
+
 function main(){
 
     //========================= Escenas ============================
@@ -54,7 +73,7 @@ function main(){
     //-------------------------- Bombilla ----------------------------     
         const bombillaGeometria = new THREE.SphereBufferGeometry(0.05, 6, 6);
 		const bombillaMaterial = new THREE.MeshToonMaterial( { color: 0xFFFF00});
-		bombilla = new THREE.Mesh(bombillaGeometria, bombillaMaterial);
+		let bombilla = new THREE.Mesh(bombillaGeometria, bombillaMaterial);
         light.add(bombilla);
     
     //========================= Camara =============================
@@ -66,25 +85,20 @@ function main(){
         scene.add(camera);         
     
     //========================== Modelos ==============================
-        /*
-        const planeGeometry = new THREE.PlaneGeometry( 20, 20 );
-        var planeMat = new THREE.MeshToonMaterial( { color: 0x202020 } );
+        
+        const planeGeometry = new THREE.PlaneGeometry( 15, 7 );
+        const textureLoader = new THREE.TextureLoader();
+        var planeMat = new THREE.MeshToonMaterial( { 
+            map: textureLoader.load('../img/eva01.png')
+         } );
         const plano = new THREE.Mesh( planeGeometry, planeMat );
-        plano.rotateX(-90*3.1415/180.0);
-        plano.position.set(0,-0.1,0);
+        plano.position.set(0,7,-3);
         scene.add( plano );
-
-        const esferaGeometria = new THREE.SphereBufferGeometry(1, 10, 10);
-		const esferaMaterial = new THREE.MeshToonMaterial( { color: 0x7b7d7d});
-		esfera = new THREE.Mesh(esferaGeometria, esferaMaterial);
-        esfera.position.set(0,0.5,0);
-        scene.add(esfera);
-        */
 
         //-------------------------- OBJ ----------------------------
         
-        const mtlLoader = new THREE.MTLLoader();
-        const objLoader = new THREE.OBJLoader();
+        const mtlLoader = new MTLLoader();
+        const objLoader = new OBJLoader();
 
         mtlLoader.load('../Models/eva01.mtl', (mtl) => {
             mtl.preload();
@@ -99,7 +113,6 @@ function main(){
     //========================== Render =============================
         
         const renderer = new THREE.WebGLRenderer({canvas: canvas});
-        //renderer.setSize( window.innerWidth, window.innerHeight );
     
         renderer.render(scene, camera);
     
@@ -113,26 +126,24 @@ function main(){
             }
             return needResize;
         }
+
+    //========================= Controls =============================
+        const controls = new OrbitControls( camera, renderer.domElement );
+        controls.target.set(0, 7, 0);
+        controls.update();
     
     //============================ GUI ============================
 
         const helper = new THREE.PointLightHelper(light, 0.01);
         scene.add(helper);
     
-        const gui1 = new dat.GUI( { autoPlace: false } );
+        const gui1 = new GUI( { autoPlace: false } );
         var customContainer = document.querySelector('#gui3').append(gui1.domElement);
-    
-        //gui1.add(esfera.material, 'wireframe').listen();
         
         const puntualGUI = gui1.addFolder('Puntal');
         puntualGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
         puntualGUI.add(light, 'intensity', 0, 2, 0.01);
-        puntualGUI.add(light, 'distance', 0, 10).setValue(3).onChange( helper.update());
-        /*
-        puntualGUI.add(light.position, 'x', -10, 10);
-        puntualGUI.add(light.position, 'z', -10, 10);
-        puntualGUI.add(light.position, 'y', 0, 10);
-        */        
+        puntualGUI.add(light, 'distance', 0, 10).setValue(4).onChange( helper.update());     
     
     //========================= Visualiza =========================
     

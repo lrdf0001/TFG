@@ -39,14 +39,23 @@
 						<canvas id="mi_canvas" class="rounded"></canvas>
 					</div>
 				</div>
-
-				
+				<!--
 				<script src="../Dependencies/three.js"></script>
-				<script src="../Dependencies/OBJLoader.js"></script> 
-				<script src="../Dependencies/MTLLoader.js"></script> 
+				<script src="../Dependencies/OBJLoader.js"></script>
+				<script src="../Dependencies/FBXLoader.js"></script>				
 				<script src="../Dependencies/dat.gui.min.js"></script>
+				-->
+
+				<script type="importmap">
+					{
+						"imports": {
+							"three": "../build/three.module.js",
+							"three/addons/": "./jsm/"
+						}
+					}
+				</script>
 				
-				<script src="../Scripts/luces.js"></script>
+				<script type="module"  src="../Scripts/luces.js"></script>
 			</div>
 			
 			<div class="container">
@@ -59,7 +68,7 @@
 					</div>
 				</div>
 				
-				<script src="../Scripts/luces_2.js"></script>
+				<script type="module"  src="../Scripts/luces_2.js"></script>
 			</div>
 
 			<div class="container">
@@ -72,7 +81,7 @@
 					</div>
 				</div>
 				
-				<script src="../Scripts/luces_3.js"></script>
+				<script type="module" src="../Scripts/luces_3.js"></script>
 			</div>
 
 			<div class="container">

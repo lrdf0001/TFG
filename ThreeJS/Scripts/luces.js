@@ -1,3 +1,8 @@
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GUI } from 'dat.gui'
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+
 class ColorGUIHelper {
     constructor(object, prop) {
       this.object = object;
@@ -13,8 +18,9 @@ class ColorGUIHelper {
 
 function main(){
 
-    //========================= Escenas ============================
+    //========================= Escena ============================
         const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1a5276);
         var canvas = document.querySelector('#mi_canvas');
     
     //========================== Ejes =============================
@@ -66,41 +72,27 @@ function main(){
     
     //========================= Camara =============================
         const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20);
-        camera.position.x = 0;
-        camera.position.y = 7;
-        camera.position.z = 4;
-        camera.lookAt(0,7,0);
-        scene.add(camera);        
+        camera.position.x = 5;
+        camera.position.y = 5;
+        camera.position.z = 5;
+        camera.lookAt(0,0,0);
+        scene.add(camera);
     
     //========================== Modelos ==============================
-        /*
-        const planeGeometry = new THREE.PlaneGeometry( 20, 20 );
-        var planeMat = new THREE.MeshToonMaterial( { color: 0x202020 } );
-        const plano = new THREE.Mesh( planeGeometry, planeMat );
-        plano.rotateX(-90*3.1415/180.0);
-        plano.position.set(0,-0.1,0);
+        let mixer;
+        const loader = new FBXLoader();
+        loader.load( '../Models/Whale/Whale.fbx', function ( object ) { //Whale by Quaternius via Poly Pizza
 
-        scene.add( plano );
+            mixer = new THREE.AnimationMixer( object );
 
-        const esferaGeometria = new THREE.SphereBufferGeometry(1, 10, 10);
-		const esferaMaterial = new THREE.MeshToonMaterial( { color: 0x7b7d7d});
-		esfera = new THREE.Mesh(esferaGeometria, esferaMaterial);
-        esfera.position.set(0,0.5,0);
-        scene.add(esfera);
-        */
+            const action = mixer.clipAction( object.animations[ 0 ] );
+            action.play();
 
-        //-------------------------- OBJ ----------------------------
-        const mtlLoader = new THREE.MTLLoader();
-        const objLoader = new THREE.OBJLoader();
-
-        mtlLoader.load('../Models/eva01.mtl', (mtl) => {
-            mtl.preload();
-            objLoader.setMaterials(mtl);
-            
-            objLoader.load('../Models/eva01.obj', (root) => {
-                scene.add(root);
-              });      
-        });
+            scene.add( object );
+            object.scale.x = 0.005;
+            object.scale.y = 0.005;
+            object.scale.z = 0.005;
+        } );
 
         
     //========================== Render =============================
@@ -120,10 +112,15 @@ function main(){
             }
             return needResize;
         }
+
+    //========================= Controls =============================
+        const controls = new OrbitControls( camera, renderer.domElement );
+        controls.target.set( 0, 0, 0 );
+        controls.update();
     
     //============================ GUI ============================
     
-        const gui1 = new dat.GUI( { autoPlace: false } );
+        const gui1 = new GUI( { autoPlace: false } );
         var customContainer = document.querySelector('#gui').append(gui1.domElement);
     
         //gui1.add(esfera.material, 'wireframe').listen();
@@ -138,9 +135,13 @@ function main(){
         hemisphereGUI.add(hemisphereLight, 'intensity', 0, 2, 0.01);
     
     //========================= Visualiza =========================
-    
+        const clock = new THREE.Clock();
+
         function animate() {
             requestAnimationFrame( animate );
+
+            const delta = clock.getDelta();
+			if ( mixer ) mixer.update( delta );
     
             if (resizeRendererToDisplaySize(renderer)) {
                 const canvas = renderer.domElement;
@@ -153,6 +154,6 @@ function main(){
     
     
         animate()
-    }
+}
     
     window.addEventListener('load', main);

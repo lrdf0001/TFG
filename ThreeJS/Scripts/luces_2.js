@@ -1,7 +1,28 @@
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GUI } from 'dat.gui'
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+
+
+class ColorGUIHelper {
+    constructor(object, prop) {
+      this.object = object;
+      this.prop = prop;
+    }
+    get value() {
+      return `#${this.object[this.prop].getHexString()}`;
+    }
+    set value(hexString) {
+      this.object[this.prop].set(hexString);
+    }
+}
+
 function main(){
 
     //========================= Escenas ============================
-        const scene = new THREE.Scene();
+        const scene = new THREE.Scene();  
+        scene.background = new THREE.Color(0x85c1e9);
         var canvas = document.querySelector('#mi_canvas2');
     
     //========================== Ejes =============================
@@ -43,10 +64,24 @@ function main(){
         const color = 0xFFFFFF;
         const intensity = 1;
         const light = new THREE.DirectionalLight(color, intensity);
-        light.position.set(0, 10, 0);
+        light.position.set(0, 5, 0);
         light.target.position.set(-5, 0, 0);
+        light.castShadow = true;
         scene.add(light);
         scene.add(light.target);
+
+        light.shadow.mapSize.width = 1000,
+        light.shadow.mapSize.height = 1000; 
+        light.shadow.camera.near = 0.5; 
+        light.shadow.camera.far = 500;
+
+        const helper = new THREE.CameraHelper( light.shadow.camera );
+        scene.add( helper );
+
+        
+        var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.3);        
+        scene.add(ambientLight);
+        
     
     //========================= Camara =============================
         const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20);
@@ -58,22 +93,34 @@ function main(){
     
     //========================== Modelos ==============================
 
-        const planeGeometry = new THREE.PlaneGeometry( 20, 20 );
-        var planeMat = new THREE.MeshToonMaterial( { color: 0x202020 } );
-        const plano = new THREE.Mesh( planeGeometry, planeMat );
-        plano.rotateX(-90*3.1415/180.0);
-        plano.position.set(0,-0.1,0);
-        scene.add( plano );
+        //Tree Assets by Ben Desai [CC-BY] via Poly Pizza
+        const mtlLoader = new MTLLoader();
+        const objLoader = new OBJLoader();
 
-        const esferaGeometria = new THREE.SphereBufferGeometry(1, 10, 10);
-		const esferaMaterial = new THREE.MeshToonMaterial( { color: 0x7b7d7d});
-		esfera = new THREE.Mesh(esferaGeometria, esferaMaterial);
-        esfera.position.set(0,0.5,0);
-        scene.add(esfera);
+        mtlLoader.load('../Models/Tree Assets/materials.mtl', (mtl) => {
+            mtl.preload();
+            objLoader.setMaterials(mtl);
+            
+            objLoader.load('../Models/Tree Assets/model.obj', (root) => {
+                scene.add(root);
+
+                root.traverse(function(node){
+                    if(node.isMesh)
+                        node.castShadow = true;
+                        node.receiveShadow = true;
+                });
+
+                root.scale.x = 4;
+                root.scale.y = 4;
+                root.scale.z = 4;
+              });
+        });
     
     //========================== Render =============================
         
         const renderer = new THREE.WebGLRenderer({canvas: canvas});
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMapSoft = true;
         //renderer.setSize( window.innerWidth, window.innerHeight );
     
         renderer.render(scene, camera);
@@ -88,20 +135,22 @@ function main(){
             }
             return needResize;
         }
+
+    //========================= Controls =============================
+        const controls = new OrbitControls( camera, renderer.domElement );
+        controls.target.set( 0, 0, 0 );
+        controls.update();
     
     //============================ GUI ============================
     
-        const gui1 = new dat.GUI( { autoPlace: false } );
+        const gui1 = new GUI( { autoPlace: false } );
         var customContainer = document.querySelector('#gui2').append(gui1.domElement);
-    
-        gui1.add(esfera.material, 'wireframe').listen();
         
         const direccionalGUI = gui1.addFolder('Direccional');
         direccionalGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
         direccionalGUI.add(light, 'intensity', 0, 2, 0.01);
         direccionalGUI.add(light.target.position, 'x', -10, 10);
         direccionalGUI.add(light.target.position, 'z', -10, 10);
-        direccionalGUI.add(light.target.position, 'y', 0, 10);
     
     //========================= Visualiza =========================
     
