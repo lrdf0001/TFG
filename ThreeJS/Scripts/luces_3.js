@@ -77,7 +77,7 @@ function main(){
         light.add(bombilla);
     
     //========================= Camara =============================
-        const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20);
+        const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 50);
         camera.position.x = 0;
         camera.position.y = 7;
         camera.position.z = 4;

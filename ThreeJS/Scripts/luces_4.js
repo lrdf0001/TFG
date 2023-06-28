@@ -1,3 +1,9 @@
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GUI } from 'dat.gui'
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+
 class DegRadHelper {
     constructor(obj, prop) {
         this.obj = obj;
@@ -11,10 +17,24 @@ class DegRadHelper {
     }
 }
 
+class ColorGUIHelper {
+    constructor(object, prop) {
+      this.object = object;
+      this.prop = prop;
+    }
+    get value() {
+      return `#${this.object[this.prop].getHexString()}`;
+    }
+    set value(hexString) {
+      this.object[this.prop].set(hexString);
+    }
+}
+
 function main(){
 
     //========================= Escenas ============================
         const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0d123f );
         var canvas = document.querySelector('#mi_canvas4');
     
     //========================== Ejes =============================
@@ -52,28 +72,32 @@ function main(){
     
         scene.add(ejeZ);
     
-    //========================= Luces ============================= 
+    //========================= Luces =============================         
         
-        
-        var ambientLight = new THREE.AmbientLight(0xfafafa , 0.5);        
-        scene.add(ambientLight);
-
-        const skyColor = 0x7986cb;  
-        const groundColor = 0xe8f5e9;  
-        const  hemisphereLight = new THREE.HemisphereLight(skyColor, groundColor, 0.75);
-        scene.add(hemisphereLight);
-        
+        var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5);        
+        scene.add(ambientLight);        
 
         const color = 0xFFFFFF;
         const intensity = 1;
         const light = new THREE.SpotLight(color, intensity);
-        light.position.set(0, 2.75, 0);
+        light.position.set(0, 4.3, -2.5);
         scene.add(light);
         scene.add(light.target);
-    
+
+        light.castShadow = true;
+        light.shadow.mapSize.width = 512; // default
+        light.shadow.mapSize.height = 512; // default
+        light.shadow.camera.near = 0.5; // default
+        light.shadow.camera.far = 500; // default
+        light.shadow.focus = 1; // default 
+        
+        const targetObject = new THREE.Object3D(); 
+        scene.add(targetObject);
+        targetObject.translateZ(-2);
+        light.target = targetObject;
     
     //========================= Camara =============================
-        const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20);
+        const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 100);
         camera.position.x = 6;
         camera.position.y = 6;
         camera.position.z = 6;
@@ -81,45 +105,100 @@ function main(){
         scene.add(camera);        
     
     //========================== Modelos ==============================
-
-        const planeGeometry = new THREE.PlaneGeometry( 20, 20 );
-        var planeMat = new THREE.MeshToonMaterial( { color: 0x202020 } );
-        const plano = new THREE.Mesh( planeGeometry, planeMat );
-        plano.rotateX(-90*3.1415/180.0);
-        plano.position.set(0,-0.1,0);
-        scene.add( plano );
-
-        /*
-        const esferaGeometria = new THREE.SphereBufferGeometry(1, 10, 10);
-		const esferaMaterial = new THREE.MeshToonMaterial( { color: 0x7b7d7d});
-		esfera = new THREE.Mesh(esferaGeometria, esferaMaterial);
-        esfera.position.set(0,0.5,0);
-        scene.add(esfera);
-        */
-       
-        // Flying saucer by Poly by Google [CC-BY] via Poly Pizza
-        const mtlLoader = new THREE.MTLLoader();
-        const objLoader = new THREE.OBJLoader();
-
-        mtlLoader.load('../Models/UFO/ufo.mtl', (mtl) => {
+        const mtlLoader = new MTLLoader();
+        const objLoader = new OBJLoader();
+        
+        mtlLoader.load('../Models/Taxi/Taxi.mtl', (mtl) => {
             mtl.preload();
             objLoader.setMaterials(mtl);
             
-            objLoader.load('../Models/UFO/ufo.obj', (root) => {
-                light.add(root);
-              });
+            objLoader.load('../Models/Taxi/Taxi.obj', (root) => {
+                scene.add(root);
+                
+                root.rotateY(-90*3.1415/180.0);
+                root.translateY(-1);
+                root.translateX(-1.5);
+                root.translateZ(1);
 
+                root.traverse(function(node){
+                    if(node.isMesh)
+                        node.castShadow = true;
+                        node.receiveShadow = false;
+                });
+            });
         });
-        /*
-        const fbxLoader = new THREE.FBXLoader();
-        fbxLoader.load('../Models/Cow/cow.fbx', (cow) => {
-            scene.add(cow);
-            cow.scale.set(0.005,0.005,0.005);
-          });
-          */
+        
+
+        const mtlLoader2 = new MTLLoader();
+        const objLoader2 = new OBJLoader();
+
+        mtlLoader2.load('../Models/Road2/road.mtl', (mtl) => {
+            mtl.preload();
+            objLoader2.setMaterials(mtl);
+            
+            objLoader2.load('../Models/Road2/road.obj', (root) => {
+                scene.add(root);
+                
+                root.scale.x = 15;
+                root.scale.y = 15;
+                root.scale.z = 15;
+                root.translateY(-1);
+
+                root.traverse(function(node){
+                    if(node.isMesh)
+                        node.receiveShadow = true;
+                });
+              });
+        });
+
+        const mtlLoader3 = new MTLLoader();
+        const objLoader3 = new OBJLoader();
+
+        mtlLoader3.load('../Models/Police Car/Cop.mtl', (mtl) => {
+            mtl.preload();
+            objLoader3.setMaterials(mtl);
+            
+            objLoader3.load('../Models/Police Car/Cop.obj', (root) => {
+                scene.add(root);
+                
+                root.rotateY(90*3.1415/180.0);
+                root.translateY(-0.9);
+                root.translateX(-1.5);
+                root.translateZ(1);
+
+                root.traverse(function(node){
+                    if(node.isMesh)
+                        node.castShadow = true;
+                        node.receiveShadow = false;
+                });
+              });
+        });
+
+        const mtlLoader4 = new MTLLoader();
+        const objLoader4 = new OBJLoader();
+
+        mtlLoader4.load('../Models/LampPost/lamp_post.mtl', (mtl) => {
+            mtl.preload();
+            objLoader4.setMaterials(mtl);
+            
+            objLoader4.load('../Models/LampPost/lamp_post.obj', (root) => {
+                scene.add(root);
+                root.translateY(-1);
+                root.translateZ(-4);
+
+                root.traverse(function(node){
+                    if(node.isMesh)
+                        node.castShadow = true;
+                        node.receiveShadow = false;
+                });
+              });
+        });
+        
     //========================== Render =============================
         
         const renderer = new THREE.WebGLRenderer({canvas: canvas});
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMapSoft = true;
         //renderer.setSize( window.innerWidth, window.innerHeight );
     
         renderer.render(scene, camera);
@@ -135,6 +214,12 @@ function main(){
             return needResize;
         }
     
+    //========================= Controls =============================
+        const controls = new OrbitControls( camera, renderer.domElement );
+        controls.target.set( 0, 0, 0 );
+        controls.update();
+    
+    
     //============================ GUI ============================
 
         const helper = new THREE.SpotLightHelper(light);
@@ -145,7 +230,7 @@ function main(){
             helper.update();
         }
     
-        const gui1 = new dat.GUI( { autoPlace: false } );
+        const gui1 = new GUI( { autoPlace: false } );
         var customContainer = document.querySelector('#gui4').append(gui1.domElement);
         
         const focalGUI = gui1.addFolder('Focal');
@@ -154,9 +239,12 @@ function main(){
         focalGUI.add(light, 'distance', 0, 40).onChange( helper.update());
         focalGUI.add(new DegRadHelper(light, 'angle'), 'value', 0, 90).name('angle').onChange(updateLight);
         focalGUI.add(light, 'penumbra', 0, 1, 0.01).setValue(0.1);
+        
+        /*
         focalGUI.add(light.position, 'x', -10, 10).onChange(updateLight);
         focalGUI.add(light.position, 'z', -10, 10).onChange(updateLight);
-        focalGUI.add(light.position, 'y', 0, 10).onChange(updateLight);        
+        focalGUI.add(light.position, 'y', 0, 10).onChange(updateLight); 
+        */            
     
     //========================= Visualiza =========================
     
