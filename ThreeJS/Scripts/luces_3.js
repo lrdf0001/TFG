@@ -141,9 +141,9 @@ function main(){
         var customContainer = document.querySelector('#gui3').append(gui1.domElement);
         
         const puntualGUI = gui1.addFolder('Puntal');
-        puntualGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
-        puntualGUI.add(light, 'intensity', 0, 2, 0.01);
-        puntualGUI.add(light, 'distance', 0, 10).setValue(4).onChange( helper.update());     
+        puntualGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('Color');
+        puntualGUI.add(light, 'intensity', 0, 2, 0.01).name("Intensiadad");
+        puntualGUI.add(light, 'distance', 0, 10).setValue(4).onChange( helper.update()).name("Atenuación");     
     
     //========================= Visualiza =========================
     

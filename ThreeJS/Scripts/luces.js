@@ -126,13 +126,13 @@ function main(){
         //gui1.add(esfera.material, 'wireframe').listen();
         
         const ambientalGUI = gui1.addFolder('Ambiental');
-        ambientalGUI.addColor(new ColorGUIHelper(ambientLight, 'color'), 'value').name('color');
-        ambientalGUI.add(ambientLight, 'intensity', 0, 2, 0.01);
+        ambientalGUI.addColor(new ColorGUIHelper(ambientLight, 'color'), 'value').name('Color');
+        ambientalGUI.add(ambientLight, 'intensity', 0, 2, 0.01).name("Intensidad");
 
         const hemisphereGUI = gui1.addFolder('Hemisferio');
-        hemisphereGUI.addColor(new ColorGUIHelper(hemisphereLight, 'color'), 'value').name('skyColor');
-        hemisphereGUI.addColor(new ColorGUIHelper(hemisphereLight, 'groundColor'), 'value').name('groundColor');
-        hemisphereGUI.add(hemisphereLight, 'intensity', 0, 2, 0.01);
+        hemisphereGUI.addColor(new ColorGUIHelper(hemisphereLight, 'color'), 'value').name('Superior');
+        hemisphereGUI.addColor(new ColorGUIHelper(hemisphereLight, 'groundColor'), 'value').name('Inferior');
+        hemisphereGUI.add(hemisphereLight, 'intensity', 0, 2, 0.01).name("Intensidad");
     
     //========================= Visualiza =========================
         const clock = new THREE.Clock();

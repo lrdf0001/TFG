@@ -147,8 +147,8 @@ function main(){
         var customContainer = document.querySelector('#gui2').append(gui1.domElement);
         
         const direccionalGUI = gui1.addFolder('Direccional');
-        direccionalGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
-        direccionalGUI.add(light, 'intensity', 0, 2, 0.01);
+        direccionalGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('Color');
+        direccionalGUI.add(light, 'intensity', 0, 2, 0.01).name("Intensidad");
         direccionalGUI.add(light.target.position, 'x', -10, 10);
         direccionalGUI.add(light.target.position, 'z', -10, 10);
     

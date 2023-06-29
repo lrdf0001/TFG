@@ -151,7 +151,7 @@ function main(){
 	const escaladoGUI = gui1.addFolder('Escalado');
 	escaladoGUI.add(cubo.scale, 'x', 0, 3).name('Ancho').listen();
 	escaladoGUI.add(cubo.scale, 'y', 0, 3).name('Alto').listen();
-	escaladoGUI.add(cubo.scale, 'z', 0, 3).name('largo').listen();
+	escaladoGUI.add(cubo.scale, 'z', 0, 3).name('Largo').listen();
 
 	gui1.add(cubo.material, 'wireframe').listen();
 
