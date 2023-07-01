@@ -187,11 +187,12 @@ function main(){
                 root.translateZ(-4);
 
                 root.traverse(function(node){
-                    if(node.isMesh)
+                    if(node.isMesh){
                         node.castShadow = true;
                         node.receiveShadow = false;
+                    }
                 });
-              });
+            });
         });
         
     //========================== Render =============================
@@ -250,6 +251,7 @@ function main(){
     
         function animate() {
             requestAnimationFrame( animate );
+
     
             if (resizeRendererToDisplaySize(renderer)) {
                 const canvas = renderer.domElement;

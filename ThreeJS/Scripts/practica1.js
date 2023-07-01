@@ -127,7 +127,7 @@ function main(){
 //============================ GUI ============================
 
 	function degToRad(deg){
-		return 3.14 * deg / 180.0;
+		return 3.1415 * deg / 180.0;
 	}
 
 	let rotacion = { x: 0.0, y: 0.0, z: 0.0};

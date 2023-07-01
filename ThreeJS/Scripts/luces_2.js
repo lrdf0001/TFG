@@ -105,9 +105,10 @@ function main(){
                 scene.add(root);
 
                 root.traverse(function(node){
-                    if(node.isMesh)
+                    if(node.isMesh){
                         node.castShadow = true;
                         node.receiveShadow = true;
+                    }
                 });
 
                 root.scale.x = 4;
