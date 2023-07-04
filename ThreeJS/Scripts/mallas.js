@@ -106,7 +106,6 @@ function main(){
     //========================== Render =============================
         
     const renderer = new THREE.WebGLRenderer({canvas: canvas});
-    //renderer.setSize( window.innerWidth, window.innerHeight );
 
     renderer.render(scene, camera);
 
@@ -130,8 +129,6 @@ function main(){
 
     const gui = new GUI( { autoPlace: false } );
     var customContainer = document.querySelector('#gui').append(gui.domElement);
-
-    //gui.add(esfera.material, 'wireframe').listen();
     
     const folder = gui.addFolder( 'Geometria Esfera' );
     folder.add( data, 'radius', 1, 3 ).setValue(2).onChange( generateSphere ).name("Radio");

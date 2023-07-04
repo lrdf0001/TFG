@@ -1,7 +1,11 @@
+import * as THREE from 'three';
+import { GUI } from 'dat.gui'
+
 function main(){
 
 //========================= Escena ============================
 	const scene = new THREE.Scene();
+	scene.background = new THREE.Color(0x1b2631);
 
 //========================== Ejes =============================
 
@@ -58,10 +62,12 @@ function main(){
 	const color = 0xFFFFFF
 	const intensity = 1
 	const ambientLight = new THREE.AmbientLight(color, intensity)
-	const pointLight = new THREE.PointLight(color, intensity)
-	pointLight.position.set(0, 7, 0)
+	const directional = new THREE.DirectionalLight(color, intensity)
+	directional.position.set(-3, 10, 3)
+	directional.target.position.set(5, 0, -5);
 	scene.add(ambientLight)
-	scene.add(pointLight)
+	scene.add(directional)
+	scene.add(directional.target);
 
 
 //========================= Camara =============================
@@ -117,7 +123,7 @@ function main(){
 	const dz = 2.3;
 	
 	//---------------------- Estructura Datos ----------------------
-	mapcajas = new Map();
+	const mapcajas = new Map();
 	for(let k=0; k<3; k++){
 		for(let j=0; j<3; j++){
 			for (let i=0; i<3; i++){
@@ -137,7 +143,7 @@ function main(){
 				unatapa.material.color.setRGB( ((i+1)/10), ((j+1)/10), ((k+1)/10) );
 				
 				//Objeto completo
-				clave = (i+1)*100 + (j+1)*10 + (k+1); //Usamos el color como clave
+				var clave = (i+1)*100 + (j+1)*10 + (k+1); //Usamos el color como clave
 				const cajazapatos = new CajaZapatos(unacaja, unatapa);
 				
 				//Disposicion en la escena
@@ -198,21 +204,21 @@ function main(){
 	}
 
 //========================== Render =============================
-const canvas = document.querySelector('#mi_canvas');
-const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
-//renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.render(scene, camera);	
+	const canvas = document.querySelector('#mi_canvas');
+	const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 
-function resizeRendererToDisplaySize(renderer) {
-	const canvas = renderer.domElement;
-	const width = canvas.clientWidth;
-	const height = canvas.clientHeight;
-	const needResize = canvas.width !== width || canvas.height !== height;
-	if (needResize) {
-		renderer.setSize(width, height, false);
-	}
-	return needResize;
-}	
+	renderer.render(scene, camera);	
+
+	function resizeRendererToDisplaySize(renderer) {
+		const canvas = renderer.domElement;
+		const width = canvas.clientWidth;
+		const height = canvas.clientHeight;
+		const needResize = canvas.width !== width || canvas.height !== height;
+		if (needResize) {
+			renderer.setSize(width, height, false);
+		}
+		return needResize;
+	}	
 	
 //========================= Eventos ============================
 	
@@ -249,7 +255,7 @@ function resizeRendererToDisplaySize(renderer) {
 		K = _seleccionado % 10; _seleccionado -= K; K -= 1;
 		J = _seleccionado % 100; _seleccionado -= J; J = J/10 - 1;
 		I = _seleccionado % 1000 / 100 - 1; 
-		//console.log("Inv:", I, J, K);
+
 		if(mapcajas.has(anterior)){
 			mapcajas.get(anterior).setColor( ((I+1)/10), ((J+1)/10), ((K+1)/10));
 		}
@@ -316,13 +322,13 @@ function resizeRendererToDisplaySize(renderer) {
 
 //============================ GUI ============================
 
-	const gui3c = new dat.GUI( { autoPlace: false } );	
+	const gui3c = new GUI( { autoPlace: false } );	
 	var customContainer = document.querySelector('#gui').append(gui3c.domElement);
 
 	const pilasCajas = gui3c.addFolder('Pila de cajas');
-	pilasCajas.add(numCajas, 'x', 1, 3, 1).onFinishChange((value) => refrescar());
-	pilasCajas.add(numCajas, 'y', 1, 3, 1).onFinishChange((value) => refrescar());
-	pilasCajas.add(numCajas, 'z', 1, 3, 1).onFinishChange((value) => refrescar());
+	pilasCajas.add(numCajas, 'x', 1, 3, 1).onChange((value) => refrescar());
+	pilasCajas.add(numCajas, 'y', 1, 3, 1).onChange((value) => refrescar());
+	pilasCajas.add(numCajas, 'z', 1, 3, 1).onChange((value) => refrescar());
 	
 
 //========================= Visualiza =========================
@@ -342,12 +348,6 @@ function resizeRendererToDisplaySize(renderer) {
 		}
 
 		renderer.render( scene, camera );
-		
-		/*
-		if(numCajas.x != numCajasAnterior.x){
-			numCajasAnterior = numCajas;
-		}
-		*/
 	};
 
 animate();

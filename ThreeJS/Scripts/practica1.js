@@ -1,10 +1,11 @@
-//const { Vector3 } = require("three");
+import * as THREE from 'three';
+import { GUI } from 'dat.gui'
 
 function main(){
 
 //========================= Escenas ============================
 	const scene = new THREE.Scene();
-
+	scene.background = new THREE.Color(0x1b2631);
 
 //========================== Ejes =============================
 
@@ -75,22 +76,18 @@ function main(){
 	scene.add(camera);
 
 //========================== Cubo ==============================
-	
-	const geometriaCaja = new THREE.BoxGeometry( 1, 1, 1 );
-	//const wireframe = new THREE.WireframeGeometry( geometriaCaja );
-	
-	//var mat = new THREE.LineBasicMaterial( { color: 0x673ab7  } );
-	var mat = new THREE.MeshToonMaterial( { color: 0x673ab7  } );
-	
-	//const line = new THREE.LineSegments( wireframe, mat );
-	const cubo = new THREE.Mesh( geometriaCaja, mat );
 
-	scene.add( cubo );
+	const pivot = new THREE.Object3D();
+    scene.add(pivot);
+	
+	const geometriaCaja = new THREE.BoxGeometry( 1, 1, 1 );	
+	var mat = new THREE.MeshToonMaterial( { color: 0x673ab7  } );	
+	const cubo = new THREE.Mesh( geometriaCaja, mat );
+	pivot.add( cubo );
 
 //========================== Render =============================
 	var canvas = document.querySelector('#mi_canvas');
 	const renderer = new THREE.WebGLRenderer({canvas: canvas});
-	//renderer.setSize( window.innerWidth, window.innerHeight );
 
 	renderer.render(scene, camera);
 
@@ -104,48 +101,71 @@ function main(){
 		}
 		return needResize;
 	}
-	
-//========================= Eventos ============================
-
-//------------------------- Teclado ----------------------------
-	function keyFunction(e) {
-		switch (e.key){
-			case "e":
-				verEjes(ejes);
-			break;
-			case "a":
-				scene.add( cubo );
-			break;
-			case "q":
-				scene.remove( cubo );
-			break;
-			
-		}
-	}
-	document.getElementById("cuerpo").addEventListener("keypress", keyFunction);
 
 //============================ GUI ============================
+
+//---------------------- Variables Auxiliares ------------------------
+	const rotacionLocal = { x: 0.0, y: 0.0, z: 0.0};
+	const rotacionActualLocal = { x: 0.0, y: 0.0, z: 0.0};
+
+	const rotacionOrigen = { x: 0.0, y: 0.0, z: 0.0};
+	const rotacionOrigenActual = { x: 0.0, y: 0.0, z: 0.0};
+
+	const traslacion = {x: 0.0, y: 0.0, z: 0.0};
+
+//---------------------- Funciones Auxiliares ------------------------
 
 	function degToRad(deg){
 		return 3.1415 * deg / 180.0;
 	}
 
-	let rotacion = { x: 0.0, y: 0.0, z: 0.0};
-	let traslacion = {x: 0.0, y: 0.0, z: 0.0};
+	function rotarCuboLocal(){
+		var angX = -(rotacionActualLocal.x - rotacionLocal.x);
+		rotacionActualLocal.x += angX;
+		cubo.rotateX(degToRad(angX));
 
-	const gui1 = new dat.GUI( { autoPlace: false } );	
+		var angY = -(rotacionActualLocal.y - rotacionLocal.y);
+		rotacionActualLocal.y += angY;
+		cubo.rotateY(degToRad(angY));
+
+		var angZ = -(rotacionActualLocal.z - rotacionLocal.z);
+		rotacionActualLocal.z += angZ;
+		cubo.rotateZ(degToRad(angZ));
+	}
+
+	function rotarCuboOrigen(){
+		var angX = -(rotacionOrigenActual.x - rotacionOrigen.x);
+		rotacionOrigenActual.x += angX;
+		pivot.rotateX(degToRad(angX));
+
+		var angY = -(rotacionOrigenActual.y - rotacionOrigen.y);
+		rotacionOrigenActual.y += angY;
+		pivot.rotateY(degToRad(angY));
+
+		var angZ = -(rotacionOrigenActual.z - rotacionOrigen.z);
+		rotacionOrigenActual.z += angZ;
+		pivot.rotateZ(degToRad(angZ));
+	}
+
+//---------------------- Interfaz GUI ------------------------
+
+	const gui1 = new GUI( { autoPlace: false } );	
 	var customContainer = document.querySelector('#gui').append(gui1.domElement);
 	
-	const rotacionGUI = gui1.addFolder('Rotacion');
-	rotacionGUI.add(rotacion, 'x', 0, 360, 10).name('x').onFinishChange((value) => cubo.setRotationFromAxisAngle(new THREE.Vector3(1, 0, 0), degToRad(rotacion.x)));
-	rotacionGUI.add(rotacion, 'y', 0, 360, 10).name('y').onFinishChange((value) => cubo.setRotationFromAxisAngle(new THREE.Vector3(0, 1, 0), degToRad(rotacion.y)));
-	rotacionGUI.add(rotacion, 'z', 0, 360, 10).name('z').onFinishChange((value) => cubo.setRotationFromAxisAngle(new THREE.Vector3(0, 0, 1), degToRad(rotacion.z)));
+	const rotacionGUI = gui1.addFolder('Rotacion local');
+	rotacionGUI.add(rotacionLocal, 'x', 0, 360, 10).name('x').onChange((value) => rotarCuboLocal());
+	rotacionGUI.add(rotacionLocal, 'y', 0, 360, 10).name('y').onChange((value) => rotarCuboLocal());
+	rotacionGUI.add(rotacionLocal, 'z', 0, 360, 10).name('z').onChange((value) => rotarCuboLocal());
 
+	const rotacionGUI2 = gui1.addFolder('Rotacion respecto al origen');
+	rotacionGUI2.add(rotacionOrigen, 'x', 0, 360, 10).name('x').onChange((value) => rotarCuboOrigen());
+	rotacionGUI2.add(rotacionOrigen, 'y', 0, 360, 10).name('y').onChange((value) => rotarCuboOrigen());
+	rotacionGUI2.add(rotacionOrigen, 'z', 0, 360, 10).name('z').onChange((value) => rotarCuboOrigen());
 	
 	const traslacionGUI = gui1.addFolder('Traslacion');
-	traslacionGUI.add(traslacion, 'x', 0, 3, 0.5).onFinishChange((value) => cubo.translateOnAxis(new THREE.Vector3(1, 0, 0), traslacion.x - cubo.position.x));
-	traslacionGUI.add(traslacion, 'y', 0, 3, 0.5).onFinishChange((value) => cubo.translateOnAxis(new THREE.Vector3(0, 1, 0), traslacion.y - cubo.position.y));
-	traslacionGUI.add(traslacion, 'z', 0, 3, 0.5).onFinishChange((value) => cubo.translateOnAxis(new THREE.Vector3(0, 0, 1), traslacion.z - cubo.position.z));
+	traslacionGUI.add(traslacion, 'x', 0, 3, 0.25).onChange((value) => cubo.translateOnAxis(new THREE.Vector3(1, 0, 0), traslacion.x - cubo.position.x));
+	traslacionGUI.add(traslacion, 'y', 0, 3, 0.25).onChange((value) => cubo.translateOnAxis(new THREE.Vector3(0, 1, 0), traslacion.y - cubo.position.y));
+	traslacionGUI.add(traslacion, 'z', 0, 3, 0.25).onChange((value) => cubo.translateOnAxis(new THREE.Vector3(0, 0, 1), traslacion.z - cubo.position.z));
 		
 
 	const escaladoGUI = gui1.addFolder('Escalado');

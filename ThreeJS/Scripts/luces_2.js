@@ -111,9 +111,9 @@ function main(){
                     }
                 });
 
-                root.scale.x = 4;
-                root.scale.y = 4;
-                root.scale.z = 4;
+                root.scale.x = 5;
+                root.scale.y = 5;
+                root.scale.z = 5;
               });
         });
     
@@ -122,7 +122,6 @@ function main(){
         const renderer = new THREE.WebGLRenderer({canvas: canvas});
         renderer.shadowMap.enabled = true;
         renderer.shadowMapSoft = true;
-        //renderer.setSize( window.innerWidth, window.innerHeight );
     
         renderer.render(scene, camera);
     
