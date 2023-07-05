@@ -94,7 +94,7 @@ function main(){
         
         esfera = new THREE.Mesh( esferaGeo, esferaMat );
         
-        var geo = new THREE.EdgesGeometry( esfera.geometry ); // or WireframeGeometry
+        var geo = new THREE.WireframeGeometry( esfera.geometry ); // or WireframeGeometry
         var mat = new THREE.LineBasicMaterial( { color: 0xffffff } );
         var wireframe = new THREE.LineSegments( geo, mat );
         esfera.add( wireframe );
@@ -127,6 +127,22 @@ function main(){
 
 //============================ GUI ============================
 
+    function degToRad(deg){
+        return 3.1415 * deg / 180.0;
+    }
+
+    const angulos = {phi: 0, theta: 0}
+
+    function updatePhi(){
+        data.phiLength = degToRad(angulos.phi);
+        generateSphere();
+    }
+
+    function updateThetha(){
+        data.thetaLength = degToRad(angulos.theta/2.0);
+        generateSphere();
+    }
+
     const gui = new GUI( { autoPlace: false } );
     var customContainer = document.querySelector('#gui').append(gui.domElement);
     
@@ -134,8 +150,8 @@ function main(){
     folder.add( data, 'radius', 1, 3 ).setValue(2).onChange( generateSphere ).name("Radio");
     folder.add( data, 'widthSegments', 3, 64 ).step( 1 ).onChange( generateSphere ).name("Meridianos");
     folder.add( data, 'heightSegments', 2, 32 ).step( 1 ).onChange( generateSphere ).name("Paralelos");
-    folder.add( data, 'phiLength', 0, twoPi ).onChange( generateSphere ).name("Phi");
-    folder.add( data, 'thetaLength', 0, Math.PI ).onChange( generateSphere ).name("Theta");
+    folder.add( angulos, 'phi', 0, 360, 5 ).onChange( updatePhi ).name("Phi").setValue(360);
+    folder.add( angulos, 'theta', 0, 360, 5 ).onChange( updateThetha ).name("Theta").setValue(360);
 
 //========================= Visualiza =========================
     const clock = new THREE.Clock();

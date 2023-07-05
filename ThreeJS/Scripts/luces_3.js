@@ -27,8 +27,8 @@ function main(){
     
     //-------------------------- Eje X ----------------------------
         const ejeXvertices = [];
-        ejeXvertices.push( new THREE.Vector3( 0, 0, 0 ) );
-        ejeXvertices.push( new THREE.Vector3( 2, 0, 0 ) );
+        ejeXvertices.push( new THREE.Vector3( 0, 7, 0 ) );
+        ejeXvertices.push( new THREE.Vector3( 2, 7, 0 ) );
         const colorEjeX = new THREE.LineBasicMaterial( { color:  0x943126 } );
     
         const geometriaX = new THREE.BufferGeometry().setFromPoints( ejeXvertices );
@@ -38,8 +38,8 @@ function main(){
     
     //-------------------------- Eje Y ----------------------------
         const ejeYvertices = [];
-        ejeYvertices.push( new THREE.Vector3( 0, 0, 0 ) );
-        ejeYvertices.push( new THREE.Vector3(  0, 2, 0 ) );
+        ejeYvertices.push( new THREE.Vector3( 0, 7, 0 ) );
+        ejeYvertices.push( new THREE.Vector3(  0, 9, 0 ) );
         const colorEjeY = new THREE.LineBasicMaterial( { color:   0x2ecc71  } );
     
         const geometriaY = new THREE.BufferGeometry().setFromPoints( ejeYvertices );
@@ -49,8 +49,8 @@ function main(){
     
     //-------------------------- Eje Z ----------------------------
         const ejeZvertices = [];
-        ejeZvertices.push( new THREE.Vector3( 0, 0, 0 ) );
-        ejeZvertices.push( new THREE.Vector3(  0, 0, 2 ) );
+        ejeZvertices.push( new THREE.Vector3( 0, 7, 0 ) );
+        ejeZvertices.push( new THREE.Vector3(  0, 7, 2 ) );
         const colorEjeZ = new THREE.LineBasicMaterial( { color:   0x3498db  } );
         
         const geometriaZ = new THREE.BufferGeometry().setFromPoints( ejeZvertices );
@@ -143,7 +143,7 @@ function main(){
         const puntualGUI = gui1.addFolder('Puntal');
         puntualGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('Color');
         puntualGUI.add(light, 'intensity', 0, 2, 0.01).name("Intensiadad");
-        puntualGUI.add(light, 'distance', 0, 10).setValue(4).onChange( helper.update()).name("Atenuación");     
+        puntualGUI.add(light, 'distance', 0, 10).setValue(5).onChange( helper.update()).name("Atenuación");     
     
     //========================= Visualiza =========================
     
