@@ -14,18 +14,13 @@ import HelloWorld from './components/HelloWorld.vue'
 
       <div class="nav-scroller py-1 mb-2">
 				<nav class="nav d-flex justify-content-between"> 
-					<RouterLink class="p-2 link-secondary" to="/">Transformaciones</RouterLink>
+					<RouterLink class="p-2 link-secondary" to="/trasformaciones">Transformaciones</RouterLink>
+          <RouterLink class="p-2 link-secondary" to="/luzAmbiental">Luz Ambiental</RouterLink>
 				</nav>
 			</div>
   </header>
 
   <main id="algo" class="container">
-    <div class="p-4 p-md-5 mb-4">
-      <div id="lienzo" class="px-0 col-md-6">
-        <div id="gui"></div>
-        <canvas id="mi_canvas" class="rounded"></canvas>
-      </div>
-    </div>
 
     <RouterView />
 
