@@ -14,7 +14,7 @@ import { RouterLink, RouterView } from 'vue-router'
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <RouterLink class="nav-link" aria-current="page" to="/trasformaciones">Transformaciones</RouterLink>
+                <RouterLink class="nav-link" aria-current="page" to="/trasformaciones">Trasformaciones</RouterLink>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -25,6 +25,24 @@ import { RouterLink, RouterView } from 'vue-router'
                   <li><RouterLink class="dropdown-item" to="/luzDireccional">Direccional</RouterLink></li>
                   <li><RouterLink class="dropdown-item" to="/luzPuntual">Puntual</RouterLink></li>
                   <li><RouterLink class="dropdown-item" to="/luzFoco">Foco</RouterLink></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link" aria-current="page" to="/seleccion">Seleccion</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link" aria-current="page" to="/grafo">Grafo</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link" aria-current="page" to="/mallas">Mallas</RouterLink>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Texturas
+                </a>
+                <ul class="dropdown-menu">
+                  <li><RouterLink class="dropdown-item" to="/filtros">Filtros</RouterLink></li>
+                  <li><RouterLink class="dropdown-item" to="/bump">Bump Mapping</RouterLink></li>
                 </ul>
               </li>
             </ul>
