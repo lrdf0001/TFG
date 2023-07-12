@@ -1,20 +1,31 @@
-
 <script >
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui'
-import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+
 
 export default {
-    name: 'Texturas',
+    name: 'Brillos',
     methods: {
 
     main: function(){
 
+        class ColorGUIHelper {
+            constructor(object, prop) {
+                this.object = object;
+                this.prop = prop;
+            }
+            get value() {
+                return `#${this.object[this.prop].getHexString()}`;
+            }
+            set value(hexString) {
+                this.object[this.prop].set(hexString);
+            }
+    }
+
     //========================= Escenas ============================
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x1b2631);
+        scene.background = new THREE.Color(0x8d9398);
 
     //========================== Ejes =============================
 
@@ -62,62 +73,60 @@ export default {
         light.position.set(5, 5, 5);
         light.target.position.set(-5, 0, -5);
 
-        light.castShadow = true;
+        //light.castShadow = true;
 
         scene.add(light.target);
         scene.add(light);
 
     //========================= Camara =============================
         const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 100);
-        camera.position.x = 3;
-        camera.position.y = 3;
-        camera.position.z = 3;
+        camera.position.x = 5.5;
+        camera.position.y = 5.5;
+        camera.position.z = 5.5;
         camera.lookAt(0,0,0);
         scene.add(camera);
 
     //========================== Modelos ==============================
 
-    //-------------------------- Materiales ----------------------------
-        const loader = new THREE.TextureLoader();
+        const pivot = new THREE.Object3D();
+        scene.add(pivot);
 
-        const textura1 = loader.load('./src/assets/img/bricks/P4_BaseColor.png');
-        const bump1 = loader.load('./src/assets/img/bricks/P4_Ao.png');
-        var material1 = new THREE.MeshStandardMaterial({
-            map: textura1,
-            bumpMap: bump1
+        const model = {
+            radius: 3,
+            tubeRadius: 1,
+            tubularSegments: 75,
+            radialSegments: 50,
+            p: 2,
+            q: 3
+        };
+        
+        var  slipknot;
+        var geometry;
+
+        var mat = new THREE.MeshStandardMaterial({
+            color: 0xbcbcbc,
+            emissive: 0x000000,
+            roughness: 0.5,
+            metalness: 1.0
         });
 
-        const textura2 = loader.load('./src/assets/img/bricks/rocks.png');
-        const bump2 = loader.load('./src/assets/img/bricks/rock_bump2.png');
-        var material2 = new THREE.MeshStandardMaterial({
-            map: textura2,
-            bumpMap: bump2
-        });
+        function generateTorus(){
+            pivot.remove(slipknot);
 
-        var elMaterial = material1;
+            geometry = new THREE.TorusKnotGeometry(model.radius, model.tubeRadius,
+                model.tubularSegments, model.radialSegments, model.p, model.q);
+    
 
-    //-------------------------- Cubo ----------------------------
-        const cubeGeo = new THREE.BoxGeometry(2.5, 2.5, 2.5);
-
-        var cubo = new THREE.Mesh(cubeGeo, material1);
-        cubo.castShadow = true;
-        cubo.receiveShadow = true;
-
-        scene.add(cubo);
-
-    //-------------------------- Esfera ----------------------------
-        const sphereGeo = new THREE.SphereGeometry(1.5, 30, 30);
-        var esfera = new THREE.Mesh(sphereGeo, material1);
-        esfera.castShadow = true;
-        esfera.receiveShadow = true;
+            slipknot = new THREE.Mesh(geometry, mat);
+            
+            pivot.add(slipknot);
+        }
+        generateTorus();
 
 
     //========================== Render =============================
         var canvas = document.querySelector('#mi_canvas');
         const renderer = new THREE.WebGLRenderer({canvas: canvas});
-
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMapSoft = true;
 
         renderer.render(scene, camera);
 
@@ -138,63 +147,32 @@ export default {
         controls.update();
 
     //============================ GUI ============================
-        
-        const select = {model: 0, text: 1};
-
-        const options = {
-            modelos:{
-                cubo:   0,
-                esfera: 1
-            },
-            texturas:{
-                ladrillos:  1,
-                rocas:      2
-            }
-        }
-
-        function actualizarBump(){
-            if(select.text == 1){
-                material1.bumpScale = elMaterial.bumpScale;
-                material1.needsUpdate = true
-            }else{
-                material2.bumpScale = elMaterial.bumpScale;
-                material2.needsUpdate = true
-            }
-        }
-        
-        function cambiarModelo(){
-            if(select.model == 1){
-                scene.remove(cubo);
-                scene.add(esfera);
-            }else if(select.model == 0){
-                scene.remove(esfera);
-                scene.add(cubo);
-            }
-        }
-
-        function cambiarTextura(){
-            if(select.text == 1){
-                esfera.material = material1;
-                cubo.material = material1;
-            }else{
-                esfera.material = material2;
-                cubo.material = material2;
-            }
-            actualizarBump()
-        }
+    
 
         const gui = new GUI( { autoPlace: false } );	
         var customContainer = document.querySelector('#gui').append(gui.domElement); 
 
-        const textureFolder = gui.addFolder('BumpMap');
-        textureFolder.add(elMaterial, 'bumpScale', 0.0, 1.0, 0.1 ).name('Escala').setValue(1.0).onChange(() => actualizarBump());
-        textureFolder.add(select, 'model', options.modelos).name('Modelo').onFinishChange(() => cambiarModelo());
-        textureFolder.add(select, 'text', options.texturas).name('Textura').onFinishChange(() => cambiarTextura());
+        const folder = gui.addFolder( 'Geometria Toro' );
+        folder.add( model, 'radius', 1, 3 ).setValue(3).onChange( generateTorus ).name("Tamaño");
+        folder.add( model, 'tubeRadius', 0.1, 1.5 ).setValue(1).onChange( generateTorus ).name("Radio");
+        folder.add( model, 'tubularSegments', 20, 100, 1 ).step( 1 ).onChange( generateTorus ).name("Segmentos");
+        folder.add( model, 'radialSegments', 3, 100, 1 ).onChange( generateTorus ).name("Radiales");
+        folder.add( model, 'p', 1, 3, 1 ).setValue(2).onChange( generateTorus ).name("Torsion 1");
+        folder.add( model, 'q', 1, 3, 1 ).setValue(3).onChange( generateTorus ).name("Torsion 2");
 
+        const folder2 = gui.addFolder( 'Material' );
+        folder2.addColor(new ColorGUIHelper(mat, 'color'), 'value').name('Color');
+        folder2.addColor(new ColorGUIHelper(mat, 'emissive'), 'value').name('Emisivo');
+        folder2.add(mat, 'roughness', 0, 1, 0.1).setValue(0.5).name('Rugosidad');
+        folder2.add(mat, 'metalness', 0, 1, 0.1).setValue(1).name('Metalico');    
 
+        
     //========================= Visualiza =========================
 
         function animate() {
+
+            pivot.rotation.y += 0.002;
+            pivot.rotation.x += 0.002;
             
             requestAnimationFrame( animate );
 
@@ -206,8 +184,6 @@ export default {
 
             renderer.render( scene, camera );
         };
-
-
         animate()
     }
   },
@@ -219,5 +195,5 @@ export default {
 
 
 <template>
-    <p>Texto explicativo de bump mapping</p>
+    <p>Texto explicativo de filtros de brillos</p>
 </template>

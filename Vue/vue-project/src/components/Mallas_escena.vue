@@ -155,8 +155,8 @@ export default {
     folder.add( data, 'radius', 1, 3 ).setValue(2).onChange( generateSphere ).name("Radio");
     folder.add( data, 'widthSegments', 3, 64 ).step( 1 ).onChange( generateSphere ).name("Meridianos");
     folder.add( data, 'heightSegments', 2, 32 ).step( 1 ).onChange( generateSphere ).name("Paralelos");
-    folder.add( angulos, 'phi', 0, 360, 5 ).onChange( updatePhi ).name("Phi").setValue(360);
-    folder.add( angulos, 'theta', 0, 360, 5 ).onChange( updateThetha ).name("Theta").setValue(360);
+    folder.add( angulos, 'phi', 0, 360, 5 ).onChange( updatePhi ).name("Inicio Vertical").setValue(360);
+    folder.add( angulos, 'theta', 0, 360, 5 ).onChange( updateThetha ).name("Inicio Horizontal").setValue(360);
 
 //========================= Visualiza =========================
     const clock = new THREE.Clock();

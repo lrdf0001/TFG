@@ -76,9 +76,9 @@ export default {
     
     //========================= Camara =============================
         const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 100);
-        camera.position.x = 5;
-        camera.position.y = 5;
-        camera.position.z = 5;
+        camera.position.x = 7;
+        camera.position.y = 7;
+        camera.position.z = 7;
         camera.lookAt(0,0,0);
         scene.add(camera);
     
@@ -277,9 +277,34 @@ export default {
         const hombroGUI = {x:90, y:90, z:90};
         const codoGUI = {x:270, y:270, z:270};
         const munecaGUI = {y: 90};
+        const animacion = { play: false};
 
         function degToRad(deg){
             return (3.1415 * deg) / 180.0;
+        }
+
+        function animar(){
+            if(hombroGUI.x < 145 && hombroGUI.z < 145){
+                hombroGUI.x += 0.1;
+                hombroGUI.z += 0.1;
+
+                rotarHombro();                
+            }
+
+            if(codoGUI.x > 220 && codoGUI.z > 220){
+                codoGUI.x -= 0.1;
+                codoGUI.z -= 0.1;
+
+                rotarCodo();
+            }
+
+            if(munecaGUI.y < 180){
+                munecaGUI.y += 0.15;
+
+                rotarMuneca();
+            }
+
+            gui.updateDisplay();
         }
 
         function rotarHombro(){
@@ -331,12 +356,18 @@ export default {
 
         const munecaFolder = gui.addFolder( 'Rotacion Muñeca' );
         munecaFolder.add(munecaGUI, 'y', 0, 180, 5).name('y').setValue(90).onChange((value) => rotarMuneca());
+        
+        gui.add(animacion, 'play').name("Animar");
+
+
 
     //========================= Visualiza =========================
         const clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame( animate );
+
+            if(animacion.play) animar();
     
             if (resizeRendererToDisplaySize(renderer)) {
                 const canvas = renderer.domElement;

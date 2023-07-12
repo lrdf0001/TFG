@@ -10,19 +10,14 @@ import EscenaGrafo from '../views/Grafo_vista.vue'
 import EscenaMallas from '../views/Mallas_vista.vue'
 import EscenaBump from '../views/Bump_vista.vue'
 import EscenaFiltros from '../views/Filtros_vista.vue'
+import EscenaBrillo from '../views/Brillos_vista.vue'
 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    /*
     {
       path: '/',
-      name: 'home',
-      component: () => import('../views/HomeView.vue')
-    },*/
-    {
-      path: '/trasformaciones',
       name: 'trasformaciones',
       component: EsceneView1
     },
@@ -70,6 +65,11 @@ const router = createRouter({
       path: '/filtros',
       name: 'filtros',
       component: EscenaFiltros
+    },
+    {
+      path: '/brillo',
+      name: 'brillo',
+      component: EscenaBrillo
     },
   ]
 })

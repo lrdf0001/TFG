@@ -59,13 +59,13 @@ export default {
 
     //========================= Camara =============================
         const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 100);
-        camera.position.z = 6;
+        camera.position.z = 8;
         camera.lookAt(0,0,0);
         scene.add(camera);
 
     //========================== Plano ==============================
         const planoGeo = new THREE.PlaneGeometry(10,10);
-        var textura1 = new THREE.TextureLoader().load('./src/assets/img/red-and-green2.png');
+        var textura1 = new THREE.TextureLoader().load('./src/assets/img/lineas.png');
         var mat = new THREE.MeshBasicMaterial( { 
             map: textura1
         } );
@@ -160,8 +160,8 @@ export default {
         var customContainer = document.querySelector('#gui').append(gui.domElement); 
 
         const textureFolder = gui.addFolder('Filtros');
-        textureFolder.add(laTextura, 'minFilter', options.minFilters).onChange(() => updateMinFilter());
-        textureFolder.add(laTextura, 'magFilter', options.magFilters).onChange(() => updateMagFilter());
+        textureFolder.add(laTextura, 'minFilter', options.minFilters).onChange(() => updateMinFilter()).name("Minificación");
+        textureFolder.add(laTextura, 'magFilter', options.magFilters).onChange(() => updateMagFilter()).name("Magnificación");
         
         textureFolder.add(data, 'seleccion', options.imagen).name('Textura').setValue(options.imagen.opcion1).onFinishChange(() => changeTexture());
         

@@ -182,6 +182,7 @@ methods: {
 		escaladoGUI.add(cubo.scale, 'z', 0, 3).name('Largo').listen();
 
 		gui1.add(cubo.material, 'wireframe').listen();
+		
 
 	//========================= Visualiza =========================
 

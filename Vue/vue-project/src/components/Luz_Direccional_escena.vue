@@ -64,14 +64,18 @@ export default {
             scene.add(ejeZ);
         
         //========================= Luces ============================= 
+            const pivot = new THREE.Object3D();
+            scene.add(pivot);
+
             const color = 0xFFFFFF;
             const intensity = 1;
             const light = new THREE.DirectionalLight(color, intensity);
             light.position.set(0, 5, 0);
-            light.target.position.set(-5, 0, 0);
+            light.target.position.set(0, 0, 0);
             light.castShadow = true;
-            scene.add(light);
-            scene.add(light.target);
+            
+            pivot.add(light);
+            pivot.add(light.target);
 
             light.shadow.mapSize.width = 1000,
             light.shadow.mapSize.height = 1000; 
@@ -80,14 +84,13 @@ export default {
 
             const helper = new THREE.CameraHelper( light.shadow.camera );
             scene.add( helper );
-
             
             var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.3);        
             scene.add(ambientLight);
             
         
         //========================= Camara =============================
-            const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20);
+            const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 40);
             camera.position.x = 3;
             camera.position.y = 3;
             camera.position.z = 3;
@@ -145,6 +148,23 @@ export default {
             controls.update();
         
         //============================ GUI ============================
+
+            function degToRad(deg){
+                return (3.1415 * deg) / 180.0;
+            }
+
+            const rotacionGUI = {x: 90, z: 90};
+            const rotacionPivot = {x: 90, z: 90};
+
+            function rotateLigth(){
+                var angX = -(rotacionPivot.x - rotacionGUI.x);
+                rotacionPivot.x += angX;
+                pivot.rotateX(degToRad(angX));
+
+                var angZ = -(rotacionPivot.z - rotacionGUI.z);
+                rotacionPivot.z += angZ;
+                pivot.rotateZ(degToRad(angZ));
+            }
         
             const gui1 = new GUI( { autoPlace: false } );
             var customContainer = document.querySelector('#gui').append(gui1.domElement);
@@ -152,8 +172,10 @@ export default {
             const direccionalGUI = gui1.addFolder('Direccional');
             direccionalGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('Color');
             direccionalGUI.add(light, 'intensity', 0, 2, 0.01).name("Intensidad");
-            direccionalGUI.add(light.target.position, 'x', -10, 10);
-            direccionalGUI.add(light.target.position, 'z', -10, 10);
+            //direccionalGUI.add(light.target.position, 'x', -10, 10);
+            //direccionalGUI.add(light.target.position, 'z', -10, 10);
+            direccionalGUI.add(rotacionGUI, 'x', 0, 180).setValue(90).onChange(rotateLigth);
+            direccionalGUI.add(rotacionGUI, 'z', 0, 180).setValue(90).onChange(rotateLigth);
         
         //========================= Visualiza =========================
         

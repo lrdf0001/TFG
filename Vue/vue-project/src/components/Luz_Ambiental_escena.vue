@@ -24,7 +24,7 @@ methods: {
 
   //========================= Escena ============================
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x1a5276);
+      scene.background = new THREE.Color(0x5499c7);
       var canvas = document.querySelector('#mi_canvas');
   
   //========================== Ejes =============================

@@ -1,11 +1,12 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import Footer from './components/Footer.vue'
 </script>
 
 <template>
   <header>
       <div>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">TFG</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,7 +15,7 @@ import { RouterLink, RouterView } from 'vue-router'
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <RouterLink class="nav-link" aria-current="page" to="/trasformaciones">Trasformaciones</RouterLink>
+                <RouterLink class="nav-link" aria-current="page" to="/">Trasformaciones</RouterLink>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -43,6 +44,7 @@ import { RouterLink, RouterView } from 'vue-router'
                 <ul class="dropdown-menu">
                   <li><RouterLink class="dropdown-item" to="/filtros">Filtros</RouterLink></li>
                   <li><RouterLink class="dropdown-item" to="/bump">Bump Mapping</RouterLink></li>
+                  <li><RouterLink class="dropdown-item" to="/brillo">Brillo</RouterLink></li>
                 </ul>
               </li>
             </ul>
@@ -53,8 +55,8 @@ import { RouterLink, RouterView } from 'vue-router'
   </header>
 
   <main id="algo" class="container">
-
     <RouterView />
-
   </main>
+
+  
 </template>
