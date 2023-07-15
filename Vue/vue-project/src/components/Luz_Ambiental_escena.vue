@@ -76,9 +76,9 @@ methods: {
   
   //========================= Camara =============================
       const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20);
-      camera.position.x = 5;
-      camera.position.y = 5;
-      camera.position.z = 5;
+      camera.position.x = 4;
+      camera.position.y = 3;
+      camera.position.z = 4;
       camera.lookAt(0,0,0);
       scene.add(camera);
   
@@ -168,6 +168,20 @@ methods: {
 
 
 <template>
-    <p>Texto explicativo de luz ambiental</p>
+    <h3>Luz ambiente</h3>
+    <p>Fuente luminosa difusa no direccional, resultado de la reflexión de la 
+        luz en el entorno de la escena.</p>
+    <p>Viene dado por dos parámetros:
+        <ul>
+            <li><b>Intensidad</b> de la luz.</li>
+            <li><b>Coeficiente</b> (K) de reflexión.</li>
+        </ul>
+    </p>
+    <p>En este caso se permite modificar tanto la intensidad como el color de la luz.</p>
+
+    <h3>Luz de hemisferio</h3>
+    <p>Es una variante de la luz ambiental y se puede combinar con esta. Representa la luz reflejada por el cielo, 
+        que incide desde arriba, y la luz reflejada por el suelo, que indice desde abajo.
+    </p>
 </template>
 

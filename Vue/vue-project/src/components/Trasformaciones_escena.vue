@@ -3,13 +3,13 @@ import * as THREE from 'three';
 import { GUI } from 'dat.gui'
 
 export default {
-name: 'Ambiental',
+name: 'Trasformaciones',
 //data() {},
 methods: {
 	main:function(){
 
 	//========================= Escenas ============================
-		const scene = new THREE.Scene();
+	const scene = new THREE.Scene();
 		scene.background = new THREE.Color(0x1b2631);
 		var canvas = document.querySelector('#mi_canvas');
 
@@ -84,7 +84,7 @@ methods: {
 	//========================== Cubo ==============================
 
 		const pivot = new THREE.Object3D();
-		scene.add(pivot);
+		scene.add(pivot)
 		
 		const geometriaCaja = new THREE.BoxGeometry( 1, 1, 1 );	
 		var mat = new THREE.MeshToonMaterial( { color: 0x673ab7  } );	
@@ -121,6 +121,8 @@ methods: {
 
 		const traslacion = {x: 0.0, y: 0.0, z: 0.0};
 
+		var trasladado = false;
+
 	//---------------------- Funciones Auxiliares ------------------------
 
 		function degToRad(deg){
@@ -141,7 +143,7 @@ methods: {
 			cubo.rotateZ(degToRad(angZ));
 		}
 
-		function rotarCuboOrigen(){
+		function rotarCuboOrigen(){					
 			var angX = -(rotacionOrigenActual.x - rotacionOrigen.x);
 			rotacionOrigenActual.x += angX;
 			pivot.rotateX(degToRad(angX));
@@ -152,34 +154,39 @@ methods: {
 
 			var angZ = -(rotacionOrigenActual.z - rotacionOrigen.z);
 			rotacionOrigenActual.z += angZ;
-			pivot.rotateZ(degToRad(angZ));
+			pivot.rotateZ(degToRad(angZ));			
+		}
+
+		function trasladar(){
+			cubo.position.x += traslacion.x - cubo.position.x;
+			cubo.position.y += traslacion.y - cubo.position.y;
+			cubo.position.z += traslacion.z - cubo.position.z;
 		}
 
 	//---------------------- Interfaz GUI ------------------------
 
 		const gui1 = new GUI( { autoPlace: false } );	
 		var customContainer = document.querySelector('#gui').append(gui1.domElement);
+
+		const escaladoGUI = gui1.addFolder('1. Escalado');
+		escaladoGUI.add(cubo.scale, 'x', 0, 3).name('Ancho').listen();
+		escaladoGUI.add(cubo.scale, 'y', 0, 3).name('Alto').listen();
+		escaladoGUI.add(cubo.scale, 'z', 0, 3).name('Largo').listen();
 		
-		const rotacionGUI = gui1.addFolder('Rotacion local');
+		const rotacionGUI = gui1.addFolder('2. Rotación');
 		rotacionGUI.add(rotacionLocal, 'x', 0, 360, 10).name('x').onChange((value) => rotarCuboLocal());
 		rotacionGUI.add(rotacionLocal, 'y', 0, 360, 10).name('y').onChange((value) => rotarCuboLocal());
 		rotacionGUI.add(rotacionLocal, 'z', 0, 360, 10).name('z').onChange((value) => rotarCuboLocal());
 
-		const rotacionGUI2 = gui1.addFolder('Rotacion respecto al origen');
-		rotacionGUI2.add(rotacionOrigen, 'x', 0, 360, 10).name('x').onChange((value) => rotarCuboOrigen());
-		rotacionGUI2.add(rotacionOrigen, 'y', 0, 360, 10).name('y').onChange((value) => rotarCuboOrigen());
-		rotacionGUI2.add(rotacionOrigen, 'z', 0, 360, 10).name('z').onChange((value) => rotarCuboOrigen());
-		
-		const traslacionGUI = gui1.addFolder('Traslacion');
-		traslacionGUI.add(traslacion, 'x', 0, 3, 0.25).onChange((value) => cubo.translateOnAxis(new THREE.Vector3(1, 0, 0), traslacion.x - cubo.position.x));
-		traslacionGUI.add(traslacion, 'y', 0, 3, 0.25).onChange((value) => cubo.translateOnAxis(new THREE.Vector3(0, 1, 0), traslacion.y - cubo.position.y));
-		traslacionGUI.add(traslacion, 'z', 0, 3, 0.25).onChange((value) => cubo.translateOnAxis(new THREE.Vector3(0, 0, 1), traslacion.z - cubo.position.z));
-			
+		const traslacionGUI = gui1.addFolder('3. Traslación');
+		traslacionGUI.add(traslacion, 'x', 0, 3).onChange((value) => trasladar()); //pivot2.translateOnAxis(new THREE.Vector3(1, 0, 0), traslacion.x - pivot2.position.x)
+		traslacionGUI.add(traslacion, 'y', 0, 3).onChange((value) => trasladar()); //pivot2.translateOnAxis(new THREE.Vector3(0, 1, 0), traslacion.y - pivot2.position.y)
+		traslacionGUI.add(traslacion, 'z', 0, 3).onChange((value) => trasladar()); //pivot2.translateOnAxis(new THREE.Vector3(0, 0, 1), traslacion.z - pivot2.position.z)
 
-		const escaladoGUI = gui1.addFolder('Escalado');
-		escaladoGUI.add(cubo.scale, 'x', 0, 3).name('Ancho').listen();
-		escaladoGUI.add(cubo.scale, 'y', 0, 3).name('Alto').listen();
-		escaladoGUI.add(cubo.scale, 'z', 0, 3).name('Largo').listen();
+		const rotacionGUI2 = gui1.addFolder('4. Rotacion después de traslación');
+		rotacionGUI2.add(rotacionOrigen, 'x', 0, 360, 10).name('x').onChange((value) => rotarCuboOrigen()); 
+		rotacionGUI2.add(rotacionOrigen, 'y', 0, 360, 10).name('y').onChange((value) => rotarCuboOrigen());
+		rotacionGUI2.add(rotacionOrigen, 'z', 0, 360, 10).name('z').onChange((value) => rotarCuboOrigen());		
 
 		gui1.add(cubo.material, 'wireframe').listen();
 		
@@ -198,7 +205,6 @@ methods: {
 			renderer.render( scene, camera );
 		};
 
-
 		animate()
 	}
 	
@@ -209,5 +215,33 @@ methods: {
 
 
 <template>
-	<p>Texto explicativo de la primera escena</p>
+	<h3>Trasformaciones Afines</h3>
+	<p>Una transformación afín es una transformación que se aplica a puntos y 
+	vectores en un espacio afín. Preservan  ciertas propiedades geométricas:
+		<ul>
+			<li>Colinealidad.</li>
+			<li>Proporcionalidad.</li>
+		</ul>
+	</p>
+	<p>Ángulos y distancias no se mantienen, aunque sí la proporción de distancias.</p>
+
+	<h4>Escalado</h4>
+	<p>Modifica el tamaño de un objeto. Si se escala igual en los tres ejes tenemos un escalado uniforme.</p>
+
+	<h4>Rotación</h4>
+	<p>Se realiza una rotación angular sobre un determinado eje en 3D.</p>
+	<p>Es una transformación rígida</p>
+
+	<h4>Traslación</h4>
+	<p>Es equivalente a la suma de un vector t a un punto. Aplicado a un objeto 
+	(conjunto de puntos) es equivalente a moverlo rígidamente por el espacio.</p>
+	<p>Es una transformación rígida.</p>
+
+	<h4>Utilización</h4>
+	<p>Estras transformaciones se aplican en el siguinete orden: escalado, rotación y traslación. En calculo de matrices
+		se representa como: <i>M = T · R · S</i>.</p>
+	<p>Si alteramos el orden de las trasformaciones podremos obtener resultados distintos, esto se debe a que el calculo de 
+		matrices no es conmutativo. Para demostrarlo, se ha añadido un 4º apartado a la interfaz donde se pueden aplicar
+		rotaciones después de la traslación, por ejemplo: <i>M = R' · T · R · S</i>.
+	</p>
 </template>

@@ -102,9 +102,9 @@ export default {
         
         //========================= Camara =============================
             const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 100);
-            camera.position.x = 6;
+            camera.position.x = 8;
             camera.position.y = 6;
-            camera.position.z = 6;
+            camera.position.z = 8;
             camera.lookAt(0,0,0);
             scene.add(camera);        
         
@@ -267,5 +267,16 @@ export default {
 
 
 <template>
-    <p>Texto explicativo de luz focal</p>
+    <h3>Foco</h3>
+    <p>Un foco al igual que la luz puntual es una fuente luminosa situada en un punto en concreto, 
+        con la diferencia que solo ilumina en un rango y dirección.</p>
+    <p>Los parametros que definen a esta luz son:
+        <ul>
+            <li><b>Intensidad</b>.</li>
+            <li><b>Posicion</b>.</li>
+            <li><b>Atenuación</b>, pérdida intensidad conforme más se aleja de la fuente.</li>
+            <li><b>Ángulo</b> de apertura.</li>
+            <li><b>Penumbra</b>, degradado de la sombra que se aplica en la frontera que delimita el ángulo de apertura.</li>
+        </ul>
+    </p>
 </template>

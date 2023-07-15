@@ -202,5 +202,15 @@ export default {
 
 
 <template>
-    <p>Texto explicativo de luz direccional</p>
+    <h3>Luz direccional</h3>
+    <p>Este modelo de iluminación simulan grandes fuentes luminosas que se encuentran a una gran distancia,
+        como puede ser el Sol.</p>
+    <p>Como parámetros tiene:
+        <ul>
+            <li><b>Intensidad</b> de la luz.</li>
+            <li><b>Dirección</b> u objetivo donde enfocar la luz.</li>
+        </ul>
+        Hay modelos que permiten establecer el tamaño del área de iluminación, en este caso se representa con unas
+        líneas amarillas.
+    </p>
 </template>

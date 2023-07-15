@@ -177,5 +177,15 @@ export default {
 
 
 <template>
-    <p>Texto explicativo de luz puntual</p>
+    <h3>Luz puntual</h3>
+    <p>Como su nombre indica, simula una fuente luminosa situada en una posición concreta y hemite luz 
+        en todas direcciones. Parecido a una bombilla.</p>
+    <p>
+        Parámetros:
+        <ul>
+            <li><b>Intensidad</b>.</li>
+            <li><b>Posición</b> dadas por coordenadas (x, y, z).</li>
+            <li><b>Atenuación</b> que delimita el alcance de los rayos que emite.</li>
+        </ul>
+    </p>
 </template>

@@ -389,5 +389,20 @@ export default {
 
 
 <template>
-    <p>Texto explicativo del grafo de escena</p>
+    <h3>Grafo de escena</h3>
+    <p>Es posible dividir en partes y articular objetos mediante una <b>jerarquía de objetos</b> y 
+        transformaciones asociadas a cada una de las partes de dicho objeto. Para construir una 
+        jerarquía de objetos eficiente y generalizar la construcción de objetos articulados se 
+        implementa un <b>grafo de escena</b>.</p>
+
+    <p>Para ello se construyen varios tipos de nodos:
+        <ul>
+            <li><b>Nodo hoja</b>: con la geometría.</li>
+            <li><b>Nodos intermedios</b>: soporte para los distintos hijos y transformaciones.
+                Transformación del sistema de coordenadas local al de mundo y transformación relativa al padre.</li>
+        </ul>
+    </p>
+    
+    <p>Si lo plantemos como si fuera un brazo, el grafo sería el siguiente:</p>
+    <img src="../assets/img/grafo_escena.png" alt="Grafo de escena" width="45%" height="auto">
 </template>
