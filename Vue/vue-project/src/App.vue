@@ -42,7 +42,7 @@ import Footer from './components/Footer.vue'
                   Texturas
                 </a>
                 <ul class="dropdown-menu">
-                  <li><RouterLink class="dropdown-item" to="/filtros">Filtros</RouterLink></li>
+                  <li><RouterLink class="dropdown-item" to="/aplicacion">Aplicación</RouterLink></li>
                   <li><RouterLink class="dropdown-item" to="/bump">Bump Mapping</RouterLink></li>
                   <li><RouterLink class="dropdown-item" to="/brillo">Brillo</RouterLink></li>
                 </ul>

@@ -62,8 +62,8 @@ const router = createRouter({
       component: EscenaBump
     },
     {
-      path: '/filtros',
-      name: 'filtros',
+      path: '/aplicacion',
+      name: 'aplicacion',
       component: EscenaFiltros
     },
     {

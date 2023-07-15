@@ -9,7 +9,7 @@ export default {
     main: function(){
 
         //========================= Escena ============================
-            const scene = new THREE.Scene();
+        const scene = new THREE.Scene();
             scene.background = new THREE.Color(0x1b2631);
 
         //========================== Ejes =============================
@@ -238,6 +238,11 @@ export default {
             var x_pos, y_pos;					// Guardar la posicion del puntero al soltar
             var dX = 0.0, dY = 0.0;				// Incrementos en los ejes X y Z
             
+            // NEW
+            let rtTexture = new THREE.WebGLRenderTarget( canvas.width, canvas.height, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat, type: THREE.FloatType } );
+            const windowHalfX = canvas.width / 2;
+			const windowHalfY = canvas.height / 2;
+
             // Actualiza la posicion del raton y calcula los incrementos de desplazamientos
             function onMouseMove( event ) {
                 if (seleccionado) {	
@@ -274,37 +279,48 @@ export default {
                 pointer.x = (pos.x / canvas.width ) *  2 - 1;
                 pointer.y = (pos.y / canvas.height) * -2 + 1;
                 
-                raycaster.setFromCamera( pointer, camera ); // Se lanza un rayo en la posicion del puntero
+                //raycaster.setFromCamera( pointer, camera ); // Se lanza un rayo en la posicion del puntero
+                //const intersects = raycaster.intersectObjects( scene.children ); // Obtenemos los objetos ipactados		
                 
-                const intersects = raycaster.intersectObjects( scene.children ); // Obtenemos los objetos ipactados		
-                
+                const read = new Float32Array( 4 );
+				renderer.readRenderTargetPixels( rtTexture, pointer.x, pointer.y,  canvas.drawingBufferWidth, canvas.drawingBufferWidth, read );
+
                 if(seleccionado) quitarSeleccion(seleccionado); // Si previamente hay un objeto seleccionado, se le quita la selccion
                 
-                if(0 < intersects.length){
+                //if(0 < intersects.length){
                     
                     //Calculamos la clave para el primer impactado por el rayo
+                    /*
                     I = intersects[ 0 ].object.material.color.r * 10 - 1;
                     J = intersects[ 0 ].object.material.color.g * 10 - 1;
                     K = intersects[ 0 ].object.material.color.b * 10 - 1;
                     seleccionado = (I+1)*100 + (J+1)*10 + (K+1);
-                    
+                    */   
+
+                    I = read[0] * 10 - 1;
+                    J = read[1] * 10 - 1;
+                    K = read[2] * 10 - 1;
+                    seleccionado = (I+1)*100 + (J+1)*10 + (K+1);
+                    console.log("read " + read.toString());
+                    console.log(I +"  "+ J +"  "+ K );
+
                     clearCajas(); //Limpiamos la escena, porque hay que cambiar el color a la caja seleccionada
                     
                     if(mapcajas.has(seleccionado)){ 
                         mapcajas.get(seleccionado).setColor( 0.9, 0.1, 0.1); // Actualizamos color
+                    }else{
+                        seleccionado = null;
+                        x_prev = 0.0, y_prev = 0.0;
                     }
                     
                     vercajas();	// Añadimos cajas a la escena
-                    //console.log(I, J, K);			
+                /*    	
                 }
                 else{			
                     seleccionado = null;
                     x_prev = 0.0, y_prev = 0.0;
-                    /*
-                    clearCajas();
-                    vercajas();
-                    */
                 }
+                */
             }
 
             function getCanvasRelativePosition(event) {
@@ -353,6 +369,7 @@ export default {
                 }
 
                 renderer.render( scene, camera );
+                renderer.setRenderTarget( rtTexture ); // NEW
             };
 
         animate();
@@ -367,5 +384,12 @@ export default {
 
 
 <template>
-    <p>Texto explicativo de la seleccion</p>
+    <h3>Seleccion por color</h3>
+    <p>Primero, se crea una estructura de datos que almacene cada objeto con su color asociado.</p>
+    <p>Con el puntero se selecciona un punto de la venta, y se lanza un rayo desde el punto de visión 
+        pasando por el punto seleccionado.</p>
+    <p>Luego se redibujan los objetos en el buffer de color sin aplicar sombreados, es decir se desactivan
+         las luces para no alterar el color de los objetos.</p>
+    <p>Por último se devuelve el color del primer objeto intersectado por el rayo, y se busca en el buffer 
+        el objeco asociado a ese color.</p>
 </template>

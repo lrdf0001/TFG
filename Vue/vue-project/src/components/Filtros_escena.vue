@@ -190,5 +190,95 @@ export default {
 
 
 <template>
-    <p>Texto explicativo de filtros de texturas</p>
+    <h3>Texturas</h3>
+    <p>Una textura es una imagen bidimensional que se adhiere a la superficie del modelo para aprtar más
+        infomación a parte de la topología y geometría. La aplicación de texturas nos permite definir un valor 
+        diferente de color por cada fragmento, con lo que somos capaces de añadir más detalle a los modelos 
+        sin tener que aumentar la geometría.
+    </p>
+    <p>
+        Para aplicar una textura a un modelo es necesario definir la correspondencia entre los vértices del modelo 
+        y los <b>téxeles</b> (píxeles de la imagen de textura), ya que usan un espacio de coordenadas diferente 
+        denominado <b>coordenadas de textura</b>:
+        <ul>
+            <li>Las coordenadas de textura <i>u</i> y <i>v</i> tienen valores [0, 1].</li>
+            <li><b>Espacio de la textura</b>, definido por los ejes <i>s</i> y <i>t</i> con valores [0, 1].</li>
+            <li>Las coordenadas de textura de cada vértice se interpolan en el proceso de rasterización, y las
+                 coordenadas de textura resultantes se convierten al espacio de la textura.</li>
+        </ul>
+    </p>
+
+    <h4>Interpolación</h4>
+    <p><b>Problema</b>: Los valores que obtenemos en el espacio de la imagen normalmente van a ser números decimales, mientras que las 
+        imágenes ráster están formadas por puntos que tienen coordenadas enteras. </p>
+    <p>Soluciones:
+        <ul>
+            <li>
+                <b>Nearest</b>, seleccionar el téxel de coordenadas más cercanas a las coordenadas del espacio de la imagen. No se interpola.
+            </li>
+            <li>
+                <b>Linear</b>, hacer una interpolación lineal de los cuatro téxeles que rodean a las coordenadas del espacio de la imagen.
+            </li>
+        </ul>
+        <img src="../assets/img/Teoria/nearest.png" alt="Nearest" width="25%" height="auto">
+        <img src="../assets/img/Teoria/linear.png" alt="Nearest" width="25%" height="auto">
+    </p>
+    <p>La interpolación lineal también sirve para solventar el problema de <b>magnificación</b>: se da cuando la rasterización del polígono 
+        produce más píxeles que téxeles tiene la textura. Entonces hay que ampliar la resolución de la imagen de textura para que un téxel 
+        se corresponda con un píxel.</p>
+        <img class="center" src="../assets/img/Teoria/magni.png" alt="Nearest" width="25%" height="auto">
+    <h4>Mipmapping</h4>
+    <p>
+        <b>Problema</b>: A la hora de aplicar una textura a un polígono, es muy habitual que o bien la textura tenga más téxeles que el 
+        número de píxeles que ocupa el polígono, lo que se conoce como <b>minificación</b>.
+    </p>
+    
+    <p>
+        <b>Solución</b>: La técnica del <b>mipmapping</b> consiste en generar imágenes de textura de menor tamaño que la imagen de textura 
+        original, más concretamente las nuevas dimensiones son la mitad de las dimensiones del mipmap de nivel anterior.
+    </p>
+    <!--
+    <div padding-bottom="1em" padding-top="1em">
+        <img  src="../assets/img/Teoria/mini.png" alt="Nearest" width="25%" height="auto">
+        <img  src="../assets/img/Teoria/mipmap.png" alt="Nearest" width="30%" height="auto">
+    </div>
+-->
+    <div class="row">
+        <div id="small-img" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 center">
+            <ul>
+            <li>
+                <img src="../assets/img/Teoria/mini.png" class="img-responsive inline-block" alt="Responsive image" />
+            </li>
+            <li>
+                <img src="../assets/img/Teoria/mipmap.png" class="img-responsive inline-block" alt="Responsive image" />
+            </li>
+            </ul>
+        </div>
+    </div>
 </template>
+
+<style scoped>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.row li {
+  width: 33.3%;
+  float: left;
+}
+
+img {
+  border: 0 none;
+  display: inline-block;
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+ul {
+    list-style-type: none;
+}
+</style>

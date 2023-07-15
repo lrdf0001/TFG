@@ -188,5 +188,16 @@ export default {
 
 
 <template>
-    <p>Texto explicativo de mallas</p>
+    <h3>Mallas de triángulos</h3>
+    <p>Las mallas de triángulos son un tipo de B-Rep (boundary representation) muy utilizado por su simplicidad. 
+        La representación de la frontera del sólido se basa en triángulos, por lo que su 
+        dominio es el de los objetos poliédricos.</p>
+    <p>Cualquier polígono de más de tres lados puede descomponerse en triángulos 
+    mediante un proceso de teselación. Cualquier sólido poliédrico general puede representarse mediante una malla de 
+    triángulos.</p>
+    <h4>Representación</h4>
+    <p>Para manejar una malla de triangulos se usa representación indexada. Que consiste en tener dos arrays distintos: uno 
+        que almacena en grupos de tres (x, y, z) las posiciones en el espacio, y otro que almacena los índices de esas coordenadas 
+        en el otro array. </p>
+    <img src="../assets/img/malla_index.png" class="img-fluid" alt="Malla indexada">
 </template>
