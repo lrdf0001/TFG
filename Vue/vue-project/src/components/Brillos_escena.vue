@@ -70,10 +70,14 @@ export default {
         scene.add(ambientLight);
 
         const light = new THREE.DirectionalLight(color, intensity);
-        light.position.set(5, 5, 5);
-        light.target.position.set(-5, 0, -5);
+        light.position.set(10, 10, 10);
+        light.target.position.set(0, 0, 0);
 
-        //light.castShadow = true;
+        light.castShadow = true;
+        light.shadow.mapSize.width = 1000,
+        light.shadow.mapSize.height = 1000; 
+        light.shadow.camera.near = 0.5; 
+        light.shadow.camera.far = 500;
 
         scene.add(light.target);
         scene.add(light);
@@ -110,14 +114,62 @@ export default {
             metalness: 1.0
         });
 
+        const textureLoader = new THREE.TextureLoader();
+        const baseColor = textureLoader.load('./src/assets/img/Wood/wood_basecolor.png', function( texture ) {
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+            texture.offset.set( 0, 0 );
+            texture.repeat.set( 20, 3 );
+        } );
+
+        const baseAO = textureLoader.load('./src/assets/img/Wood/wood_ambientocclusion.png', function( texture ) {
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+            texture.offset.set( 0, 0 );
+            texture.repeat.set( 20, 3 );
+        } );
+
+        const baseHeight = textureLoader.load('./src/assets/img/Wood/wood_height.png', function( texture ) {
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+            texture.offset.set( 0, 0 );
+            texture.repeat.set( 20, 3 );
+        } );
+
+        const baseNormal = textureLoader.load('./src/assets/img/Wood/wood_normal.png', function( texture ) {
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+            texture.offset.set( 0, 0 );
+            texture.repeat.set( 20, 3 );
+        } );
+
+        const baseRoughness = textureLoader.load('./src/assets/img/Wood/wood_roughness.png', function( texture ) {
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+            texture.offset.set( 0, 0 );
+            texture.repeat.set( 20, 3 );
+        } );
+
+        const woodTexture = new THREE.MeshStandardMaterial({
+            map: baseColor,
+            aoMap: baseAO,
+            bumpMap: baseHeight,
+            bumpScale: 0.75,
+            normalMap: baseNormal,
+            roughnessMap: baseRoughness,
+        });
+
+        const madera = { bool:false };
+
         function generateTorus(){
             pivot.remove(slipknot);
 
             geometry = new THREE.TorusKnotGeometry(model.radius, model.tubeRadius,
                 model.tubularSegments, model.radialSegments, model.p, model.q);
-    
 
-            slipknot = new THREE.Mesh(geometry, mat);
+            if(madera.bool){
+                slipknot = new THREE.Mesh(geometry, woodTexture);
+            }else{
+                slipknot = new THREE.Mesh(geometry, mat);
+            }            
+
+            slipknot.castShadow = true;
+            slipknot.receiveShadow = true;
             
             pivot.add(slipknot);
         }
@@ -127,6 +179,8 @@ export default {
     //========================== Render =============================
         var canvas = document.querySelector('#mi_canvas');
         const renderer = new THREE.WebGLRenderer({canvas: canvas});
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMapSoft = true;
 
         renderer.render(scene, camera);
 
@@ -146,33 +200,32 @@ export default {
         controls.target.set(0, 0, 0);
         controls.update();
 
-    //============================ GUI ============================
-    
+    //============================ GUI ============================        
 
         const gui = new GUI( { autoPlace: false } );	
         var customContainer = document.querySelector('#gui').append(gui.domElement); 
 
-        const folder = gui.addFolder( 'Geometria Toro' );
+        const folder = gui.addFolder( 'Geometria' );
         folder.add( model, 'radius', 1, 3 ).setValue(3).onChange( generateTorus ).name("Tamaño");
         folder.add( model, 'tubeRadius', 0.1, 1.5 ).setValue(1).onChange( generateTorus ).name("Radio");
         folder.add( model, 'tubularSegments', 20, 100, 1 ).step( 1 ).onChange( generateTorus ).name("Segmentos");
         folder.add( model, 'radialSegments', 3, 100, 1 ).onChange( generateTorus ).name("Radiales");
-        folder.add( model, 'p', 1, 3, 1 ).setValue(2).onChange( generateTorus ).name("Torsion 1");
-        folder.add( model, 'q', 1, 3, 1 ).setValue(3).onChange( generateTorus ).name("Torsion 2");
+        //folder.add( model, 'p', 1, 3, 1 ).setValue(2).onChange( generateTorus ).name("Torsion 1");
+        //folder.add( model, 'q', 1, 3, 1 ).setValue(3).onChange( generateTorus ).name("Torsion 2");
 
-        const folder2 = gui.addFolder( 'Material' );
+        const folder2 = gui.addFolder( 'Metal' );
         folder2.addColor(new ColorGUIHelper(mat, 'color'), 'value').name('Color');
         folder2.addColor(new ColorGUIHelper(mat, 'emissive'), 'value').name('Emisivo');
         folder2.add(mat, 'roughness', 0, 1, 0.1).setValue(0.5).name('Rugosidad');
         folder2.add(mat, 'metalness', 0, 1, 0.1).setValue(1).name('Metalico');    
 
-        
+        gui.add(madera, 'bool').name("Madera").onFinishChange(generateTorus);
     //========================= Visualiza =========================
 
         function animate() {
 
-            pivot.rotation.y += 0.002;
-            pivot.rotation.x += 0.002;
+            pivot.rotation.y += 0.001;
+            pivot.rotation.x += 0.001;
             
             requestAnimationFrame( animate );
 

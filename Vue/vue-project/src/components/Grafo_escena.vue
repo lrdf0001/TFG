@@ -359,8 +359,6 @@ export default {
         
         gui.add(animacion, 'play').name("Animar");
 
-
-
     //========================= Visualiza =========================
         const clock = new THREE.Clock();
 
