@@ -245,7 +245,7 @@ export default {
 -->
     <div class="row">
         <div id="small-img" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 center">
-            <ul>
+            <ul class="sin_punto">
             <li>
                 <img src="../assets/img/Teoria/mini.png" class="img-responsive inline-block" alt="Responsive image" />
             </li>
@@ -276,9 +276,10 @@ img {
   height: auto;
   max-width: 100%;
   vertical-align: middle;
+  padding-left: 1em;
 }
 
-ul {
+.sin_punto {
     list-style-type: none;
 }
 </style>

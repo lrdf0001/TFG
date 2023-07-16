@@ -219,5 +219,67 @@ export default {
 
 
 <template>
-    <p>Texto explicativo de bump mapping</p>
+    <h3>Bump Mapping</h3>
+    <p>En los modelos 3D existen tres niveles de detalle:
+        <ul>
+            <li>Los detalles a <b>macroescala</b> se representan 
+                a través de la geometría de los modelos (vértices, aristas y caras).</li>
+            <li>Los detalles a <b>microescala</b> son más pequeños que un píxel. Los modelos de 
+                reflexión que estudiamos representan el comportamiento de la superficie 
+                de los objetos ante los rayos de luz.</li>
+            <li>Los detalles a <b>mesoescala</b> ocupan un pequeño número de píxeles. Se introducen 
+                perturbaciones en el cálculo de la iluminación de los fragmentos para simular,
+                a través de las variaciones de color, detalles:  modificar la normal a la superficie.</li>
+        </ul>
+
+        Para representar detalles a mesoescala se han desarrollado diferentes técnicas que se agrupan 
+        bajo el nombre genérico de <b>bump mapping</b>.
+    </p>
+    <p>Una propuesta consiste en utilizar un <b>mapa de alturas</b> (heightfield). Esto no es más que 
+        una textura en escala de grises, en la que los valores más claros representan una mayor altura,
+        y los valores más oscuros una altura menor.</p>
+    <p>En la actualidad, la propuesta más utilizada es el <b>normal mapping</b>. En este método, lo que se 
+        guarda en la textura son directamente las normales a utilizar, codificadas como un color RGB. 
+        Para cada fragmento, se recupera del mapa de normales el vector normal a utilizar en el cálculo 
+        de iluminación, evitando así el tener que calcular los vectores de desplazamiento.</p>
+    <div class="row">
+        <div id="small-img" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 center">
+            <ul class="sin_punto">
+            <li>
+                <img src="../assets/img/bricks/P4_Ao.png" class="img-responsive inline-block" alt="Heightfield" />
+            </li>
+            <li>
+                <img src="../assets/img/bricks/P4_Normal.png" class="img-responsive inline-block" alt="Normal map" />
+            </li>
+            </ul>
+        </div>
+    </div>
 </template>
+
+
+<style scoped>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.row li {
+  width: 33.3%;
+  float: left;
+}
+
+img {
+  border: 0 none;
+  display: inline-block;
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+  padding-left: 1em;
+}
+
+.sin_punto {
+    list-style-type: none;
+}
+</style>

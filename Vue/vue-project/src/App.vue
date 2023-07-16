@@ -44,7 +44,7 @@ import Footer from './components/Footer.vue'
                 <ul class="dropdown-menu">
                   <li><RouterLink class="dropdown-item" to="/aplicacion">Aplicación</RouterLink></li>
                   <li><RouterLink class="dropdown-item" to="/bump">Bump Mapping</RouterLink></li>
-                  <li><RouterLink class="dropdown-item" to="/brillo">Brillo</RouterLink></li>
+                  <li><RouterLink class="dropdown-item" to="/reflexion">Reflexión</RouterLink></li>
                 </ul>
               </li>
             </ul>

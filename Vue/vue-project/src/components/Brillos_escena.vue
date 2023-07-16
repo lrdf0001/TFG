@@ -213,13 +213,13 @@ export default {
         //folder.add( model, 'p', 1, 3, 1 ).setValue(2).onChange( generateTorus ).name("Torsion 1");
         //folder.add( model, 'q', 1, 3, 1 ).setValue(3).onChange( generateTorus ).name("Torsion 2");
 
-        const folder2 = gui.addFolder( 'Metal' );
+        const folder2 = gui.addFolder( 'Metal (material)' );
         folder2.addColor(new ColorGUIHelper(mat, 'color'), 'value').name('Color');
         folder2.addColor(new ColorGUIHelper(mat, 'emissive'), 'value').name('Emisivo');
-        folder2.add(mat, 'roughness', 0, 1, 0.1).setValue(0.5).name('Rugosidad');
-        folder2.add(mat, 'metalness', 0, 1, 0.1).setValue(1).name('Metalico');    
+        folder2.add(mat, 'roughness', 0, 1, 0.1).setValue(0.5).name('Difuso');
+        folder2.add(mat, 'metalness', 0, 1, 0.1).setValue(1).name('Especular');    
 
-        gui.add(madera, 'bool').name("Madera").onFinishChange(generateTorus);
+        gui.add(madera, 'bool').name("Madera (textura)").onFinishChange(generateTorus);
     //========================= Visualiza =========================
 
         function animate() {
@@ -248,5 +248,63 @@ export default {
 
 
 <template>
-    <p>Texto explicativo de filtros de brillos</p>
+    <h3>Modelos de reflexión</h3>
+    <p>El modelo de <b>reflexión difusa</b>, también llamado modelo de reflexión lambertiano representa 
+        el comportamiento de la luz al alcanzar objetos con superficie <b>mate</b>. Estas superficies se 
+        caracterizan porque son más o menos irregulares, lo que provoca que la luz se refleje en 
+        proporción similar en todas las direcciones, y por tanto, no aparecen brillos.</p>
+    <img class="center" src="../assets/img/Teoria/difusa2.png" alt="Nearest" width="25%" height="auto">
+
+    <p>El modelo de <b>reflexión especular</b> describe la relación entre la luz y aquellos materiales con 
+        superficie pulida. Estos materiales se caracterizan visualmente por la presencia de <b>brillos</b>, 
+        debidos a que reflejan la luz preferentemente en una dirección concreta que depende de la 
+        orientación de la superficie respecto a la fuente luminosa.</p>
+    <img class="center" src="../assets/img/Teoria/especular.png" alt="Nearest" width="25%" height="auto">
+    
+    <p>No lo solo los materiales aplicados a los modelos tienen estas propiedades, las texturas también pueden
+        emular estos efectos si se le aplican los <b>maps</b> correspondientes. Al igual que en la técnica de
+        bump mapping, también existen mapas en escalas de grises con información de las propiedades 
+        especular y difusa de la textura:
+    </p>
+    <div class="row">
+        <div id="small-img" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 center">
+            <ul class="sin_punto">
+            <li>
+                <img src="../assets/img/Wood/wood_ambientocclusion.png" class="img-responsive inline-block" alt="Responsive image" />
+            </li>
+            <li>
+                <img src="../assets/img/Wood/wood_roughness.png" class="img-responsive inline-block" alt="Responsive image" />
+            </li>
+            </ul>
+        </div>
+    </div>
 </template>
+
+<style scoped>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.row li {
+  width: 33.3%;
+  float: left;
+}
+
+img {
+  border: 0 none;
+  display: inline-block;
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+  padding-left: 1em;
+}
+
+.sin_punto {
+    list-style-type: none;
+}
+
+</style>
