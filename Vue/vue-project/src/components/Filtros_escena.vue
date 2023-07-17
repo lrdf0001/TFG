@@ -198,7 +198,7 @@ export default {
     </p>
     <p>
         Para aplicar una textura a un modelo es necesario definir la correspondencia entre los vértices del modelo 
-        y los <b>téxeles</b> (píxeles de la imagen de textura), ya que usan un espacio de coordenadas diferente 
+        y los <b>téxeles</b> (parecido a los píxeles de una imagen), ya que usan un espacio de coordenadas diferente 
         denominado <b>coordenadas de textura</b>:
         <ul>
             <li>Las coordenadas de textura <i>u</i> y <i>v</i> tienen valores [0, 1].</li>

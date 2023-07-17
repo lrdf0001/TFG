@@ -146,7 +146,7 @@ function main(){
         const pos = getCanvasRelativePosition(event);
         x_pos = (pos.x / canvas.width ) *  2 - 1;
         y_pos = (pos.y / canvas.height) * -2 + 1;
-        console.log(x_pos+" "+y_pos);
+        //console.log(x_pos+" "+y_pos);
     }
 
     function rotarSeleccionado(){

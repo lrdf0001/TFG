@@ -194,10 +194,21 @@ export default {
         dominio es el de los objetos poliédricos.</p>
     <p>Cualquier polígono de más de tres lados puede descomponerse en triángulos 
     mediante un proceso de teselación. Cualquier sólido poliédrico general puede representarse mediante una malla de 
-    triángulos.</p>
+    triángulos. Pero a cuantos más triangulos, mayor coste computacional pudiendo afectar a la velocidad del renderizado.</p>
     <h4>Representación</h4>
     <p>Para manejar una malla de triangulos se usa representación indexada. Que consiste en tener dos arrays distintos: uno 
         que almacena en grupos de tres (x, y, z) las posiciones en el espacio, y otro que almacena los índices de esas coordenadas 
         en el otro array. </p>
-    <img src="../assets/img/malla_index.png" class="img-fluid" alt="Malla indexada">
+    <img src="../assets/img/malla_index.png" alt="Malla indexada" width="860" max-height="350">
 </template>
+
+
+<style scoped>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+</style>

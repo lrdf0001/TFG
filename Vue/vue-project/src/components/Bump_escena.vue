@@ -3,8 +3,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui'
-import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
 export default {
     name: 'Texturas',
@@ -187,7 +185,7 @@ export default {
         var customContainer = document.querySelector('#gui').append(gui.domElement); 
 
         const textureFolder = gui.addFolder('BumpMap');
-        textureFolder.add(elMaterial, 'bumpScale', 0.0, 1.0, 0.1 ).name('Escala').setValue(1.0).onChange(() => actualizarBump());
+        textureFolder.add(elMaterial, 'bumpScale', 0.0, 1.0, 0.1 ).name('Detalle').setValue(1.0).onChange(() => actualizarBump());
         textureFolder.add(select, 'model', options.modelos).name('Modelo').onFinishChange(() => cambiarModelo());
         textureFolder.add(select, 'text', options.texturas).name('Textura').onFinishChange(() => cambiarTextura());
 
@@ -224,12 +222,12 @@ export default {
         <ul>
             <li>Los detalles a <b>macroescala</b> se representan 
                 a través de la geometría de los modelos (vértices, aristas y caras).</li>
-            <li>Los detalles a <b>microescala</b> son más pequeños que un píxel. Los modelos de 
-                reflexión que estudiamos representan el comportamiento de la superficie 
-                de los objetos ante los rayos de luz.</li>
             <li>Los detalles a <b>mesoescala</b> ocupan un pequeño número de píxeles. Se introducen 
                 perturbaciones en el cálculo de la iluminación de los fragmentos para simular,
                 a través de las variaciones de color, detalles:  modificar la normal a la superficie.</li>
+            <li>Los detalles a <b>microescala</b> son más pequeños que un píxel. Los modelos de 
+                reflexión que estudiamos representan el comportamiento de la superficie 
+                de los objetos ante los rayos de luz.</li>            
         </ul>
 
         Para representar detalles a mesoescala se han desarrollado diferentes técnicas que se agrupan 

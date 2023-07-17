@@ -40,7 +40,7 @@ export default {
 
     //========================= Luces =============================
         const color = 0xFFFFFF;
-        const intensity = 1;
+        const intensity = 2;
         
         const ambientLight = new THREE.AmbientLight(color, intensity);
 
@@ -81,8 +81,8 @@ export default {
         const idToObject = {};
         const numObjects = 100;
         
-        for (let i = 0; i < numObjects; ++i) {
-            const id = i + 1;
+        for (let i = 0; i < numObjects; i++) {
+            const id = i ;
             const material = new THREE.MeshPhongMaterial({
                 color: randomColor()
             });
@@ -95,8 +95,9 @@ export default {
             //cube.rotation.set(rand(Math.PI), rand(Math.PI), 0);
             cube.scale.set(rand(3, 6), rand(3, 6), rand(3, 6));
 
+            const colorID = new THREE.Color(id);
             const pickingMaterial = new THREE.MeshPhongMaterial({
-                emissive: new THREE.Color(id),
+                emissive: colorID,
                 color: new THREE.Color(0, 0, 0)
             });
 
@@ -138,9 +139,8 @@ export default {
 
         function setPickPosition(event) {
             const pos = getCanvasRelativePosition(event);
-            pickPosition.x = pos.x;
-            pickPosition.y = pos.y;
-            console.log(pickPosition);
+            pickPosition.x = (pos.x / canvas.width ) *  2 - 1;
+            pickPosition.y = (pos.y / canvas.height) * -2 + 1;
         }
 
         function clearPickPosition() {
@@ -161,19 +161,19 @@ export default {
             }
         }
 
-        window.addEventListener('mousedown', setPickPosition);
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mouseout', clearPickPosition);
-        window.addEventListener('mouseleave', clearPickPosition);
+        canvas.addEventListener('mousedown', setPickPosition);
+        canvas.addEventListener('mousemove', onMouseMove);
+        canvas.addEventListener('mouseout', clearPickPosition);
+        canvas.addEventListener('mouseleave', clearPickPosition);
 
     //============================ Picker ============================
         class GPUPickHelper {
             constructor() {
-            // Creamos un Render Tarjet de dimension 1x1 pixel
-            this.pickingTexture = new THREE.WebGLRenderTarget(1, 1);
-            this.pixelBuffer = new Uint8Array(4); // Almacena info del pixel leido
-            this.pickedObject = null;             // Objeto seleccionado
-            this.pickedObjectSavedColor = 0;      // Color original de este
+                // Creamos un Render Tarjet de dimension 1x1 pixel
+                this.pickingTexture = new THREE.WebGLRenderTarget(1, 1);
+                this.pixelBuffer = new Uint8Array(4); // Almacena info del pixel leido
+                this.pickedObject = null;             // Objeto seleccionado
+                this.pickedObjectSavedColor = 0;      // Color original de este
             }
 
             pick(cssPosition, scene, camera, time) {
@@ -181,8 +181,8 @@ export default {
             
                 // Si previamente hay un objeto selecionado, restauramos su color
                 if (this.pickedObject) {
-                this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
-                this.pickedObject = undefined;
+                    this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
+                    this.pickedObject = undefined;
                 }
             
                 // Establecemos una region (view offset) de solo un pixel en la posicion del puntero
@@ -221,12 +221,13 @@ export default {
 
                 // Buscamos en el array el objeto
                 const intersectedObject = idToObject[id];
+                //console.log(pixelBuffer[0]+"  "+pixelBuffer[1]+"  "+pixelBuffer[2]);
 
                 // Si hay un objeto al color asociado:
                 if (intersectedObject) {
                     // Se establece como selecionado
                     this.pickedObject = intersectedObject;
-                    
+                    //console.log("pikeado");
                     // Guardamos su color
                     this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                     
@@ -271,7 +272,17 @@ export default {
 
 
 <template>
-    
+    <div class="p-4 p-md-5 mb-4">
+      <div id="lienzo" class="px-0 col-md-6">
+        <div id="gui"></div>
+        <canvas id="mi_canvas" class="rounded"></canvas>
+      </div>
+    </div>
     <h3>Seleccion por color</h3>
     
 </template>
+
+
+<style>
+  @import '../assets/canvas.css';
+</style>
