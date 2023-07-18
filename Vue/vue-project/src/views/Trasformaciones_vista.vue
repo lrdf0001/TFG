@@ -1,6 +1,6 @@
 <script setup>
 import Canvas from '../components/Canvas.vue'
-import Escena1 from '../components/Trasformaciones_escena.vue'
+import Escena1 from '../components/Trasformaciones2_escena.vue'
 </script>
 
 <template>
