@@ -179,15 +179,15 @@ methods: {
 		rotacionGUI.add(rotacion, 'z', -180, 180, 1).setValue(0).name('z');
 
 		const traslacionGUI = gui1.addFolder('3. Traslación');
-		traslacionGUI.add(traslacion, 'x', -3, 3).setValue(0);
-		traslacionGUI.add(traslacion, 'y', -3, 3).setValue(0);
-		traslacionGUI.add(traslacion, 'z', -3, 3).setValue(0);
+		traslacionGUI.add(traslacion, 'x', -3, 3, 0.1).setValue(0);
+		traslacionGUI.add(traslacion, 'y', -3, 3, 0.1).setValue(0);
+		traslacionGUI.add(traslacion, 'z', -3, 3, 0.1).setValue(0);
         
         gui1.add(options, 'aplicarTrasformaciones').name("Aplicar");
         gui1.add(options, 'reset').name("Reset");
 
 
-		gui1.add(cubo.material, 'wireframe').listen();
+		gui1.add(cubo.material, 'wireframe').name("Wireframe").listen();
 		
 
 	//========================= Visualiza =========================
@@ -215,5 +215,33 @@ methods: {
 
 <template>
 	<h3>Trasformaciones Afines</h3>
-	
+	<p>Una transformación afín es una transformación que se aplica a puntos y 
+	vectores en un espacio afín. Preservan  ciertas propiedades geométricas:
+		<ul>
+			<li>Colinealidad.</li>
+			<li>Proporcionalidad.</li>
+		</ul>
+	</p>
+	<p>Ángulos y distancias no se mantienen, aunque sí la proporción de distancias.</p>
+
+	<h4>Escalado</h4>
+	<p>Modifica el tamaño de un objeto. Si se escala igual en los tres ejes tenemos un escalado uniforme.</p>
+
+	<h4>Rotación</h4>
+	<p>Se realiza una rotación angular sobre un determinado eje en 3D.</p>
+	<p>Es una transformación rígida, es decir, que no cambia el tamaño o la forma de una figura.</p>
+
+	<h4>Traslación</h4>
+	<p>Es equivalente a la suma de un vector t a un punto. Aplicado a un objeto 
+	(conjunto de puntos) es equivalente a moverlo rígidamente por el espacio.</p>
+	<p>También es una transformación rígida.</p>
+
+	<h4>Uso</h4>
+	<p>Estas transformaciones se aplican en el siguinete orden: escalado, rotación y traslación. En calculo de matrices
+		se representa como: <i>M = T · R · S</i>.</p>
+	<p>Para aplicar transformaciones al cubo, hay que desplegar los controles de la izquierda, modificar los parámetros y clicar en
+		<i>Aplicar</i>. Las transformaciones son acumulativas y se aplican respecto a la transformación anterior. Si no se desea
+		aplicar un tipo de transformación basta con poner sus parámetros por defecto: 1 para el escadado, y 0 para rotación y traslación.
+	</p>
+	<p>Y si se quiere volver a la posición inicial, basta con pulsar <i>Reset</i>.</p>
 </template>

@@ -63,9 +63,9 @@ export default {
 
     //========================= Camara =============================
         const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20);
-        camera.position.x = 5;
-        camera.position.y = 5;
-        camera.position.z = 5;
+        camera.position.x = 4;
+        camera.position.y = 4;
+        camera.position.z = 4;
         camera.lookAt(0,0,0);
         scene.add(camera);
     
@@ -76,7 +76,7 @@ export default {
     const twoPi = Math.PI * 2;
 
     const data = {
-        radius: 2,
+        radius: 1.7,
         widthSegments: 32,
         heightSegments: 16,
         phiStart: 0,
@@ -152,7 +152,7 @@ export default {
     var customContainer = document.querySelector('#gui').append(gui.domElement);
     
     const folder = gui.addFolder( 'Geometria Esfera' );
-    folder.add( data, 'radius', 1, 3 ).setValue(2).onChange( generateSphere ).name("Radio");
+    folder.add( data, 'radius', 1, 3 ).setValue(1.7).onChange( generateSphere ).name("Radio");
     folder.add( data, 'widthSegments', 3, 64 ).step( 1 ).onChange( generateSphere ).name("Meridianos");
     folder.add( data, 'heightSegments', 2, 32 ).step( 1 ).onChange( generateSphere ).name("Paralelos");
     folder.add( angulos, 'phi', 0, 360, 5 ).onChange( updatePhi ).name("Inicio Vertical").setValue(360);

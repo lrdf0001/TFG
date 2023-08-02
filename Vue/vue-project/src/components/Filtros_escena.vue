@@ -159,7 +159,7 @@ export default {
         const gui = new GUI( { autoPlace: false } );	
         var customContainer = document.querySelector('#gui').append(gui.domElement); 
 
-        const textureFolder = gui.addFolder('Filtros');
+        const textureFolder = gui.addFolder('Propiedades');
         textureFolder.add(laTextura, 'minFilter', options.minFilters).onChange(() => updateMinFilter()).name("Minificación");
         textureFolder.add(laTextura, 'magFilter', options.magFilters).onChange(() => updateMagFilter()).name("Magnificación");
         

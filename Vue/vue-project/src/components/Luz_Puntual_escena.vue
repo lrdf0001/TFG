@@ -75,7 +75,7 @@ export default {
         //pivot.add(light.target);
 
     //-------------------------- Bombilla ----------------------------     
-        const bombillaGeometria = new THREE.SphereGeometry(0.05, 6, 6);
+        const bombillaGeometria = new THREE.SphereGeometry(0.05, 8, 8);
 		const bombillaMaterial = new THREE.MeshToonMaterial( { color: 0xFFFF00});
 		let bombilla = new THREE.Mesh(bombillaGeometria, bombillaMaterial);
         light.add(bombilla);

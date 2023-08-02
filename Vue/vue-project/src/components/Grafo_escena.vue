@@ -63,8 +63,8 @@ export default {
         scene.add(ambientLight);
 
         const light = new THREE.DirectionalLight(color, 0.5);
-        light.position.set(8, 15, 5);
-        light.target.position.set(-5, 0, 0);
+        light.position.set(5, 10, 2);
+        light.target.position.set(-0, 0, 0);
         scene.add(light);        
         scene.add(light.target);
 
@@ -393,7 +393,7 @@ export default {
         jerarquía de objetos eficiente y generalizar la construcción de objetos articulados se 
         implementa un <b>grafo de escena</b>.</p>
 
-    <p>Para ello se construyen varios tipos de nodos:
+    <p>Para ello se construyen dos tipos de nodos:
         <ul>
             <li><b>Nodo hoja</b>: con la geometría.</li>
             <li><b>Nodos intermedios</b>: soporte para los distintos hijos y transformaciones.

@@ -3,11 +3,36 @@
 	<head>
 		<meta charset="utf-8">
 		<title>My first three.js app</title>
-		<link href="./Styles/index.css" rel="stylesheet" type="text/css" />
 	</head>
-	
-	<body id="cuerpo" >
+
+	<style>
 		
+		html, body {
+		height: 100%;
+		margin: 0;
+		}		
+
+		#c {
+		width: 100%;
+		height: 100%;
+		display: block;
+		}
+
+		#video01{
+			margin: auto;
+  			width: 60%;
+		}
+	</style>
+	
+	<body>
+		<canvas id="c"></canvas>
+		<script type="module" src="../Scripts/personal.js"></script>
+		<video id="video01" loop crossOrigin="anonymous" playsinline style="display:none">
+			<source src="./video/Rammstein-FeuerFrei.mp4"
+			  type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+		  </video>
+	  
+		<!--
 		<div class="container">
 			<header class="blog-header lh-1 py-3">
 				<div class="row flex-nowrap justify-content-between align-items-center">
@@ -43,6 +68,6 @@
 			<script src="./Scripts/practica3c.js"></script>
 		
 		</main>		
-		
+	-->
 	</body>
 </html>

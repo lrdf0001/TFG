@@ -91,9 +91,9 @@ export default {
         
         //========================= Camara =============================
             const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 40);
-            camera.position.x = 3;
-            camera.position.y = 3;
-            camera.position.z = 3;
+            camera.position.x = 3.5;
+            camera.position.y = 3.5;
+            camera.position.z = 3.5;
             camera.lookAt(0,0,0);
             scene.add(camera);        
         

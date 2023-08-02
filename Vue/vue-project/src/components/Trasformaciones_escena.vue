@@ -214,34 +214,4 @@ methods: {
 </script>
 
 
-<template>
-	<h3>Trasformaciones Afines</h3>
-	<p>Una transformación afín es una transformación que se aplica a puntos y 
-	vectores en un espacio afín. Preservan  ciertas propiedades geométricas:
-		<ul>
-			<li>Colinealidad.</li>
-			<li>Proporcionalidad.</li>
-		</ul>
-	</p>
-	<p>Ángulos y distancias no se mantienen, aunque sí la proporción de distancias.</p>
 
-	<h4>Escalado</h4>
-	<p>Modifica el tamaño de un objeto. Si se escala igual en los tres ejes tenemos un escalado uniforme.</p>
-
-	<h4>Rotación</h4>
-	<p>Se realiza una rotación angular sobre un determinado eje en 3D.</p>
-	<p>Es una transformación rígida</p>
-
-	<h4>Traslación</h4>
-	<p>Es equivalente a la suma de un vector t a un punto. Aplicado a un objeto 
-	(conjunto de puntos) es equivalente a moverlo rígidamente por el espacio.</p>
-	<p>Es una transformación rígida.</p>
-
-	<h4>Utilización</h4>
-	<p>Estras transformaciones se aplican en el siguinete orden: escalado, rotación y traslación. En calculo de matrices
-		se representa como: <i>M = T · R · S</i>.</p>
-	<p>Si alteramos el orden de las trasformaciones podremos obtener resultados distintos, esto se debe a que el calculo de 
-		matrices no es conmutativo. Para demostrarlo, se ha añadido un 4º apartado a la interfaz donde se pueden aplicar
-		rotaciones después de la traslación, por ejemplo: <i>M = R' · T · R · S</i>.
-	</p>
-</template>
