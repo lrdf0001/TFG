@@ -3,13 +3,14 @@ import * as THREE from 'three';
 import { GUI } from 'dat.gui'
 
 export default {
+
 name: 'Trasformaciones',
-//data() {},
+
 methods: {
 	main:function(){
 
 	//========================= Escenas ============================
-	const scene = new THREE.Scene();
+		const scene = new THREE.Scene();
 		scene.background = new THREE.Color(0x1b2631);
 		var canvas = document.querySelector('#mi_canvas');
 
@@ -47,31 +48,17 @@ methods: {
 		const ejeZ = new THREE.Line( geometriaZ, colorEjeZ );
 
 		scene.add(ejeZ);
-		
-	//---------------------- Activar/desactivar ejes ------------------------	
-		var ejes = true;
-		function verEjes(booleano){
-			if(booleano){
-				scene.add(ejeX);
-				scene.add(ejeY);
-				scene.add(ejeZ);
-				ejes = false;
-			}else{
-				scene.remove(ejeX);
-				scene.remove(ejeY);
-				scene.remove(ejeZ);
-				ejes = true;
-			}
-		}
 
 	//========================= Luces =============================
 		const color = 0xFFFFFF;
 		const intensity = 1;
+		
 		const ambientLight = new THREE.AmbientLight(color, intensity);
+		scene.add(ambientLight);
+		
 		const pointLight = new THREE.PointLight(color, intensity);
 		pointLight.position.set(0, 7, 0);
-		scene.add(ambientLight);
-		scene.add(pointLight);
+		scene.add(pointLight);		
 
 	//========================= Camara =============================
 		const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20);
@@ -112,6 +99,9 @@ methods: {
 
 	//============================ GUI ============================
 
+	const gui1 = new GUI( { autoPlace: false } );	
+	var customContainer = document.querySelector('#gui').append(gui1.domElement);
+
 	//---------------------- Variables Auxiliares ------------------------
 		const transfromM = new THREE.Matrix4();
         transfromM.identity();
@@ -127,7 +117,7 @@ methods: {
 		}
 
         var options = {
-            aplicarTrasformaciones: function(){
+            aplicar: function(){
 
                 // Traslacion
                 const T = new THREE.Matrix4();
@@ -155,7 +145,13 @@ methods: {
                 // Aplicar
                 cubo.applyMatrix4(transfromM);
                 
-                transfromM.identity();           
+				// Reiniciar variables
+                transfromM.identity();
+				traslacion.set(0,0,0);
+				rotacion.set(0,0,0);
+				escalado.set(1,1,1);
+				
+				gui1.updateDisplay();
             },
 
             reset: function(){
@@ -165,13 +161,10 @@ methods: {
 
 	//---------------------- Interfaz GUI ------------------------
 
-		const gui1 = new GUI( { autoPlace: false } );	
-		var customContainer = document.querySelector('#gui').append(gui1.domElement);
-
 		const escaladoGUI = gui1.addFolder('1. Escalado');
-		escaladoGUI.add(escalado, 'x', 0, 3, 0.1).setValue(1).name('Ancho');
-		escaladoGUI.add(escalado, 'y', 0, 3, 0.1).setValue(1).name('Alto');
-		escaladoGUI.add(escalado, 'z', 0, 3, 0.1).setValue(1).name('Largo');
+		escaladoGUI.add(escalado, 'x', 0.1, 3, 0.1).setValue(1).name('Ancho');
+		escaladoGUI.add(escalado, 'y', 0.1, 3, 0.1).setValue(1).name('Alto');
+		escaladoGUI.add(escalado, 'z', 0.1, 3, 0.1).setValue(1).name('Largo');
 		
 		const rotacionGUI = gui1.addFolder('2. Rotación');
 		rotacionGUI.add(rotacion, 'x', -180, 180, 1).setValue(0).name('x');
@@ -183,7 +176,7 @@ methods: {
 		traslacionGUI.add(traslacion, 'y', -3, 3, 0.1).setValue(0);
 		traslacionGUI.add(traslacion, 'z', -3, 3, 0.1).setValue(0);
         
-        gui1.add(options, 'aplicarTrasformaciones').name("Aplicar");
+        gui1.add(options, 'aplicar').name("Aplicar");
         gui1.add(options, 'reset').name("Reset");
 
 

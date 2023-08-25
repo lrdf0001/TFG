@@ -50,7 +50,8 @@ export default {
         scene.add(light);
         scene.add(light.target);
 
-    //========================= Camara =============================
+    //========================= Camara =============================   
+
         const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 200);
         camera.position.z = 30;
         camera.lookAt(0,0,0);
@@ -79,23 +80,12 @@ export default {
 
         const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
-        const threeTone = new THREE.TextureLoader().load('./src/assets/img/gradientMaps/fiveTone.jpg');
-        threeTone.minFilter = THREE.LinearFilter;
-        threeTone.magFilter = THREE.LinearFilter;
-
-        const idToObject = {};
         const numObjects = 100;
 
         for (let i = 0; i < numObjects; i++) {
-            const id = i ;
-            const material = new THREE.MeshToonMaterial({
-                color: randomColor(),
-                gradientMap: threeTone,
-            });
-
+            const material = new THREE.MeshPhongMaterial({ color: randomColor()});
             const cube = new THREE.Mesh(geometry, material);
             scene.add(cube);
-            idToObject[id] = cube;
 
             cube.position.set(rand(-20, 20), rand(-20, 20), rand(-20, 20));
             cube.scale.set(rand(3, 6), rand(3, 6), rand(3, 6));
@@ -145,19 +135,17 @@ export default {
         }
 
         function onPointerClick( event ) {
-            // calculate pointer position in normalized device coordinates
-            // (-1 to +1) for both components
             const pos = getCanvasRelativePosition(event);
             pointer.x = (pos.x / canvas.width ) *  2 - 1;
             pointer.y = (pos.y / canvas.height) * -2 + 1;
             
             raycaster.setFromCamera( pointer, camera ); // Se lanza un rayo en la posicion del puntero
             
-            const intersects = raycaster.intersectObjects( scene.children ); // Obtenemos los objetos ipactados
+            const intersects = raycaster.intersectObjects( scene.children ); // Obtenemos los objetos impactados
 
             quitarSeleccionado();
 
-            if(0 < intersects.length){
+            if(0 < intersects.length && intersects[0].object.isMesh){
                 seleccionado = intersects[0].object;
                 colorSeleccionado = seleccionado.material.emissive.getHex();
                 seleccionado.material.emissive.setHex((seconds * 5) % 2 > 1 ? 0x00FFFF : 0xFF0000);

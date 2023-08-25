@@ -52,10 +52,7 @@ export default {
         const color = 0xffffff;
         const intensity = 1;
         const ambientLight = new THREE.AmbientLight(color, intensity);
-        const pointLight = new THREE.PointLight(0xd5d8dc , intensity);
-        pointLight.position.set(3, 3, 3);
         scene.add(ambientLight);
-        //scene.add(pointLight);
 
     //========================= Camara =============================
         const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -146,7 +143,7 @@ export default {
         }
 
         function changeTexture(){
-            console.log(data.seleccion);
+            //console.log(data.seleccion);
             if(data.seleccion == 2){
                 scene.remove(plano);
                 scene.add(plano2);

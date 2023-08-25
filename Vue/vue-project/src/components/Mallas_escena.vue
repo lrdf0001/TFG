@@ -94,7 +94,7 @@ export default {
         var esferaGeo = new THREE.SphereGeometry(data.radius, data.widthSegments, data.heightSegments, 
         data.phiStart, data.phiLength, data.thetaStart, data.thetaLength);
         
-        var esferaMat = new THREE. MeshNormalMaterial();
+        var esferaMat = new THREE.MeshNormalMaterial();
         esferaMat.side = THREE.DoubleSide;
         
         esfera = new THREE.Mesh( esferaGeo, esferaMat );

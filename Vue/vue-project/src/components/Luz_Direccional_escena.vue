@@ -10,18 +10,22 @@ export default {
     methods: {
 
     main: function(){
-        class ColorGUIHelper {
-            constructor(object, prop) {
-                this.object = object;
-                this.prop = prop;
+            class ColorGUIHelper {
+                constructor(object, prop) {
+                    this.object = object;
+                    this.prop = prop;
+                }
+                get value() {
+                    return `#${this.object[this.prop].getHexString()}`;
+                }
+                set value(hexString) {
+                    this.object[this.prop].set(hexString);
+                }
             }
-            get value() {
-                return `#${this.object[this.prop].getHexString()}`;
+
+            function degToRad(deg){
+                    return (3.1415 * deg) / 180.0;
             }
-            set value(hexString) {
-                this.object[this.prop].set(hexString);
-            }
-        }
 
         //========================= Escenas ============================
             const scene = new THREE.Scene();  
@@ -77,13 +81,14 @@ export default {
             pivot.add(light);
             pivot.add(light.target);
 
-            light.shadow.mapSize.width = 1000,
-            light.shadow.mapSize.height = 1000; 
+            light.shadow.mapSize.width = 800,
+            light.shadow.mapSize.height = 800; 
             light.shadow.camera.near = 0.5; 
             light.shadow.camera.far = 500;
-
+            
             const helper = new THREE.CameraHelper( light.shadow.camera );
             scene.add( helper );
+            
             
             var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.3);        
             scene.add(ambientLight);
@@ -102,7 +107,7 @@ export default {
             //Tree Assets by Ben Desai [CC-BY] via Poly Pizza
             const mtlLoader = new MTLLoader();
             const objLoader = new OBJLoader();
-
+            
             mtlLoader.load('./src/assets/Models/Tree Assets/materials.mtl', (mtl) => {
                 mtl.preload();
                 objLoader.setMaterials(mtl);
@@ -122,6 +127,7 @@ export default {
                     root.scale.z = 5;
                 });
             });
+            
         
         //========================== Render =============================
             
@@ -148,10 +154,6 @@ export default {
             controls.update();
         
         //============================ GUI ============================
-
-            function degToRad(deg){
-                return (3.1415 * deg) / 180.0;
-            }
 
             const rotacionGUI = {x: 90, z: 90};
             const rotacionPivot = {x: 90, z: 90};

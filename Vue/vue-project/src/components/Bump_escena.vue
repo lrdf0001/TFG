@@ -53,17 +53,17 @@ export default {
         const color = 0xFFFFFF;
         const intensity = 1;
 
-        const ambientLight = new THREE.AmbientLight(color, intensity);    
+        const ambientLight = new THREE.AmbientLight(color, intensity/2);    
         scene.add(ambientLight);
 
         const light = new THREE.DirectionalLight(color, intensity);
         light.position.set(5, 5, 5);
-        light.target.position.set(-5, 0, -5);
-
+        light.target.position.set(0, 0, 0);
         light.castShadow = true;
 
         scene.add(light.target);
         scene.add(light);
+        
 
     //========================= Camara =============================
         const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 100);

@@ -178,8 +178,7 @@ export default {
     //-------------------------- Mano ----------------------------
         const manoGeo = new THREE.BoxGeometry( 0.15, 0.15, 0.5 );
         const mano = new THREE.Mesh( manoGeo, yellowToon );
-        mano.translateY(0.25
-            )
+        mano.translateY(0.25);
         muneca.add(mano);
         mano.castShadow = true;
         mano.receiveShadow = false;

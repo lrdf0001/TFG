@@ -10,7 +10,8 @@ import EscenaGrafo from '../views/Grafo_vista.vue'
 import EscenaMallas from '../views/Mallas_vista.vue'
 import EscenaBump from '../views/Bump_vista.vue'
 import EscenaFiltros from '../views/Filtros_vista.vue'
-import EscenaReflexion from '../views/Brillos_vista.vue'
+import EscenaReflexion from '../views/Reflexion_vista.vue'
+import EscenaPersonal from '../views/Personal_vista.vue'
 
 
 const router = createRouter({
@@ -70,6 +71,11 @@ const router = createRouter({
       path: '/reflexion',
       name: 'reflexion',
       component: EscenaReflexion
+    },
+    {
+      path: '/personal',
+      name: 'personal',
+      component: EscenaPersonal
     },
   ]
 })

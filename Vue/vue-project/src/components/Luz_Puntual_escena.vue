@@ -72,12 +72,17 @@ export default {
         const light = new THREE.PointLight(color, intensity);
         light.position.set(0, 0, 3);
         pivot.add(light);
-        //pivot.add(light.target);
+
+        light.castShadow = true;
+        light.shadow.mapSize.width = 800,
+        light.shadow.mapSize.height = 800; 
+        light.shadow.camera.near = 0.5; 
+        light.shadow.camera.far = 500;
 
     //-------------------------- Bombilla ----------------------------     
         const bombillaGeometria = new THREE.SphereGeometry(0.05, 8, 8);
 		const bombillaMaterial = new THREE.MeshToonMaterial( { color: 0xFFFF00});
-		let bombilla = new THREE.Mesh(bombillaGeometria, bombillaMaterial);
+		var bombilla = new THREE.Mesh(bombillaGeometria, bombillaMaterial);
         light.add(bombilla);
     
     //========================= Camara =============================
@@ -89,7 +94,7 @@ export default {
         scene.add(camera);         
     
     //========================== Modelos ==============================
-        
+    
         const planeGeometry = new THREE.PlaneGeometry( 15, 7 );
         const textureLoader = new THREE.TextureLoader();
         var planeMat = new THREE.MeshToonMaterial( { 
@@ -97,6 +102,7 @@ export default {
          } );
         const plano = new THREE.Mesh( planeGeometry, planeMat );
         plano.position.set(0,7,-3);
+        plano.receiveShadow = true;
         scene.add( plano );
 
         //-------------------------- OBJ ----------------------------
@@ -110,6 +116,13 @@ export default {
             
             objLoader.load('./src/assets/Models/eva01.obj', (root) => {
                 scene.add(root);
+
+                root.traverse(function(node){
+                        if(node.isMesh){
+                            node.castShadow = true;
+                            node.receiveShadow = true;
+                        }
+                    });
               });      
         });
         
@@ -117,7 +130,9 @@ export default {
     //========================== Render =============================
         
         const renderer = new THREE.WebGLRenderer({canvas: canvas});
-    
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMapSoft = true;
+
         renderer.render(scene, camera);
     
         function resizeRendererToDisplaySize(renderer) {
@@ -137,9 +152,9 @@ export default {
         controls.update();
     
     //============================ GUI ============================
-
+        /*
         const helper = new THREE.PointLightHelper(light, 0.01);
-        scene.add(helper);
+        scene.add(helper);*/
     
         const gui1 = new GUI( { autoPlace: false } );
         var customContainer = document.querySelector('#gui').append(gui1.domElement);
@@ -147,7 +162,7 @@ export default {
         const puntualGUI = gui1.addFolder('Puntal');
         puntualGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('Color');
         puntualGUI.add(light, 'intensity', 0, 2, 0.01).name("Intensiadad");
-        puntualGUI.add(light, 'distance', 0, 10).setValue(5).onChange( helper.update()).name("Atenuación");     
+        puntualGUI.add(light, 'distance', 0, 10).setValue(5).name("Atenuación"); //onChange( helper.update()).    
     
     //========================= Visualiza =========================
     

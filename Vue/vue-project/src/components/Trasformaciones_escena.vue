@@ -9,7 +9,7 @@ methods: {
 	main:function(){
 
 	//========================= Escenas ============================
-	const scene = new THREE.Scene();
+		const scene = new THREE.Scene();
 		scene.background = new THREE.Color(0x1b2631);
 		var canvas = document.querySelector('#mi_canvas');
 

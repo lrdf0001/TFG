@@ -109,6 +109,7 @@ export default {
             scene.add(camera);        
         
         //========================== Modelos ==============================
+
             const mtlLoader = new MTLLoader();
             const objLoader = new OBJLoader();
             
@@ -198,6 +199,7 @@ export default {
                     });
                 });
             });
+            
             
         //========================== Render =============================
             

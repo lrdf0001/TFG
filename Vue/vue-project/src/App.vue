@@ -1,6 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import Footer from './components/Footer.vue'
 </script>
 
 <template>
@@ -47,6 +46,7 @@ import Footer from './components/Footer.vue'
                   <li><RouterLink class="dropdown-item" to="/reflexion">Reflexión</RouterLink></li>
                 </ul>
               </li>
+              
             </ul>
           </div>
         </div>
