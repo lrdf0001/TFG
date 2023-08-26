@@ -1,5 +1,6 @@
 <script>
 import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui'
 
 export default {
@@ -20,34 +21,70 @@ methods: {
 		const ejeXvertices = [];
 		ejeXvertices.push( new THREE.Vector3( 0, 0, 0 ) );
 		ejeXvertices.push( new THREE.Vector3( 3, 0, 0 ) );
-		const colorEjeX = new THREE.LineBasicMaterial( { color:  0x943126 } );
+		const colorEjeX = new THREE.LineBasicMaterial( { color: 0x943126 } );
 
 		const geometriaX = new THREE.BufferGeometry().setFromPoints( ejeXvertices );
 		const ejeX = new THREE.Line( geometriaX, colorEjeX );
 
 		scene.add(ejeX);
 
+		const _ejeXvertices = [];
+		_ejeXvertices.push( new THREE.Vector3( 0, 0, 0 ) );
+		_ejeXvertices.push( new THREE.Vector3( -3, 0, 0 ) );
+		const _colorEjeX = new THREE.LineDashedMaterial( { 
+			color: 0x943126 ,
+			dashSize: 0.4,
+			gapSize: 0.15 } );
+		const _geometriaX = new THREE.BufferGeometry().setFromPoints( _ejeXvertices );
+		const _ejeX = new THREE.Line( _geometriaX, _colorEjeX );
+		_ejeX.computeLineDistances();
+		scene.add(_ejeX);
+
 	//-------------------------- Eje Y ----------------------------
 		const ejeYvertices = [];
 		ejeYvertices.push( new THREE.Vector3( 0, 0, 0 ) );
 		ejeYvertices.push( new THREE.Vector3(  0, 3, 0 ) );
-		const colorEjeY = new THREE.LineBasicMaterial( { color:   0x2ecc71  } );
+		const colorEjeY = new THREE.LineBasicMaterial( { color: 0x2ecc71 } );
 
 		const geometriaY = new THREE.BufferGeometry().setFromPoints( ejeYvertices );
 		const ejeY = new THREE.Line( geometriaY, colorEjeY );
 
 		scene.add(ejeY);
 
+		const _ejeYvertices = [];
+		_ejeYvertices.push( new THREE.Vector3( 0, 0, 0 ) );
+		_ejeYvertices.push( new THREE.Vector3(  0, -3, 0 ) );
+		const _colorEjeY = new THREE.LineDashedMaterial( { 
+			color: 0x2ecc71 ,
+			dashSize: 0.4,
+			gapSize: 0.15 } );
+		const _geometriaY = new THREE.BufferGeometry().setFromPoints( _ejeYvertices );
+		const _ejeY = new THREE.Line( _geometriaY, _colorEjeY );
+		_ejeY.computeLineDistances();
+		scene.add(_ejeY);
+
 	//-------------------------- Eje Z ----------------------------
 		const ejeZvertices = [];
 		ejeZvertices.push( new THREE.Vector3( 0, 0, 0 ) );
 		ejeZvertices.push( new THREE.Vector3(  0, 0, 3 ) );
-		const colorEjeZ = new THREE.LineBasicMaterial( { color:   0x3498db  } );
+		const colorEjeZ = new THREE.LineBasicMaterial( { color: 0x3498db } );
 		
 		const geometriaZ = new THREE.BufferGeometry().setFromPoints( ejeZvertices );
 		const ejeZ = new THREE.Line( geometriaZ, colorEjeZ );
 
 		scene.add(ejeZ);
+
+		const _ejeZvertices = [];
+		_ejeZvertices.push( new THREE.Vector3( 0, 0, 0 ) );
+		_ejeZvertices.push( new THREE.Vector3(  0, 0, -3 ) );
+		const _colorEjeZ = new THREE.LineDashedMaterial( { 
+			color: 0x3498db ,
+			dashSize: 0.4,
+			gapSize: 0.15 } );
+		const _geometriaZ = new THREE.BufferGeometry().setFromPoints( _ejeZvertices );
+		const _ejeZ = new THREE.Line( _geometriaZ, _colorEjeZ );
+		_ejeZ.computeLineDistances();
+		scene.add(_ejeZ);
 
 	//========================= Luces =============================
 		const color = 0xFFFFFF;
@@ -96,6 +133,11 @@ methods: {
 			}
 			return needResize;
 		}
+
+	//========================= Controls =============================
+	const controls = new OrbitControls( camera, renderer.domElement );
+        controls.target.set( 0, 0, 0 );
+        controls.update();
 
 	//============================ GUI ============================
 

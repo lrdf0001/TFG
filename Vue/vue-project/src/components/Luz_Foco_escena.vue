@@ -241,7 +241,7 @@ export default {
             const focalGUI = gui1.addFolder('Focal');
             focalGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('Color');
             focalGUI.add(light, 'intensity', 0, 2, 0.01).name("Intensidad");
-            focalGUI.add(light, 'distance', 0, 40).onChange( helper.update()).name("Atenuacion");
+            focalGUI.add(light, 'distance', 1, 40).onChange( helper.update()).name("Atenuacion");
             focalGUI.add(new DegRadHelper(light, 'angle'), 'value', 0, 90).name('angle').setValue(60).onChange(updateLight).name("Angulo");
             focalGUI.add(light, 'penumbra', 0, 1, 0.01).setValue(0.1).name("Penumbra");         
         
