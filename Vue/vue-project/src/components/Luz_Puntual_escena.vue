@@ -152,9 +152,6 @@ export default {
         controls.update();
     
     //============================ GUI ============================
-        /*
-        const helper = new THREE.PointLightHelper(light, 0.01);
-        scene.add(helper);*/
     
         const gui1 = new GUI( { autoPlace: false } );
         var customContainer = document.querySelector('#gui').append(gui1.domElement);
@@ -162,7 +159,7 @@ export default {
         const puntualGUI = gui1.addFolder('Puntal');
         puntualGUI.addColor(new ColorGUIHelper(light, 'color'), 'value').name('Color');
         puntualGUI.add(light, 'intensity', 0, 2, 0.01).name("Intensiadad");
-        puntualGUI.add(light, 'distance', 0, 10).setValue(5).name("Atenuación"); //onChange( helper.update()).    
+        puntualGUI.add(light, 'distance', 1, 10, 1).setValue(5).name("Atenuación"); //onChange( helper.update()).    
     
     //========================= Visualiza =========================
     
