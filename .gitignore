@@ -1,1 +1,8 @@
-./ThreeJS/Models/
+/ThreeJS/Models
+/ThreeJS/video
+/ThreeJS/three.js-master
+/Vue/vue-project/.vscode
+/Vue/vue-project/node_modules
+/Vue/vue-project/public
+/Vue/vue-project/src/assets/Models
+/Vue/vue-project/src/assets/video
