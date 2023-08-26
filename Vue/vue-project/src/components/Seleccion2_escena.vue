@@ -10,7 +10,7 @@ export default {
     
     //========================= Escenas ============================
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xd0d3d4);
+        scene.background = new THREE.Color(0x78909c);//0xd0d3d4
     
     //========================== Ejes =============================
 
