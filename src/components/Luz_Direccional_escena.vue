@@ -108,6 +108,7 @@ export default {
             const mtlLoader = new MTLLoader();
             const objLoader = new OBJLoader();
             
+            //./src/assets/Models/Tree Assets/materials.mtl
             mtlLoader.load('./src/assets/Models/Tree Assets/materials.mtl', (mtl) => {
                 mtl.preload();
                 objLoader.setMaterials(mtl);
