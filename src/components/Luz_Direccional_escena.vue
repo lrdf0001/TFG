@@ -110,6 +110,7 @@ export default {
             
             //./src/assets/Models/Tree Assets/materials.mtl
             mtlLoader.load('./src/assets/Models/Tree Assets/materials.mtl', (mtl) => {
+
                 mtl.preload();
                 objLoader.setMaterials(mtl);
                 

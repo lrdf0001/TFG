@@ -98,6 +98,7 @@ export default {
         const planeGeometry = new THREE.PlaneGeometry( 15, 7 );
         const textureLoader = new THREE.TextureLoader();
         var planeMat = new THREE.MeshToonMaterial( { 
+            //./src/assets/img/eva01.png
             map: textureLoader.load('./src/assets/img/eva01.png')
          } );
         const plano = new THREE.Mesh( planeGeometry, planeMat );

@@ -115,6 +115,7 @@ export default {
             
             //./src/assets/Models/Taxi/Taxi.mtl
             mtlLoader.load('./src/assets/Models/Taxi/Taxi.mtl', (mtl) => {
+
                 mtl.preload();
                 objLoader.setMaterials(mtl);
                 
