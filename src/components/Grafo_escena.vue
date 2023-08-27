@@ -16,7 +16,7 @@ export default {
 
         //scene.background = new THREE.Color(0x151f60);
         const loader = new THREE.TextureLoader();
-        const bgTexture = loader.load('./src/assets/img/space.jpg');
+        const bgTexture = loader.load('/img/space.jpg');
         scene.background = bgTexture;
 
         var canvas = document.querySelector('#mi_canvas');
@@ -86,7 +86,7 @@ export default {
 
     //------------------------ Toon Material --------------------------
         
-        const threeTone = new THREE.TextureLoader().load('./src/assets/img/gradientMaps/threeTone.jpg');
+        const threeTone = new THREE.TextureLoader().load('/img/gradientMaps/threeTone.jpg');
         threeTone.minFilter = THREE.NearestFilter;
         threeTone.magFilter = THREE.NearestFilter;
 
@@ -202,11 +202,11 @@ export default {
     const mtlLoader = new MTLLoader();
     const objLoader = new OBJLoader();
 
-        mtlLoader.load('./src/assets/Models/Rover/rover.mtl', (mtl) => {
+        mtlLoader.load('/Models/Rover/rover.mtl', (mtl) => {
             mtl.preload();
             objLoader.setMaterials(mtl);
             
-            objLoader.load('./src/assets/Models/Rover/rover.obj', (root) => {
+            objLoader.load('/Models/Rover/rover.obj', (root) => {
                 scene.add(root);
 
                 root.traverse(function(node){
@@ -228,11 +228,11 @@ export default {
         const mtlLoader2 = new MTLLoader();
         const objLoader2 = new OBJLoader();
 
-        mtlLoader2.load('./src/assets/Models/Moon/1226 moon.mtl', (mtl) => {
+        mtlLoader2.load('/Models/Moon/1226 moon.mtl', (mtl) => {
             mtl.preload();
             objLoader2.setMaterials(mtl);
             
-            objLoader2.load('./src/assets/Models/Moon/1226 moon.obj', (root) => {
+            objLoader2.load('/Models/Moon/1226 moon.obj', (root) => {
                 scene.add(root);
 
                 root.traverse(function(node){

@@ -98,7 +98,8 @@ export default {
         const planeGeometry = new THREE.PlaneGeometry( 15, 7 );
         const textureLoader = new THREE.TextureLoader();
         var planeMat = new THREE.MeshToonMaterial( { 
-            map: textureLoader.load('./src/assets/img/eva01.png')
+            //./src/assets/img/eva01.png
+            map: textureLoader.load('/img/eva01.png')
          } );
         const plano = new THREE.Mesh( planeGeometry, planeMat );
         plano.position.set(0,7,-3);
@@ -110,11 +111,11 @@ export default {
         const mtlLoader = new MTLLoader();
         const objLoader = new OBJLoader();
 
-        mtlLoader.load('./src/assets/Models/eva01.mtl', (mtl) => {
+        mtlLoader.load('/Models/eva01.mtl', (mtl) => {
             mtl.preload();
             objLoader.setMaterials(mtl);
             
-            objLoader.load('./src/assets/Models/eva01.obj', (root) => {
+            objLoader.load('/Models/eva01.obj', (root) => {
                 scene.add(root);
 
                 root.traverse(function(node){

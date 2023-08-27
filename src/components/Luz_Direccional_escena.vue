@@ -108,11 +108,12 @@ export default {
             const mtlLoader = new MTLLoader();
             const objLoader = new OBJLoader();
             
-            mtlLoader.load('./src/assets/Models/Tree Assets/materials.mtl', (mtl) => {
+            //./src/assets/Models/Tree Assets/materials.mtl
+            mtlLoader.load('/Models/Tree Assets/materials.mtl', (mtl) => {
                 mtl.preload();
                 objLoader.setMaterials(mtl);
                 
-                objLoader.load('./src/assets/Models/Tree Assets/model.obj', (root) => {
+                objLoader.load('/Models/Tree Assets/model.obj', (root) => {
                     scene.add(root);
 
                     root.traverse(function(node){

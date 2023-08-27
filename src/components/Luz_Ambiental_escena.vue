@@ -88,7 +88,7 @@ methods: {
     
         let mixer;
         const loader = new FBXLoader();
-        loader.load( './src/assets/Models/Whale/Whale.fbx', function ( object ) { //Whale by Quaternius via Poly Pizza
+        loader.load( '/Models/Whale/Whale.fbx', function ( object ) { //Whale by Quaternius via Poly Pizza
 
             mixer = new THREE.AnimationMixer( object );
 

@@ -113,11 +113,12 @@ export default {
             const mtlLoader = new MTLLoader();
             const objLoader = new OBJLoader();
             
-            mtlLoader.load('./src/assets/Models/Taxi/Taxi.mtl', (mtl) => {
+            //./src/assets/Models/Taxi/Taxi.mtl
+            mtlLoader.load('/Models/Taxi/Taxi.mtl', (mtl) => {
                 mtl.preload();
                 objLoader.setMaterials(mtl);
                 
-                objLoader.load('./src/assets/Models/Taxi/Taxi.obj', (root) => {
+                objLoader.load('/Models/Taxi/Taxi.obj', (root) => {
                     scene.add(root);
                     
                     root.rotateY(-90*3.1415/180.0);
@@ -137,11 +138,11 @@ export default {
             const mtlLoader2 = new MTLLoader();
             const objLoader2 = new OBJLoader();
 
-            mtlLoader2.load('./src/assets/Models/Road2/road.mtl', (mtl) => {
+            mtlLoader2.load('/Models/Road2/road.mtl', (mtl) => {
                 mtl.preload();
                 objLoader2.setMaterials(mtl);
                 
-                objLoader2.load('./src/assets/Models/Road2/road.obj', (root) => {
+                objLoader2.load('/Models/Road2/road.obj', (root) => {
                     scene.add(root);
                     
                     root.scale.x = 15;
@@ -159,11 +160,11 @@ export default {
             const mtlLoader3 = new MTLLoader();
             const objLoader3 = new OBJLoader();
 
-            mtlLoader3.load('./src/assets/Models/Police Car/Cop.mtl', (mtl) => {
+            mtlLoader3.load('/Models/Police Car/Cop.mtl', (mtl) => {
                 mtl.preload();
                 objLoader3.setMaterials(mtl);
                 
-                objLoader3.load('./src/assets/Models/Police Car/Cop.obj', (root) => {
+                objLoader3.load('/Models/Police Car/Cop.obj', (root) => {
                     scene.add(root);
                     
                     root.rotateY(90*3.1415/180.0);
@@ -182,11 +183,11 @@ export default {
             const mtlLoader4 = new MTLLoader();
             const objLoader4 = new OBJLoader();
 
-            mtlLoader4.load('./src/assets/Models/LampPost/lamp_post.mtl', (mtl) => {
+            mtlLoader4.load('/Models/LampPost/lamp_post.mtl', (mtl) => {
                 mtl.preload();
                 objLoader4.setMaterials(mtl);
                 
-                objLoader4.load('./src/assets/Models/LampPost/lamp_post.obj', (root) => {
+                objLoader4.load('/Models/LampPost/lamp_post.obj', (root) => {
                     scene.add(root);
                     root.translateY(-1);
                     root.translateZ(-4);
