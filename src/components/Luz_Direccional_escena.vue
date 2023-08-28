@@ -4,8 +4,6 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui'
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
-import treeOBJ from './model.obj?url';
-import treeMTL from './materials.obj?url';
 
 export default {
     name: 'Direccional',
@@ -111,12 +109,15 @@ export default {
             const objLoader = new OBJLoader();
             
             //./src/assets/Models/Tree Assets/materials.mtl
-            mtlLoader.load(treeMTL, (mtl) => {
+            const mtlUrl = new URL('./materials.mtl', import.meta.url).href;
+            const objUrl = new URL('./model.obj', import.meta.url).href;
+
+            mtlLoader.load(mtlUrl, (mtl) => {
 
                 mtl.preload();
                 objLoader.setMaterials(mtl);
                 
-                objLoader.load(treeOBJ, (root) => {
+                objLoader.load(objUrl, (root) => {
                     scene.add(root);
 
                     root.traverse(function(node){
