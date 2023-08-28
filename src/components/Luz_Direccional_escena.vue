@@ -109,8 +109,8 @@ export default {
             const objLoader = new OBJLoader();
             
             //./src/assets/Models/Tree Assets/materials.mtl
-            const mtlUrl = new URL('./materials.mtl', import.meta.url).href;
-            const objUrl = new URL('./model.obj', import.meta.url).href;
+            const mtlUrl = new URL('/materials.mtl', import.meta.url).href;
+            const objUrl = new URL('/model.obj', import.meta.url).href;
 
             mtlLoader.load(mtlUrl, (mtl) => {
 
