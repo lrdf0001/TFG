@@ -152,29 +152,29 @@ export default {
                 }
             );
 
-            const grassGeometry = new THREE.BoxGeometry( 10, 0.25, 7 );
+            const grassGeometry = new THREE.BoxGeometry( 10, 0.1, 7 );
 		    const grassMat = new THREE.MeshStandardMaterial({
                 color: 0x66bb6a,
                 emissive: 0x000000,
                 roughness: 0.6,
-                metalness: 0.6
+                metalness: 0.6,
             });		
             const hierba = new THREE.Mesh( grassGeometry, grassMat );
             scene.add(hierba);
-            hierba.translateY(-0.125);
+            hierba.translateY(-0.05);
             hierba.receiveShadow = true;
 
             const groundGeometry = new THREE.BoxGeometry( 10, 0.5, 7 );	
-		    const groundMat = new THREE.MeshPhongMaterial( { color: 0xdc7633 } );		
+		    const groundMat = new THREE.MeshPhongMaterial( { color: 0xdc7633} );		
             const ground = new THREE.Mesh( groundGeometry, groundMat );
             scene.add(ground);
-            ground.translateY(-0.5);
+            ground.translateY(-0.35);
 
             const stoneGeometry = new THREE.BoxGeometry( 10, 0.75, 7 );	
-		    const stoneMat = new THREE.MeshPhongMaterial( { color: 0xabb2b9 } );		
+		    const stoneMat = new THREE.MeshPhongMaterial( {  color: 0xabb2b9 } );		
             const stone = new THREE.Mesh( stoneGeometry, stoneMat );
             scene.add(stone);
-            stone.translateY(-1.125);
+            stone.translateY(-0.975);
         
         //========================== Render =============================
             

@@ -6,6 +6,7 @@ import { GUI } from 'dat.gui'
 //import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
 export default {
     name: 'Puntual',
@@ -128,6 +129,15 @@ export default {
               });      
         });
         */
+
+        const gltfLoader = new GLTFLoader();
+        const url = '/eva01.gltf';
+        gltfLoader.load(url, (gltf) => {
+            const root = gltf.scene;
+            scene.add(root);
+        });
+
+/*
         const fontLoader = new FontLoader();
         fontLoader.load(
             '/helvetiker_regular.typeface.json',
@@ -166,7 +176,7 @@ export default {
         scene.add(ground);
         ground.receiveShadow=true;
 
-    
+*/
     //========================== Render =============================
         
         const renderer = new THREE.WebGLRenderer({canvas: canvas});
