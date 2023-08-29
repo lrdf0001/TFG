@@ -2,8 +2,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui'
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+//import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+//import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
 export default {
     name: 'Puntual',
@@ -31,8 +33,8 @@ export default {
     
     //-------------------------- Eje X ----------------------------
         const ejeXvertices = [];
-        ejeXvertices.push( new THREE.Vector3( 0, 7, 0 ) );
-        ejeXvertices.push( new THREE.Vector3( 2, 7, 0 ) );
+        ejeXvertices.push( new THREE.Vector3( 0, 0, 0 ) );
+        ejeXvertices.push( new THREE.Vector3( 2, 0, 0 ) );
         const colorEjeX = new THREE.LineBasicMaterial( { color:  0x943126 } );
     
         const geometriaX = new THREE.BufferGeometry().setFromPoints( ejeXvertices );
@@ -42,8 +44,8 @@ export default {
     
     //-------------------------- Eje Y ----------------------------
         const ejeYvertices = [];
-        ejeYvertices.push( new THREE.Vector3( 0, 7, 0 ) );
-        ejeYvertices.push( new THREE.Vector3(  0, 9, 0 ) );
+        ejeYvertices.push( new THREE.Vector3( 0, 0, 0 ) );
+        ejeYvertices.push( new THREE.Vector3(  0, 2, 0 ) );
         const colorEjeY = new THREE.LineBasicMaterial( { color:   0x2ecc71  } );
     
         const geometriaY = new THREE.BufferGeometry().setFromPoints( ejeYvertices );
@@ -53,8 +55,8 @@ export default {
     
     //-------------------------- Eje Z ----------------------------
         const ejeZvertices = [];
-        ejeZvertices.push( new THREE.Vector3( 0, 7, 0 ) );
-        ejeZvertices.push( new THREE.Vector3(  0, 7, 2 ) );
+        ejeZvertices.push( new THREE.Vector3( 0, 0, 0 ) );
+        ejeZvertices.push( new THREE.Vector3(  0, 0, 2 ) );
         const colorEjeZ = new THREE.LineBasicMaterial( { color:   0x3498db  } );
         
         const geometriaZ = new THREE.BufferGeometry().setFromPoints( ejeZvertices );
@@ -64,7 +66,6 @@ export default {
     
     //========================= Luces ============================= 
         const pivot = new THREE.Object3D();
-        pivot.position.set(0, 7, 0);
         scene.add(pivot);
 
         const color = 0xFFFFFF;
@@ -80,21 +81,21 @@ export default {
         light.shadow.camera.far = 500;
 
     //-------------------------- Bombilla ----------------------------     
-        const bombillaGeometria = new THREE.SphereGeometry(0.05, 8, 8);
+        const bombillaGeometria = new THREE.SphereGeometry(0.05, 10, 10);
 		const bombillaMaterial = new THREE.MeshToonMaterial( { color: 0xFFFF00});
 		var bombilla = new THREE.Mesh(bombillaGeometria, bombillaMaterial);
         light.add(bombilla);
     
     //========================= Camara =============================
-        const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 50);
+        const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 100);
         camera.position.x = 0;
-        camera.position.y = 7;
-        camera.position.z = 4;
-        camera.lookAt(0,7,0);
+        camera.position.y = 0;
+        camera.position.z = 5;
+        camera.lookAt(0,0,0);
         scene.add(camera);         
     
     //========================== Modelos ==============================
-    
+        /*
         const planeGeometry = new THREE.PlaneGeometry( 15, 7 );
         const textureLoader = new THREE.TextureLoader();
         var planeMat = new THREE.MeshToonMaterial( { 
@@ -126,7 +127,45 @@ export default {
                     });
               });      
         });
+        */
+        const fontLoader = new FontLoader();
+        fontLoader.load(
+            '/public/helvetiker_regular.typeface.json',
+            (droidfont) => {
+                const textGeometry =  new TextGeometry('Puntual', {
+                    font: droidfont,
+                    size: 1,
+                    height: 1,
+                });
+                const textMaterial = new THREE.MeshStandardMaterial( { 
+                    color: 0xe5e7e9,
+                    emissive: 0x000000,
+                    roughness: 0.5,
+                    metalness: 1 
+                } );
+                const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+                
+                scene.add(textMesh);
+                
+                textMesh.translateX(-2.25);
+                textMesh.translateZ(-0.5);                    
+                textMesh.castShadow = true;
+                textMesh.receiveShadow = true;
+            }
+        );
         
+        
+        const groundGeometry = new THREE.BoxGeometry( 8, 5, 8 );	
+        const groundMat = new THREE.MeshPhongMaterial( {
+					color: 0xa0adaf,
+					shininess: 10,
+					specular: 0x111111,
+					side: THREE.BackSide
+				} );		
+        const ground = new THREE.Mesh( groundGeometry, groundMat );
+        scene.add(ground);
+        ground.receiveShadow=true;
+
     
     //========================== Render =============================
         
@@ -149,7 +188,7 @@ export default {
 
     //========================= Controls =============================
         const controls = new OrbitControls( camera, renderer.domElement );
-        controls.target.set(0, 7, 0);
+        controls.target.set(0, 0, 0);
         controls.update();
     
     //============================ GUI ============================

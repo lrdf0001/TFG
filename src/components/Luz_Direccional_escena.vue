@@ -76,7 +76,7 @@ export default {
             const color = 0xFFFFFF;
             const intensity = 1;
             const light = new THREE.DirectionalLight(color, intensity);
-            light.position.set(0, 5, 0);
+            light.position.set(0, 6, 0);
             light.target.position.set(0, 0, 0);
             light.castShadow = true;
             
@@ -89,12 +89,10 @@ export default {
             light.shadow.camera.far = 500;
             
             const helper = new THREE.CameraHelper( light.shadow.camera );
-            scene.add( helper );
-            
+            scene.add( helper );            
             
             var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.3);        
-            scene.add(ambientLight);
-            
+            scene.add(ambientLight);            
         
         //========================= Camara =============================
             const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 40);
@@ -135,19 +133,48 @@ export default {
             //node_modules/three/examples/fonts/droid/droid_serif_regular.typeface.json
             const fontLoader = new FontLoader();
             fontLoader.load(
-                '/helvetiker_regular.typeface.json',
+                '/public/helvetiker_regular.typeface.json',
                 (droidfont) => {
                     const textGeometry =  new TextGeometry('Direccional', {
                         font: droidfont,
                         size: 1,
                         height: 1,
                     });
-                    const textMaterial = new THREE.MeshNormalMaterial();
+                    const textMaterial = new THREE.MeshPhongMaterial( { color: 0xe59866 } );
                     const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+                    
                     scene.add(textMesh);
+                    
                     textMesh.translateX(-3.5);
+                    textMesh.translateZ(-0.5);
+                    textMesh.castShadow = true;
+                    textMesh.receiveShadow = true;
                 }
             );
+
+            const grassGeometry = new THREE.BoxGeometry( 10, 0.25, 7 );
+		    const grassMat = new THREE.MeshStandardMaterial({
+                color: 0x66bb6a,
+                emissive: 0x000000,
+                roughness: 0.6,
+                metalness: 0.6
+            });		
+            const hierba = new THREE.Mesh( grassGeometry, grassMat );
+            scene.add(hierba);
+            hierba.translateY(-0.125);
+            hierba.receiveShadow = true;
+
+            const groundGeometry = new THREE.BoxGeometry( 10, 0.5, 7 );	
+		    const groundMat = new THREE.MeshPhongMaterial( { color: 0xdc7633 } );		
+            const ground = new THREE.Mesh( groundGeometry, groundMat );
+            scene.add(ground);
+            ground.translateY(-0.5);
+
+            const stoneGeometry = new THREE.BoxGeometry( 10, 0.75, 7 );	
+		    const stoneMat = new THREE.MeshPhongMaterial( { color: 0xabb2b9 } );		
+            const stone = new THREE.Mesh( stoneGeometry, stoneMat );
+            scene.add(stone);
+            stone.translateY(-1.125);
         
         //========================== Render =============================
             

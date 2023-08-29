@@ -113,25 +113,25 @@ export default {
         });
 
         const textureLoader = new THREE.TextureLoader();
-        const baseColor = textureLoader.load('./src/assets/img/Wood/wood_basecolor.png', function( texture ) {
+        const baseColor = textureLoader.load('/img/Wood/wood_basecolor.png', function( texture ) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
             texture.repeat.set( 25, 3 );
         } );
 
-        const especular = textureLoader.load('./src/assets/img/Wood/wood_ambientocclusion.png', function( texture ) {
+        const especular = textureLoader.load('/img/Wood/wood_ambientocclusion.png', function( texture ) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
             texture.repeat.set( 25, 3 );
         } );
 
-        const altura = textureLoader.load('./src/assets/img/Wood/wood_height.png', function( texture ) {
+        const altura = textureLoader.load('/img/Wood/wood_height.png', function( texture ) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
             texture.repeat.set( 25, 3 );
         } );
 
-        const rugoso = textureLoader.load('./src/assets/img/Wood/wood_roughness.png', function( texture ) {
+        const rugoso = textureLoader.load('/img/Wood/wood_roughness.png', function( texture ) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
             texture.repeat.set( 25, 3 );

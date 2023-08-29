@@ -2,7 +2,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui'
-import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+//import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
 export default {
   name: 'Ambiental',
@@ -71,7 +73,7 @@ methods: {
         scene.add(ambientLight);
 
         const skyColor = 0xB1E1FF;  // light blue
-        const groundColor = 0xB97A20;  // brownish orange
+        const groundColor = 0x82e0aa ;  // light green
         const  hemisphereLight = new THREE.HemisphereLight(skyColor, groundColor, intensity);
         scene.add(hemisphereLight);
   
@@ -85,7 +87,7 @@ methods: {
         scene.add(camera);
   
     //========================== Modelos ==============================
-    
+        /*
         let mixer;
         const loader = new FBXLoader();
         loader.load( './src/assets/Models/Whale/Whale.fbx', function ( object ) { //Whale by Quaternius via Poly Pizza
@@ -100,6 +102,56 @@ methods: {
             object.scale.y = 0.005;
             object.scale.z = 0.005;
         } );
+        */
+        const fontLoader = new FontLoader();
+        fontLoader.load(
+            '/public/helvetiker_regular.typeface.json',
+            (droidfont) => {
+                const textGeometry =  new TextGeometry('Ambiental', {
+                    font: droidfont,
+                    size: 1,
+                    height: 1,
+                });
+                const textMaterial = new THREE.MeshStandardMaterial( { 
+                    color: 0xe5e7e9,
+                    emissive: 0x000000,
+                    roughness: 0.6,
+                    metalness: 0.6 
+                } );
+                const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+                
+                scene.add(textMesh);
+                
+                textMesh.translateX(-3.5);
+                textMesh.translateZ(-0.5);
+                textMesh.castShadow = true;
+                textMesh.receiveShadow = true;
+            }
+        );
+
+        const grassGeometry = new THREE.BoxGeometry( 10, 0.25, 7 );
+        const grassMat = new THREE.MeshStandardMaterial({
+            color: 0x66bb6a,
+            emissive: 0x000000,
+            roughness: 0.6,
+            metalness: 0.6
+        });		
+        const hierba = new THREE.Mesh( grassGeometry, grassMat );
+        scene.add(hierba);
+        hierba.translateY(-0.125);
+        hierba.receiveShadow = true;
+
+        const groundGeometry = new THREE.BoxGeometry( 10, 0.5, 7 );	
+        const groundMat = new THREE.MeshPhongMaterial( { color: 0xdc7633 } );		
+        const ground = new THREE.Mesh( groundGeometry, groundMat );
+        scene.add(ground);
+        ground.translateY(-0.5);
+
+        const stoneGeometry = new THREE.BoxGeometry( 10, 0.75, 7 );	
+        const stoneMat = new THREE.MeshPhongMaterial( { color: 0xabb2b9 } );		
+        const stone = new THREE.Mesh( stoneGeometry, stoneMat );
+        scene.add(stone);
+        stone.translateY(-1.125);
       
     //========================== Render =============================
   
@@ -143,8 +195,8 @@ methods: {
         function animate() {
             requestAnimationFrame( animate );
 
-            const delta = clock.getDelta();
-            if ( mixer ) mixer.update( delta );            
+            //const delta = clock.getDelta();
+            //if ( mixer ) mixer.update( delta );            
     
             if (resizeRendererToDisplaySize(renderer)) {
                 const canvas = renderer.domElement;

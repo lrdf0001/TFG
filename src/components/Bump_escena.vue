@@ -78,15 +78,15 @@ export default {
     //-------------------------- Materiales ----------------------------
         const loader = new THREE.TextureLoader();
 
-        const textura1 = loader.load('./src/assets/img/bricks/P4_BaseColor.png');
-        const bump1 = loader.load('./src/assets/img/bricks/P4_Ao.png');
+        const textura1 = loader.load('/img/bricks/P4_BaseColor.png');
+        const bump1 = loader.load('/img/bricks/P4_Ao.png');
         var material1 = new THREE.MeshStandardMaterial({
             map: textura1,
             bumpMap: bump1
         });
 
-        const textura2 = loader.load('./src/assets/img/bricks/rocks.png');
-        const bump2 = loader.load('./src/assets/img/bricks/rock_bump2.png');
+        const textura2 = loader.load('/img/bricks/rocks.png');
+        const bump2 = loader.load('/img/bricks/rock_bump2.png');
         var material2 = new THREE.MeshStandardMaterial({
             map: textura2,
             bumpMap: bump2
