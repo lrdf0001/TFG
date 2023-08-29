@@ -2,10 +2,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui';
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-//import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-//import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+
+//import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+//import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
 export default {
     name: 'Direccional',
@@ -105,32 +105,15 @@ export default {
         //========================== Modelos ==============================
 
             //Tree Assets by Ben Desai [CC-BY] via Poly Pizza
-            /*
-            const mtlLoader = new MTLLoader();
-            const objLoader = new OBJLoader();
-            
-            mtlLoader.load("./src/assets/Models/Tree Assets/materials.mtl", (mtl) => {
-
-                mtl.preload();
-                objLoader.setMaterials(mtl);
-                
-                objLoader.load("./src/assets/Models/Tree Assets/model.obj", (root) => {
+            const gltfLoader = new GLTFLoader();
+                const url = '/Models/trees.gltf';
+                gltfLoader.load(url, (gltf) => {
+                    const root = gltf.scene;
                     scene.add(root);
-
-                    root.traverse(function(node){
-                        if(node.isMesh){
-                            node.castShadow = true;
-                            node.receiveShadow = true;
-                        }
-                    });
-
-                    root.scale.x = 5;
-                    root.scale.y = 5;
-                    root.scale.z = 5;
-                });
             });
-            */
-            //node_modules/three/examples/fonts/droid/droid_serif_regular.typeface.json
+
+
+            /*
             const fontLoader = new FontLoader();
             fontLoader.load(
                 '/helvetiker_regular.typeface.json',
@@ -175,7 +158,7 @@ export default {
             const stone = new THREE.Mesh( stoneGeometry, stoneMat );
             scene.add(stone);
             stone.translateY(-0.975);
-        
+        */
         //========================== Render =============================
             
             const renderer = new THREE.WebGLRenderer({canvas: canvas});

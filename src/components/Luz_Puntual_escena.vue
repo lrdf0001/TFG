@@ -2,10 +2,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui'
-//import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-//import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+//import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+//import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
 export default {
@@ -34,8 +32,8 @@ export default {
     
     //-------------------------- Eje X ----------------------------
         const ejeXvertices = [];
-        ejeXvertices.push( new THREE.Vector3( 0, 0, 0 ) );
-        ejeXvertices.push( new THREE.Vector3( 2, 0, 0 ) );
+        ejeXvertices.push( new THREE.Vector3( 0, 7, 0 ) );
+        ejeXvertices.push( new THREE.Vector3( 2, 7, 0 ) );
         const colorEjeX = new THREE.LineBasicMaterial( { color:  0x943126 } );
     
         const geometriaX = new THREE.BufferGeometry().setFromPoints( ejeXvertices );
@@ -45,8 +43,8 @@ export default {
     
     //-------------------------- Eje Y ----------------------------
         const ejeYvertices = [];
-        ejeYvertices.push( new THREE.Vector3( 0, 0, 0 ) );
-        ejeYvertices.push( new THREE.Vector3(  0, 2, 0 ) );
+        ejeYvertices.push( new THREE.Vector3( 0, 7, 0 ) );
+        ejeYvertices.push( new THREE.Vector3(  0, 9, 0 ) );
         const colorEjeY = new THREE.LineBasicMaterial( { color:   0x2ecc71  } );
     
         const geometriaY = new THREE.BufferGeometry().setFromPoints( ejeYvertices );
@@ -56,8 +54,8 @@ export default {
     
     //-------------------------- Eje Z ----------------------------
         const ejeZvertices = [];
-        ejeZvertices.push( new THREE.Vector3( 0, 0, 0 ) );
-        ejeZvertices.push( new THREE.Vector3(  0, 0, 2 ) );
+        ejeZvertices.push( new THREE.Vector3( 0, 7, 0 ) );
+        ejeZvertices.push( new THREE.Vector3(  0, 7, 2 ) );
         const colorEjeZ = new THREE.LineBasicMaterial( { color:   0x3498db  } );
         
         const geometriaZ = new THREE.BufferGeometry().setFromPoints( ejeZvertices );
@@ -68,6 +66,7 @@ export default {
     //========================= Luces ============================= 
         const pivot = new THREE.Object3D();
         scene.add(pivot);
+        pivot.position.set(0, 7, 0);
 
         const color = 0xFFFFFF;
         const intensity = 1;
@@ -90,8 +89,8 @@ export default {
     //========================= Camara =============================
         const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 100);
         camera.position.x = 0;
-        camera.position.y = 0;
-        camera.position.z = 5;
+        camera.position.y = 7;
+        camera.position.z = 4;
         camera.lookAt(0,0,0);
         scene.add(camera);         
     
@@ -103,18 +102,16 @@ export default {
             map: textureLoader.load('/img/eva01.png')
         } );
         const plano = new THREE.Mesh( planeGeometry, planeMat );
-        plano.position.set(0,0,-3);
+        plano.position.set(0,7,-3);
         plano.receiveShadow = true;
         scene.add( plano );
 
         //-------------------------- GLTF ----------------------------
-
         const gltfLoader = new GLTFLoader();
-        const url = '/eva01.gltf';
+        const url = '/Models/eva01.gltf';
         gltfLoader.load(url, (gltf) => {
             const root = gltf.scene;
             scene.add(root);
-            root.translateY(-7);
         });
 
 /*
