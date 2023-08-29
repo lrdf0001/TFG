@@ -96,45 +96,25 @@ export default {
         scene.add(camera);         
     
     //========================== Modelos ==============================
-        /*
+        
         const planeGeometry = new THREE.PlaneGeometry( 15, 7 );
         const textureLoader = new THREE.TextureLoader();
         var planeMat = new THREE.MeshToonMaterial( { 
-            //./src/assets/img/eva01.png
-            map: textureLoader.load('./src/assets/img/eva01.png')
-         } );
+            map: textureLoader.load('/img/eva01.png')
+        } );
         const plano = new THREE.Mesh( planeGeometry, planeMat );
-        plano.position.set(0,7,-3);
+        plano.position.set(0,0,-3);
         plano.receiveShadow = true;
         scene.add( plano );
 
-        //-------------------------- OBJ ----------------------------
-        
-        const mtlLoader = new MTLLoader();
-        const objLoader = new OBJLoader();
-
-        mtlLoader.load('./src/assets/Models/eva01.mtl', (mtl) => {
-            mtl.preload();
-            objLoader.setMaterials(mtl);
-            
-            objLoader.load('./src/assets/Models/eva01.obj', (root) => {
-                scene.add(root);
-
-                root.traverse(function(node){
-                        if(node.isMesh){
-                            node.castShadow = true;
-                            node.receiveShadow = true;
-                        }
-                    });
-              });      
-        });
-        */
+        //-------------------------- GLTF ----------------------------
 
         const gltfLoader = new GLTFLoader();
         const url = '/eva01.gltf';
         gltfLoader.load(url, (gltf) => {
             const root = gltf.scene;
             scene.add(root);
+            root.translateY(-7);
         });
 
 /*
