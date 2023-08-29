@@ -106,7 +106,7 @@ export default {
 
             //Tree Assets by Ben Desai [CC-BY] via Poly Pizza
             const gltfLoader = new GLTFLoader();
-            gltfLoader.load('/trees.gltf', (gltf) => {
+            gltfLoader.load('/trees.glb', (gltf) => {
                 const root = gltf.scene;
                 scene.add(root);
             });
