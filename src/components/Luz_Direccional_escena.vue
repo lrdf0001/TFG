@@ -132,10 +132,10 @@ export default {
                 });
             });
             */
-
+            //node_modules/three/examples/fonts/droid/droid_serif_regular.typeface.json
             const fontLoader = new FontLoader();
             fontLoader.load(
-                'node_modules/three/examples/fonts/droid/droid_serif_regular.typeface.json',
+                '/helvetiker_regular.typeface.json',
                 (droidfont) => {
                     const textGeometry =  new TextGeometry('Direccional', {
                         font: droidfont,
