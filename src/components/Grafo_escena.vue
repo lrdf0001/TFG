@@ -2,8 +2,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui'
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+//import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+//import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 
 export default {
     name: 'Grafo',
@@ -14,10 +14,12 @@ export default {
     //========================= Escena ============================
         const scene = new THREE.Scene();
 
-        //scene.background = new THREE.Color(0x151f60);
+        scene.background = new THREE.Color(0x151f60);
+        /*
         const loader = new THREE.TextureLoader();
         const bgTexture = loader.load('./src/assets/img/space.jpg');
         scene.background = bgTexture;
+        */
 
         var canvas = document.querySelector('#mi_canvas');
     
@@ -86,7 +88,7 @@ export default {
 
     //------------------------ Toon Material --------------------------
         
-        const threeTone = new THREE.TextureLoader().load('./src/assets/img/gradientMaps/threeTone.jpg');
+        const threeTone = new THREE.TextureLoader().load('/img/gradientMaps/threeTone.jpg');
         threeTone.minFilter = THREE.NearestFilter;
         threeTone.magFilter = THREE.NearestFilter;
 
@@ -199,6 +201,7 @@ export default {
         dedo2.receiveShadow = false;
 
     //-------------------------- Rover ----------------------------
+    /*
     const mtlLoader = new MTLLoader();
     const objLoader = new OBJLoader();
 
@@ -247,6 +250,7 @@ export default {
                 root.translateY(-39.1);
             });
         });
+        */
 
     //========================== Render =============================
         

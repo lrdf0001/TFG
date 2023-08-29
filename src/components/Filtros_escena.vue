@@ -62,14 +62,14 @@ export default {
 
     //========================== Plano ==============================
         const planoGeo = new THREE.PlaneGeometry(10,10);
-        var textura1 = new THREE.TextureLoader().load('./src/assets/img/lineas.png');
+        var textura1 = new THREE.TextureLoader().load('/img/lineas.png');
         var mat = new THREE.MeshBasicMaterial( { 
             map: textura1
         } );
         var plano = new THREE.Mesh(planoGeo, mat);
         scene.add(plano);
 
-        var textura2 = new THREE.TextureLoader().load('./src/assets/img/texture_grid.png');
+        var textura2 = new THREE.TextureLoader().load('/img/texture_grid.png');
         var mat2 = new THREE.MeshBasicMaterial( { 
             map: textura2
         } );
