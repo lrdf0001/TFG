@@ -91,7 +91,7 @@ export default {
         camera.position.x = 0;
         camera.position.y = 7;
         camera.position.z = 4;
-        camera.lookAt(0,0,0);
+        camera.lookAt(0,7,0);
         scene.add(camera);         
     
     //========================== Modelos ==============================
@@ -108,7 +108,7 @@ export default {
 
         //-------------------------- GLTF ----------------------------
         const gltfLoader = new GLTFLoader();
-        const url = '/Models/eva01.gltf';
+        const url = '/eva01.gltf';
         gltfLoader.load(url, (gltf) => {
             const root = gltf.scene;
             scene.add(root);
