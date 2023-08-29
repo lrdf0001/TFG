@@ -58,7 +58,5 @@ import { RouterLink, RouterView } from 'vue-router'
   <main id="algo" class="container">
     <RouterView />
   </main>
-
-  
   
 </template>
