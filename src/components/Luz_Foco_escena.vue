@@ -219,7 +219,7 @@ export default {
                     
                     scene.add(textMesh);
                     
-                    textMesh.translateX(-1);
+                    textMesh.translateX(-1.5);
                     textMesh.translateZ(-0.5);
                     textMesh.castShadow = true;
                     textMesh.receiveShadow = true;
