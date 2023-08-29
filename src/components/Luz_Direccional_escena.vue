@@ -1,9 +1,11 @@
 <script >
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { GUI } from 'dat.gui'
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+import { GUI } from 'dat.gui';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+//import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+//import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 
 export default {
     name: 'Direccional',
@@ -105,19 +107,16 @@ export default {
         //========================== Modelos ==============================
 
             //Tree Assets by Ben Desai [CC-BY] via Poly Pizza
+            /*
             const mtlLoader = new MTLLoader();
             const objLoader = new OBJLoader();
             
-            //./src/assets/Models/Tree Assets/materials.mtl
-            const mtlUrl = new URL('/materials.mtl', import.meta.url).href;
-            const objUrl = new URL('/model.obj', import.meta.url).href;
-
-            mtlLoader.load(mtlUrl, (mtl) => {
+            mtlLoader.load("./src/assets/Models/Tree Assets/materials.mtl", (mtl) => {
 
                 mtl.preload();
                 objLoader.setMaterials(mtl);
                 
-                objLoader.load(objUrl, (root) => {
+                objLoader.load("./src/assets/Models/Tree Assets/model.obj", (root) => {
                     scene.add(root);
 
                     root.traverse(function(node){
@@ -132,7 +131,23 @@ export default {
                     root.scale.z = 5;
                 });
             });
-            
+            */
+
+            const fontLoader = new FontLoader();
+            fontLoader.load(
+                'node_modules/three/examples/fonts/droid/droid_serif_regular.typeface.json',
+                (droidfont) => {
+                    const textGeometry =  new TextGeometry('Direccional', {
+                        font: droidfont,
+                        size: 1,
+                        height: 1,
+                    });
+                    const textMaterial = new THREE.MeshNormalMaterial();
+                    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+                    scene.add(textMesh);
+                    textMesh.translateX(-3.5);
+                }
+            );
         
         //========================== Render =============================
             
