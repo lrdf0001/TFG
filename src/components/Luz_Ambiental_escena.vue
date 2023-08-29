@@ -105,7 +105,7 @@ methods: {
         */
         const fontLoader = new FontLoader();
         fontLoader.load(
-            '/public/helvetiker_regular.typeface.json',
+            '/helvetiker_regular.typeface.json',
             (droidfont) => {
                 const textGeometry =  new TextGeometry('Ambiental', {
                     font: droidfont,
