@@ -108,7 +108,7 @@ export default {
 
         //-------------------------- GLTF ----------------------------
         const gltfLoader = new GLTFLoader();
-        gltfLoader.load('/eva01.gltf', (gltf) => {
+        gltfLoader.load('/eva.glb', (gltf) => {
             const root = gltf.scene;
             scene.add(root);
         });
