@@ -87,12 +87,12 @@ export default {
         light.add(bombilla);
     
     //========================= Camara =============================
-        const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 100);
+        const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 50);
         camera.position.x = 0;
         camera.position.y = 7;
         camera.position.z = 4;
         camera.lookAt(0,7,0);
-        scene.add(camera);         
+        scene.add(camera);           
     
     //========================== Modelos ==============================
         
@@ -108,8 +108,7 @@ export default {
 
         //-------------------------- GLTF ----------------------------
         const gltfLoader = new GLTFLoader();
-        const url = '/eva01.gltf';
-        gltfLoader.load(url, (gltf) => {
+        gltfLoader.load('/eva01.gltf', (gltf) => {
             const root = gltf.scene;
             scene.add(root);
         });
@@ -175,7 +174,7 @@ export default {
 
     //========================= Controls =============================
         const controls = new OrbitControls( camera, renderer.domElement );
-        controls.target.set(0, 0, 0);
+        controls.target.set(0, 7, 0);
         controls.update();
     
     //============================ GUI ============================
