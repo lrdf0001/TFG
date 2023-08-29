@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui'
 //import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 //import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
 export default {
     name: 'Grafo',
@@ -251,6 +252,39 @@ export default {
             });
         });
         */
+        const gltfLoader = new GLTFLoader();
+        gltfLoader.load('/rover.glb', (gltf) => {
+            const root = gltf.scene;
+            
+            root.traverse( function( node ) {
+                if ( node.isMesh ) { 
+                    node.castShadow = true; 
+                }
+            } );
+            scene.add(root);
+
+            root.scale.x = 4;
+            root.scale.y = 4;
+            root.scale.z = 4;
+            root.translateY(-2.5);
+            root.translateX(1.3);
+            root.rotateY(degToRad(180));
+        });
+
+        gltfLoader.load('/moon.glb', (gltf) => {
+            const root = gltf.scene;
+            scene.add(root);
+
+            root.traverse(function(node){
+                if(node.isMesh){
+                    node.receiveShadow = true;
+                }
+            });
+            root.scale.x = 0.5;
+            root.scale.y = 0.5;
+            root.scale.z = 0.5;
+            root.translateY(-39.1);
+        });
 
     //========================== Render =============================
         

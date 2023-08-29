@@ -110,6 +110,11 @@ export default {
         const gltfLoader = new GLTFLoader();
         gltfLoader.load('/eva.glb', (gltf) => {
             const root = gltf.scene;
+            root.traverse( function( node ) {
+                if ( node.isMesh ) { 
+                    node.castShadow = true; 
+                }
+            } );
             scene.add(root);
         });
 

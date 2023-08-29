@@ -108,6 +108,14 @@ export default {
             const gltfLoader = new GLTFLoader();
             gltfLoader.load('/trees.glb', (gltf) => {
                 const root = gltf.scene;
+
+                root.traverse( function( node ) {
+                    if ( node.isMesh ) { 
+                        node.castShadow = true;
+                        node.receiveShadow = true;
+                    }
+                } );
+
                 scene.add(root);
             });
 
