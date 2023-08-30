@@ -238,7 +238,7 @@ export default {
                 scene.add(root);
             });
 
-            gltfLoader.load('/cop.glb', (gltf) => {
+            gltfLoader.load('/police.glb', (gltf) => {
                 const root = gltf.scene;
 
                 root.rotateY(90*3.1415/180.0);
