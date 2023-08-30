@@ -69,11 +69,11 @@ methods: {
     //========================= Luces =============================
         const color = 0xFFFFFF;
         const intensity = 1;
-        var ambientLight = new THREE.AmbientLight(color, intensity);        
+        var ambientLight = new THREE.AmbientLight(color, intensity/2);        
         scene.add(ambientLight);
 
-        const skyColor = 0xB1E1FF;  // light blue
-        const groundColor = 0x82e0aa ;  // light green
+        const skyColor = 0xE0EF3E;  
+        const groundColor = 0x10E526; 
         const  hemisphereLight = new THREE.HemisphereLight(skyColor, groundColor, intensity);
         scene.add(hemisphereLight);
   
@@ -105,14 +105,12 @@ methods: {
         */
 
         const gltfLoader = new GLTFLoader();
-        gltfLoader.load('/whale.glb', (gltf) => {
+        gltfLoader.load('../../public/whale.glb', (gltf) => {
             const root = gltf.scene;
 
-            /*
-            root.scale.x = 0.5;
-            root.scale.y = 0.5;
-            root.scale.z = 0.5;
-            */
+            root.scale.x = 0.04;
+            root.scale.y = 0.04;
+            root.scale.z = 0.04;
 
             scene.add(root);
         });
