@@ -15,12 +15,12 @@ export default {
     //========================= Escena ============================
         const scene = new THREE.Scene();
 
-        scene.background = new THREE.Color(0x151f60);
-        /*
+        //scene.background = new THREE.Color(0x151f60);
+        
         const loader = new THREE.TextureLoader();
-        const bgTexture = loader.load('./src/assets/img/space.jpg');
+        const bgTexture = loader.load('/img/space.jpg');
         scene.background = bgTexture;
-        */
+        
 
         var canvas = document.querySelector('#mi_canvas');
     

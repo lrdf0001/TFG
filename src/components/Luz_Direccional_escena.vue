@@ -87,6 +87,7 @@ export default {
             light.shadow.mapSize.height = 800; 
             light.shadow.camera.near = 0.5; 
             light.shadow.camera.far = 500;
+            light.shadow.bias = - 0.0001;
             
             const helper = new THREE.CameraHelper( light.shadow.camera );
             scene.add( helper );            

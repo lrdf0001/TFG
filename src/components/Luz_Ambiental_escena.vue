@@ -2,13 +2,13 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui'
-//import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+//import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+//import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
 export default {
-  name: 'Ambiental',
-  //data() {},
+name: 'Ambiental',
+
 methods: {
 
     main:function main(){
@@ -103,6 +103,24 @@ methods: {
             object.scale.z = 0.005;
         } );
         */
+
+        let mixer;
+        const gltfLoader = new GLTFLoader();
+        gltfLoader.load('/whale.glb', (gltf) => {
+            const root = gltf.scene;
+
+            mixer = new THREE.AnimationMixer( root );
+            const action = mixer.clipAction( root.animations[ 0 ] );
+            action.play();
+
+            root.scale.x = 0.005;
+            root.scale.y = 0.005;
+            root.scale.z = 0.005;
+
+            scene.add(root);
+        });
+
+        /*
         const fontLoader = new FontLoader();
         fontLoader.load(
             '/helvetiker_regular.typeface.json',
@@ -152,6 +170,7 @@ methods: {
         const stone = new THREE.Mesh( stoneGeometry, stoneMat );
         scene.add(stone);
         stone.translateY(-1.125);
+        */
       
     //========================== Render =============================
   
@@ -195,8 +214,8 @@ methods: {
         function animate() {
             requestAnimationFrame( animate );
 
-            //const delta = clock.getDelta();
-            //if ( mixer ) mixer.update( delta );            
+            const delta = clock.getDelta();
+            if ( mixer ) mixer.update( delta );            
     
             if (resizeRendererToDisplaySize(renderer)) {
                 const canvas = renderer.domElement;

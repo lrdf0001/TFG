@@ -2,10 +2,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'dat.gui'
-//import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-//import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+//import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+//import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
 export default {
     name: 'Focal',
@@ -86,7 +85,7 @@ export default {
             const color = 0xFFFFFF;
             const intensity = 1;
             const light = new THREE.SpotLight(color, intensity);
-            light.position.set(0, 4.3, 2.5);
+            light.position.set(0, 4.3, -2.5);
             scene.add(light);
             scene.add(light.target);
 
@@ -99,7 +98,7 @@ export default {
             
             const targetObject = new THREE.Object3D(); 
             scene.add(targetObject);
-            //targetObject.translateZ(-2);
+            targetObject.translateZ(-2);
             light.target = targetObject;
         
         //========================= Camara =============================
@@ -204,7 +203,76 @@ export default {
                 });
             });
             */
+
+            const gltfLoader = new GLTFLoader();
+            gltfLoader.load('/taxi.glb', (gltf) => {
+                const root = gltf.scene;
+
+                root.rotateY(-90*3.1415/180.0);
+                root.translateY(-1);
+                root.translateX(-1.5);
+                root.translateZ(1);
+
+                root.traverse( function( node ) {
+                    if ( node.isMesh ) { 
+                        node.castShadow = true;
+                        node.receiveShadow = false;
+                    }
+                } );
+
+                scene.add(root);
+            });
+
+            gltfLoader.load('/road.glb', (gltf) => {
+                const root = gltf.scene;
+
+                root.translateY(-1);
+
+                root.traverse( function( node ) {
+                    if ( node.isMesh ) { 
+                        node.castShadow = true;
+                        node.receiveShadow = false;
+                    }
+                } );
+
+                scene.add(root);
+            });
+
+            gltfLoader.load('/cop.glb', (gltf) => {
+                const root = gltf.scene;
+
+                root.rotateY(90*3.1415/180.0);
+                root.translateY(-0.9);
+                root.translateX(-1.5);
+                root.translateZ(1);
+
+                root.traverse( function( node ) {
+                    if ( node.isMesh ) { 
+                        node.castShadow = true;
+                        node.receiveShadow = false;
+                    }
+                } );
+
+                scene.add(root);
+            });
+
+            gltfLoader.load('/lamp_post.glb', (gltf) => {
+                const root = gltf.scene;
+
+                root.translateY(-1);
+                root.translateZ(-4);
+
+                root.traverse( function( node ) {
+                    if ( node.isMesh ) { 
+                        node.castShadow = true;
+                        node.receiveShadow = false;
+                    }
+                } );
+
+                scene.add(root);
+            });
         
+            /*
             const fontLoader = new FontLoader();
             fontLoader.load(
                 '/helvetiker_regular.typeface.json',
@@ -249,7 +317,7 @@ export default {
             const stone = new THREE.Mesh( stoneGeometry, stoneMat );
             scene.add(stone);
             stone.translateY(-1.125);
-            
+            */
             
         //========================== Render =============================
             
