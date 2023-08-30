@@ -105,12 +105,14 @@ methods: {
         */
 
         const gltfLoader = new GLTFLoader();
-        gltfLoader.load('/Whale.glb', (gltf) => {
+        gltfLoader.load('/whale.glb', (gltf) => {
             const root = gltf.scene;
 
+            /*
             root.scale.x = 0.5;
             root.scale.y = 0.5;
             root.scale.z = 0.5;
+            */
 
             scene.add(root);
         });
