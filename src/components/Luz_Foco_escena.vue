@@ -230,8 +230,8 @@ export default {
 
                 root.traverse( function( node ) {
                     if ( node.isMesh ) { 
-                        node.castShadow = true;
-                        node.receiveShadow = false;
+                        node.castShadow = false;
+                        node.receiveShadow = true;
                     }
                 } );
 

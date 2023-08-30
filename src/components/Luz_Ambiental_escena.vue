@@ -106,8 +106,12 @@ methods: {
 
         let mixer;
         const gltfLoader = new GLTFLoader();
-        gltfLoader.load('/whale.glb', (gltf) => {
+        gltfLoader.load('/Whale.glb', (gltf) => {
             const root = gltf.scene;
+
+            mixer = new THREE.AnimationMixer( root );
+            const action = mixer.clipAction( root.animations[ 0 ] );
+            action.play();
 
             root.scale.x = 0.005;
             root.scale.y = 0.005;
@@ -210,8 +214,8 @@ methods: {
         function animate() {
             requestAnimationFrame( animate );
 
-            //const delta = clock.getDelta();
-            //if ( mixer ) mixer.update( delta );            
+            const delta = clock.getDelta();
+            if ( mixer ) mixer.update( delta );            
     
             if (resizeRendererToDisplaySize(renderer)) {
                 const canvas = renderer.domElement;
