@@ -105,7 +105,7 @@ methods: {
         */
 
         const gltfLoader = new GLTFLoader();
-        gltfLoader.load('../../public/whale.glb', (gltf) => {
+        gltfLoader.load('/whale.glb', (gltf) => {
             const root = gltf.scene;
 
             root.scale.x = 0.04;
