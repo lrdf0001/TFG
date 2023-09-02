@@ -121,52 +121,6 @@ export default {
             });
 
 
-            /*
-            const fontLoader = new FontLoader();
-            fontLoader.load(
-                '/helvetiker_regular.typeface.json',
-                (droidfont) => {
-                    const textGeometry =  new TextGeometry('Direccional', {
-                        font: droidfont,
-                        size: 1,
-                        height: 1,
-                    });
-                    const textMaterial = new THREE.MeshPhongMaterial( { color: 0xe59866 } );
-                    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-                    
-                    scene.add(textMesh);
-                    
-                    textMesh.translateX(-3.5);
-                    textMesh.translateZ(-0.5);
-                    textMesh.castShadow = true;
-                    textMesh.receiveShadow = true;
-                }
-            );
-
-            const grassGeometry = new THREE.BoxGeometry( 10, 0.1, 7 );
-		    const grassMat = new THREE.MeshStandardMaterial({
-                color: 0x66bb6a,
-                emissive: 0x000000,
-                roughness: 0.6,
-                metalness: 0.6,
-            });		
-            const hierba = new THREE.Mesh( grassGeometry, grassMat );
-            scene.add(hierba);
-            hierba.translateY(-0.05);
-            hierba.receiveShadow = true;
-
-            const groundGeometry = new THREE.BoxGeometry( 10, 0.5, 7 );	
-		    const groundMat = new THREE.MeshPhongMaterial( { color: 0xdc7633} );		
-            const ground = new THREE.Mesh( groundGeometry, groundMat );
-            scene.add(ground);
-            ground.translateY(-0.35);
-
-            const stoneGeometry = new THREE.BoxGeometry( 10, 0.75, 7 );	
-		    const stoneMat = new THREE.MeshPhongMaterial( {  color: 0xabb2b9 } );		
-            const stone = new THREE.Mesh( stoneGeometry, stoneMat );
-            scene.add(stone);
-            stone.translateY(-0.975);
-        */
         //========================== Render =============================
             
             const renderer = new THREE.WebGLRenderer({canvas: canvas});
@@ -245,6 +199,7 @@ export default {
     <h3>Luz direccional</h3>
     <p>Este modelo de iluminación simulan grandes fuentes luminosas que se encuentran a una gran distancia,
         como puede ser el Sol.</p>
+    <img class="center" src="../assets/img/Teoria/direccional.png" alt="Nearest" width="25%" height="auto">
     <p>Como parámetros tiene:
         <ul>
             <li><b>Intensidad</b> de la luz.</li>
@@ -254,3 +209,23 @@ export default {
         líneas amarillas.
     </p>
 </template>
+
+<style scoped>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+img {
+  border: 0 none;
+  display: inline-block;
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+  padding-left: 1em;
+}
+
+</style>
