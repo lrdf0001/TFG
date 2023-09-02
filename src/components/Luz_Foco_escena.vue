@@ -344,7 +344,7 @@ export default {
     <h3>Foco</h3>
     <p>Un foco al igual que la luz puntual es una fuente luminosa situada en un punto en concreto, 
         con la diferencia que solo ilumina en un rango y dirección.</p>
-    <img class="center" src="../assets/img/Teoria/direccional.png" alt="Nearest" width="25%" height="auto">
+    <img class="center" src="../assets/img/Teoria/foco.png" alt="Esquema foco de luz" width="25%" height="auto">
     <p>Los parametros que definen a esta luz son:
         <ul>
             <li><b>Intensidad</b>.</li>

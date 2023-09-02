@@ -249,7 +249,7 @@ methods: {
 </script>
 
 <template>
-	<h3>Trasformaciones Afines</h3>
+	<h3>Transformaciones Afines</h3>
 	<p>Una transformación afín es una transformación que se aplica a puntos y 
 	vectores en un espacio afín. Preservan  ciertas propiedades geométricas:
 		<ul>
@@ -261,16 +261,31 @@ methods: {
 
 	<h4>Escalado</h4>
 	<p>Modifica el tamaño de un objeto. Si se escala igual en los tres ejes tenemos un escalado uniforme.</p>
+	<img class="center" src="../assets/img/Teoria/scale.png" alt="Matriz escalado" width="20%" height="auto">
 
 	<h4>Rotación</h4>
 	<p>Se realiza una rotación angular sobre un determinado eje en 3D.</p>
 	<p>Es una transformación rígida, es decir, que no cambia el tamaño o la forma de una figura.</p>
+	<img class="center" src="../assets/img/Teoria/rotacion.jpg" alt="Matriz rotacion" width="25%" height="auto">
 
 	<h4>Traslación</h4>
-	<p>Es equivalente a la suma de un vector t a un punto. Aplicado a un objeto 
+	<p>Es equivalente a la suma de un vector a un punto. Aplicado a un objeto 
 	(conjunto de puntos) es equivalente a moverlo rígidamente por el espacio.</p>
 	<p>También es una transformación rígida.</p>
+	<img class="center" src="../assets/img/Teoria/translation.png" alt="Matriz traslación" width="20%" height="auto">
 
+	<h4>Pila de matrices</h4>
+	<p>Cada una de estas funciones genera la correspondiente <b>matriz en 4x4</b>. Estas matrices de 
+		transfomación se aplican sobre la matriz de transformacion del modelo (M) que inicialmente
+		es la matriz de identidad.</p>
+	<p>Cada llamada a una transformación geométrica (T) implica una multiplicación (composición) por 
+		la matriz modelo actual: <i>M = M · T</i></p>
+	<p>Estas transfomaciones se almacenan en una <b>pila</b>, por lo que se aplican en orden LIFO 
+		(último en entrar, primero en salir), por este motivo el orden habitual para multiplicar 
+		las matrices es: <i>M = T · R · S</i>, primero se aplica el escalado, luego la rotación y por 
+		último se traslada. Si se altera este orden, el resultado es distinto, ya que la operación de 
+		multiplicación en matrices <b>no es conmutativa</b>.</p>
+	
 	<h4>Uso</h4>
 	<p>Estas transformaciones se aplican en el siguinete orden: escalado, rotación y traslación. En calculo de matrices
 		se representa como: <i>M = T · R · S</i>.</p>
@@ -280,3 +295,23 @@ methods: {
 	</p>
 	<p>Y si se quiere volver a la posición inicial, basta con pulsar <i>Reset</i>.</p>
 </template>
+
+<style scoped>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+img {
+  border: 0 none;
+  display: inline-block;
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+  padding-left: 1em;
+}
+
+</style>

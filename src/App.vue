@@ -15,7 +15,7 @@ import Footer from './components/Footer.vue'
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <RouterLink class="nav-link" aria-current="page" to="/">Trasformaciones</RouterLink>
+                <RouterLink class="nav-link" aria-current="page" to="/">Transformaciones</RouterLink>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
