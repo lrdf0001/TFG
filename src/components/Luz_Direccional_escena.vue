@@ -199,7 +199,7 @@ export default {
     <h3>Luz direccional</h3>
     <p>Este modelo de iluminación simulan grandes fuentes luminosas que se encuentran a una gran distancia,
         como puede ser el Sol.</p>
-    <img class="center" src="../assets/img/Teoria/direccional.png" alt="Esquema luz direccional" width="25%" height="auto">
+    <img class="center" src="../assets/img/Teoria/direccional.png" alt="Esquema luz direccional" >
     <p>Como parámetros tiene:
         <ul>
             <li><b>Intensidad</b> de la luz.</li>
@@ -217,15 +217,7 @@ export default {
   margin-right: auto;
   padding-top: 1em;
   padding-bottom: 1em;
-}
-
-img {
-  border: 0 none;
-  display: inline-block;
-  height: auto;
-  max-width: 100%;
-  vertical-align: middle;
-  padding-left: 1em;
+  width: 25%;
 }
 
 </style>

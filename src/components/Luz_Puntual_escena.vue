@@ -223,6 +223,7 @@ export default {
     <h3>Luz puntual</h3>
     <p>Como su nombre indica, simula una fuente luminosa situada en una posición concreta y hemite luz 
         en todas direcciones. Parecido a una bombilla.</p>
+    <img class="center" src="../assets/img/Teoria/point_light.png" alt="Esquema luz direccional" >        
     <p>
         Parámetros:
         <ul>
@@ -232,3 +233,16 @@ export default {
         </ul>
     </p>
 </template>
+
+
+<style scoped>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  width: 15%;
+}
+
+</style>
